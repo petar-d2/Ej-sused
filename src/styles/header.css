@@ -1,0 +1,39 @@
+.header{
+    display: flex;
+    flex-direction: column;
+}
+
+.header_slika{
+    height: 80%;
+}
+
+.header_grid{
+    margin-top: 30px;
+    margin-left: 40%;
+    display: flex;
+    justify-content: right;
+    flex-wrap: nowrap;
+    margin-right: 5%;
+
+}
+
+.header_gumb{
+    margin: 0 1vw;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: gray;
+    background-color: lightgray;
+    color: black;
+    border-width: 3px;
+    height: 40px;
+    cursor: pointer;
+    text-align: center;
+    padding: 6px;
+    font-weight: bold;
+}
+
+.header_gumb:hover {
+    color: white;
+    background-color: black;
+    border-color: lightgray;
+}
