@@ -1,11 +1,41 @@
-import React,{useState} from 'react';
+import React, { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import {useNavigate} from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const Prijava = () => {
     const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleLogInGoogle = (response) => {
+        var userObject=jwtDecode(response.credential);
+        const loggedUser={
+            email: userObject.email,
+            password: "abc"
+        };
+        localStorage.setItem("user", JSON.stringify(loggedUser));
+        navigate('/');
+    };
+
+    useEffect(() => {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
+            callback: handleLogInGoogle
+        });
+
+        google.accounts.id.renderButton(
+            document.getElementById('GoogleDiv'),
+            {theme: "outline", size: "large"}
+        );
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            navigate('/');
+        }
+
+    },[navigate]);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -17,7 +47,12 @@ const Prijava = () => {
 
         setEmail('');
         setPassword('');
-        navigate('/home');
+        const loggedUser={
+            email: email,
+            password: password
+        };
+        localStorage.setItem("user", JSON.stringify({ loggedUser }));
+        navigate('/');
 
     };
 
@@ -45,6 +80,7 @@ const Prijava = () => {
                 </div>
                 <button className="button_1" type="submit">Prijava</button>
             </form>
+            <div id='GoogleDiv'></div>
             <div className="horizontalna_crta" style={{ 
                 height: '2px', 
                 backgroundColor: 'black',
@@ -60,4 +96,4 @@ const Prijava = () => {
     );
 }
 
-export default Prijava
+export default Prijava;
