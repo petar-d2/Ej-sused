@@ -38,6 +38,7 @@ const Header = () => {
                     <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
                     <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
                     <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
+                    <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>
                 </div>
             </div>
         );

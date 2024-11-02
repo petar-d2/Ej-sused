@@ -6,9 +6,14 @@ import './styles/login_signup.css';
 const RegistracijaTvrtka = ({kvartovi, user2}) => {
 
     const navigate = useNavigate();
-    const [adresa, setAdresa] = useState('');
-    const [naziv, setNaziv] = useState('');
-    const [kvart, setKvart] = useState('Trešnjevka');
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const tekst = user ? "Uredi profil" : "Registracija";
+    const tekst2 = user ? "Spremi" : "Registracija";
+
+    const [adresa, setAdresa] = useState(user && user.adresa ? user.adresa : "");
+    const [naziv, setNaziv] = useState(user && user.naziv ? user.naziv : "");
+    const [kvart, setKvart] = useState(user && user.kvart ? user.kvart : "Trešnjevka");
 
     const handleSignup = (e) => {
         e.preventDefault();
@@ -30,7 +35,7 @@ const RegistracijaTvrtka = ({kvartovi, user2}) => {
 
     return (
         <div className="login_signup-container">
-            <h2>Registracija</h2>
+            <h2>{tekst}</h2>
             <form onSubmit={handleSignup}>
                 <div className="form-group">
                     <label>Adresa:</label>
@@ -39,6 +44,7 @@ const RegistracijaTvrtka = ({kvartovi, user2}) => {
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
                         required 
+                        placeholder={adresa}
                     />
                 </div>
                 <div className="form-group">
@@ -48,6 +54,7 @@ const RegistracijaTvrtka = ({kvartovi, user2}) => {
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
                         required 
+                        placeholder={naziv}
                     />
                 </div>
                 <select id="options" 
@@ -59,7 +66,7 @@ const RegistracijaTvrtka = ({kvartovi, user2}) => {
                         <option key={index} value={kvart.name}>{kvart.name}</option>
                     ))}
                 </select>
-                <button className="button_1" type="submit">Registracija</button>
+                <button className="button_1" type="submit">{tekst2}</button>
             </form>
         </div>
     );

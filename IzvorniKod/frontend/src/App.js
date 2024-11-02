@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/app.css';
 import Registracija from './Registracija';
 import NapraviPonudu from './NapraviPonudu';
+import UrediProfil from './UrediProfil';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
             <Route path="/dogadaji" element={<Prijava />} />
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija kvartovi={kvartovi}/>} />
+            <Route path="/uredi-profil" element={<UrediProfil kvartovi={kvartovi}/>} />
         </Routes>
       </div>
     </Router>
