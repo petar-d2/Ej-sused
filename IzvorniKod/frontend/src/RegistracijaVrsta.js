@@ -37,6 +37,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
                                     value="tvrtka"
                                     checked={vrstaKorisnika === 'tvrtka'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Tvrtka
                             </label>
@@ -48,21 +49,23 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
                                     value="susjed"
                                     checked={vrstaKorisnika === 'susjed'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Susjed
                             </label>
                         </div>
-                        {/*<div>
+                        <div>
                             <label>
                                 <input
                                     type="radio"
                                     value="volonter"
                                     checked={vrstaKorisnika === 'volonter'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Volonter
                             </label>
-                        </div>*/}
+                        </div>
                     </div>
                     <button className="button_1" type="submit">Nastavi</button>
                 </form>
@@ -75,7 +78,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
         );
     }
 
-    else if (user2.vrsta==="susjed") {
+    else if (user2.vrsta==="susjed" || user2.vrsta==="volonter") {
         return (
             <RegistracijaSusjed kvartovi={kvartovi} user2={user2}/>
         );
