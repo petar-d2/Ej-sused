@@ -1,25 +1,30 @@
 import React,{useState} from 'react';
 import './styles/login_signup.css';
 import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 const Prijava = () => {
     const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-
-        if (!email || !password) {
-            alert("Molimo unesite i email i lozinku.");
-            return;
+        try {
+          const response = await axios.post('http://localhost:8000/prijava/', {
+            email,
+            password,
+          });
+          //localStorage.setItem('token', response.data.access);
+          navigate('/home');
+        } catch (error) {
+          console.error('Login failed:', error.response.data);
+          alert("Neuspješna prijava!");
+          return;
         }
-
-        setEmail('');
-        setPassword('');
-        navigate('/home');
-
     };
+
+
 
     return (
         <div className="login_signup-container">

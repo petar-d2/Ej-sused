@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
+import axios from 'axios';
 
 const Registracija = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Registracija = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [korisnik, setKorisnik] = useState('');
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
 
         if (!email || !password || !confirmPassword) {
@@ -17,16 +18,23 @@ const Registracija = () => {
             return;
         }
 
-
         if (password !== confirmPassword) {
             alert("Lozinke se ne podudaraju. Molimo pokušajte ponovno.");
             return;
         }
 
-        setEmail('');
-        setPassword('');
-        setKorisnik('');
-        navigate('/prijava');
+        try {
+            await axios.post('http://localhost:8000/registracija/', {
+                email,
+                password,
+            });
+            alert("Uspješno ste registrirani!");
+            navigate('/prijava');
+        } catch (error) {
+          console.error('Registration failed:', error.response.data);
+          alert("Neuspješna registracija!");
+          return;
+        }
     };
 
     return (
