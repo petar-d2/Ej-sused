@@ -1,12 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { jwtDecode } from 'jwt-decode';
+import { GlobalContext } from './GlobalContext';
 
 const Prijava = () => {
     const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const { users } = useContext(GlobalContext);
 
     const handleLogInGoogle = (response) => {
         var userObject=jwtDecode(response.credential);
@@ -14,8 +17,19 @@ const Prijava = () => {
             email: userObject.email,
             password: "abc"
         };
-        localStorage.setItem("user", JSON.stringify(loggedUser));
-        navigate('/');
+
+        const existingUser = users.find(
+            (user) => user.email === loggedUser.email && user.password === loggedUser.password
+        );
+        
+        if (existingUser){
+            localStorage.setItem("currentUser", JSON.stringify(existingUser));
+            navigate('/');
+        }
+        else {
+            alert('Pogrešan mail i/ili lozinka.');
+            setPassword('');
+        }
     };
 
     useEffect(() => {
@@ -30,7 +44,7 @@ const Prijava = () => {
             {theme: "outline", size: "large"}
         );
 
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem("currentUser"));
         if (user) {
             navigate('/');
         }
@@ -51,9 +65,19 @@ const Prijava = () => {
             email: email,
             password: password
         };
-        localStorage.setItem("user", JSON.stringify({ loggedUser }));
-        navigate('/');
 
+        const existingUser = users.find(
+            (user) => user.email === loggedUser.email && user.password === loggedUser.password
+        );
+        
+        if (existingUser){
+            localStorage.setItem("currentUser", JSON.stringify(existingUser));
+            navigate('/');
+        }
+        else {
+            alert('Pogrešan mail i/ili lozinka.');
+            setPassword('');
+        }
     };
 
     return (

@@ -1,15 +1,18 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { jwtDecode } from 'jwt-decode';
 import RegistracijaVrsta from './RegistracijaVrsta';
+import { GlobalContext } from './GlobalContext';
 
-const Registracija = ({kvartovi}) => {
+const Registracija = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user2, setUser2] = useState({});
+
+    const { users } = useContext(GlobalContext);
 
     const handleSignUpGoogle = (response) => {
         var userObject=jwtDecode(response.credential);
@@ -17,8 +20,13 @@ const Registracija = ({kvartovi}) => {
             email: userObject.email,
             password: "abc"
         };
-        setUser2(newUser);
-        //navigate('/prijava');
+
+        const existingUser = users.find((user) => user.email === newUser.email);
+        if (existingUser) {
+            alert("Korisnik s ovim mailom već postoji.");
+        } else {
+            setUser2(newUser);
+        }
     };
 
     useEffect(() => {
@@ -33,7 +41,7 @@ const Registracija = ({kvartovi}) => {
             {theme: "outline", size: "large"}
         );
 
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem("currentUser"));
         if (user) {
             navigate('/');
         }
@@ -60,14 +68,19 @@ const Registracija = ({kvartovi}) => {
             email: email,
             password: password
         };
-        setUser2(newUser);
+
+        const existingUser = users.find((user) => user.email === newUser.email);
+        if (existingUser) {
+            alert("Korisnik s ovim mailom već postoji.");
+        } else {
+            setUser2(newUser);
+        }
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        //navigate('/prijava');
     };
 
-    //const user = JSON.parse(localStorage.getItem("user"));
+    //const user = JSON.parse(localStorage.getItem("currentUser"));
 
     if (! (user2 && user2.email && user2.password)){
         return (
@@ -120,7 +133,7 @@ const Registracija = ({kvartovi}) => {
     }
     else {
         return (
-            <RegistracijaVrsta kvartovi={kvartovi} user2={user2} setUser2={setUser2}/>
+            <RegistracijaVrsta user2={user2} setUser2={setUser2}/>
         );
     }
 

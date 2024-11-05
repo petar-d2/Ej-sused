@@ -1,13 +1,16 @@
-import React, { useState} from 'react';
+import React, { useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
+import { GlobalContext } from './GlobalContext';
 
 
-const RegistracijaTvrtka = ({kvartovi, user2}) => {
+const RegistracijaTvrtka = ({user2}) => {
 
     const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { users, setUsers, kvartovi } = useContext(GlobalContext);
+
+    const user = JSON.parse(localStorage.getItem("currentUser"));
     const tekst = user ? "Uredi profil" : "Registracija";
     const tekst2 = user ? "Spremi" : "Registracija";
 
@@ -26,7 +29,23 @@ const RegistracijaTvrtka = ({kvartovi, user2}) => {
             naziv: naziv,
             kvart: kvart
         };
-        localStorage.setItem("user", JSON.stringify(newUser));
+
+        const existingUser = users.find(
+            (user) => user.email === newUser.email
+        );
+        if (existingUser){
+            const updatedUsers = users.map((user) =>
+                user.email === existingUser.email ? newUser : user
+            );
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+            setUsers(updatedUsers);
+        }
+        else {
+            localStorage.setItem('users', JSON.stringify([...users, newUser]));
+            setUsers([...users, newUser]);
+        }
+
+        localStorage.setItem("currentUser", JSON.stringify(newUser));
         setAdresa('');
         setNaziv('');
         setKvart('Trešnjevka');

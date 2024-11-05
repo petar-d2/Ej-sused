@@ -1,25 +1,29 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import RegistracijaTvrtka from './RegistracijaTvrtka';
 import RegistracijaSusjed from './RegistracijaSusjed';
 
-const UrediProfil = ({kvartovi}) => {
+const UrediProfil = () => {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("user"));
-    const [vrstaKorisnika, setVrstaKorisnika] = useState(user.vrstaKorisnika);
-    const [user2, setUser2] = useState(user);
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    //const [vrstaKorisnika, setVrstaKorisnika] = useState(user.vrstaKorisnika);
+    //const [user2, setUser2] = useState(user);
 
-    if (user2.vrsta==="tvrtka") {
+    if (user.vrsta==="tvrtka") {
         return (
-            <RegistracijaTvrtka kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaTvrtka user2={user}/>
         );
     }
 
-    else if (user2.vrsta==="susjed" || user2.vrsta==="volonter") {
+    else if (user.vrsta==="susjed" || user.vrsta==="volonter") {
         return (
-            <RegistracijaSusjed kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaSusjed user2={user}/>
         );
+    }
+
+    else {
+        navigate('/');
     }
 
 };

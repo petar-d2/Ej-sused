@@ -4,7 +4,7 @@ import './styles/login_signup.css';
 import RegistracijaTvrtka from './RegistracijaTvrtka';
 import RegistracijaSusjed from './RegistracijaSusjed';
 
-const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
+const RegistracijaVrsta = ({user2, setUser2}) => {
     const navigate = useNavigate();
     const [vrstaKorisnika, setVrstaKorisnika] = useState('tvrtka');
 
@@ -21,7 +21,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
         //navigate('/prijava');
     };
 
-    //const user = JSON.parse(localStorage.getItem("user"));
+    //const user = JSON.parse(localStorage.getItem("currentUser"));
 
     if (!(user2 && user2.vrsta)){
         return (
@@ -74,13 +74,13 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
     }
     else if (user2.vrsta==="tvrtka") {
         return (
-            <RegistracijaTvrtka kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaTvrtka user2={user2}/>
         );
     }
 
     else if (user2.vrsta==="susjed" || user2.vrsta==="volonter") {
         return (
-            <RegistracijaSusjed kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaSusjed user2={user2}/>
         );
     }
 
