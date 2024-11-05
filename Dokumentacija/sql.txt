@@ -1,0 +1,148 @@
+CREATE TABLE vrstaUsluga
+(
+  nazivVrsta VARCHAR(255) NOT NULL,
+  sifVrsta INT NOT NULL,
+  PRIMARY KEY (sifVrsta)
+);
+
+CREATE TABLE korisnik
+(
+  sifKorisnik INT NOT NULL,
+  eMailLogin VARCHAR(255) NOT NULL,
+  lozinka VARCHAR(255) NOT NULL,
+  isTvrtka BOOLEAN NOT NULL,
+  PRIMARY KEY (sifKorisnik),
+  UNIQUE (eMailLogin)
+);
+
+CREATE TABLE tvrtka
+(
+  nazivTvrtka VARCHAR(255) NOT NULL,
+  adresaTvrtka VARCHAR(255) NOT NULL,
+  kvartTvrtka VARCHAR(255) NOT NULL,
+  mjestoTvrtka VARCHAR(255) NOT NULL,
+  opisTvrtka VARCHAR(4095),
+  sifTvrtka INT NOT NULL,
+  PRIMARY KEY (sifTvrtka),
+  FOREIGN KEY (sifTvrtka) REFERENCES korisnik(sifKorisnik)
+);
+
+CREATE TABLE osoba
+(
+  ime VARCHAR(255) NOT NULL,
+  prezime VARCHAR(255) NOT NULL,
+  isNadlezna BOOLEAN NOT NULL,
+  sifOsoba INT NOT NULL,
+  PRIMARY KEY (sifOsoba),
+  FOREIGN KEY (sifOsoba) REFERENCES korisnik(sifKorisnik)
+);
+
+CREATE TABLE susjed
+(
+  bodovi INT NOT NULL,
+  isVolonter BOOLEAN NOT NULL,
+  mjestoSusjed VARCHAR(255) NOT NULL,
+  kvartSusjed VARCHAR(255) NOT NULL,
+  opisSusjed VARCHAR(4095),
+  sifSusjed INT NOT NULL,
+  PRIMARY KEY (sifSusjed),
+  FOREIGN KEY (sifSusjed) REFERENCES osoba(sifOsoba)
+);
+
+CREATE TABLE nadlezna
+(
+  isAdmin BOOLEAN NOT NULL,
+  sifNadlezna INT NOT NULL,
+  PRIMARY KEY (sifNadlezna),
+  FOREIGN KEY (sifNadlezna) REFERENCES osoba(sifOsoba)
+);
+
+CREATE TABLE jeSposoban
+(
+  sifSusjed INT NOT NULL,
+  sifVrsta INT NOT NULL,
+  PRIMARY KEY (sifSusjed, sifVrsta),
+  FOREIGN KEY (sifSusjed) REFERENCES susjed(sifSusjed),
+  FOREIGN KEY (sifVrsta) REFERENCES vrstaUsluga(sifVrsta)
+);
+
+CREATE TABLE zahtjev
+(
+  cijenaBod INT NOT NULL,
+  kadZadan TIMESTAMP NOT NULL,
+  nazivZahtjev VARCHAR(255) NOT NULL,
+  adresaZahtjev VARCHAR(255) NOT NULL,
+  statusZahtjev VARCHAR(255) NOT NULL,
+  opisZahtjev VARCHAR(2047),
+  ocjenaIzvrsitelj INT,
+  sifSusjed INT NOT NULL,
+  sifVrsta INT,
+  sifIzvrsitelj INT,
+  PRIMARY KEY (kadZadan, sifSusjed),
+  FOREIGN KEY (sifSusjed) REFERENCES susjed(sifSusjed),
+  FOREIGN KEY (sifVrsta) REFERENCES vrstaUsluga(sifVrsta),
+  FOREIGN KEY (sifIzvrsitelj) REFERENCES susjed(sifSusjed)
+);
+
+CREATE TABLE dogadaj
+(
+  datumDogadaj DATE NOT NULL,
+  nazivDogadaj VARCHAR(255) NOT NULL,
+  adresaDogadaj VARCHAR(255) NOT NULL,
+  statusDogadaj VARCHAR(255) NOT NULL,
+  kadZadano INT NOT NULL,
+  vrstaDogadaj VARCHAR(255),
+  opisDogadaj VARCHAR(2047) NOT NULL,
+  nagradaBod INT NOT NULL,
+  vrijemeDogadaj TIME NOT NULL,
+  sifVolonter INT NOT NULL,
+  PRIMARY KEY (kadZadano, sifVolonter),
+  FOREIGN KEY (sifVolonter) REFERENCES susjed(sifSusjed)
+);
+
+CREATE TABLE ponuda
+(
+  kadZadano TIMESTAMP NOT NULL,
+  cijenaNovac FLOAT,
+  nazivPonuda VARCHAR(255) NOT NULL,
+  isAktivna BOOLEAN NOT NULL,
+  opisPonuda VARCHAR(2048),
+  sifTvrtka INT NOT NULL,
+  sifVrsta INT,
+  PRIMARY KEY (kadZadano, sifTvrtka),
+  FOREIGN KEY (sifTvrtka) REFERENCES tvrtka(sifTvrtka),
+  FOREIGN KEY (sifVrsta) REFERENCES vrstaUsluga(sifVrsta)
+);
+
+CREATE TABLE komentar
+(
+  sifKom INT NOT NULL,
+  textKom VARCHAR(2047) NOT NULL,
+  sifDaje INT NOT NULL,
+  sifPrima INT NOT NULL,
+  PRIMARY KEY (sifKom),
+  FOREIGN KEY (sifDaje) REFERENCES susjed(sifSusjed),
+  FOREIGN KEY (sifPrima) REFERENCES korisnik(sifKorisnik)
+);
+
+CREATE TABLE prijavljenNa
+(
+  isNagraden BOOLEAN NOT NULL,
+  sifSusjed INT NOT NULL,
+  kadZadano INT NOT NULL,
+  sifVolonter INT NOT NULL,
+  PRIMARY KEY (sifSusjed, kadZadano, sifVolonter),
+  FOREIGN KEY (sifSusjed) REFERENCES susjed(sifSusjed),
+  FOREIGN KEY (kadZadano, sifVolonter) REFERENCES dogadaj(kadZadano, sifVolonter)
+);
+
+CREATE TABLE prihvaca
+(
+  ocjenaPonuda INT,
+  sifSusjed INT NOT NULL,
+  kadZadano TIMESTAMP NOT NULL,
+  sifTvrtka INT NOT NULL,
+  PRIMARY KEY (sifSusjed, kadZadano, sifTvrtka),
+  FOREIGN KEY (sifSusjed) REFERENCES susjed(sifSusjed),
+  FOREIGN KEY (kadZadano, sifTvrtka) REFERENCES ponuda(kadZadano, sifTvrtka)
+);
