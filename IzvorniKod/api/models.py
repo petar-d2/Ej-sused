@@ -42,7 +42,7 @@ class Tvrtka(models.Model):
         return self.nazivTvrtka
 
 class Susjed(models.Model):
-    bodovi = models.PositiveSmallIntegerField(default=0) 
+    bodovi = models.PositiveSmallIntegerField(default=5) 
     isVolonter = models.BooleanField(default=False)
     mjestoSusjed = models.CharField(max_length=50)
     kvartSusjed = models.CharField(max_length=50)
