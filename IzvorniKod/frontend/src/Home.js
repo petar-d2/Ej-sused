@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './styles/home.css';
 import PrikazKvarta from './PrikazKvarta';
+import { GlobalContext } from './GlobalContext';
 
-const Home = ({kvartovi}) => {
-    
+const Home = () => {
+
+    const { kvartovi } = useContext(GlobalContext);
+
     return(
         <div className="home_main">
             {kvartovi.map((kvart) => (
@@ -15,4 +18,4 @@ const Home = ({kvartovi}) => {
     );
 }
 
-export default Home
+export default Home;
