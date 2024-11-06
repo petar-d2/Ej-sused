@@ -15,11 +15,10 @@ const Prijava = () => {
         var userObject=jwtDecode(response.credential);
         const loggedUser={
             email: userObject.email,
-            password: "abc"
         };
 
         const existingUser = users.find(
-            (user) => user.email === loggedUser.email && user.password === loggedUser.password
+            (user) => user.email === loggedUser.email && user.authProvider === 'google'
         );
         
         if (existingUser){
@@ -27,7 +26,7 @@ const Prijava = () => {
             navigate('/');
         }
         else {
-            alert('Pogrešan mail i/ili lozinka.');
+            alert('Nepostojeći korisnički račun. Morate se prvo registrirati.');
             setPassword('');
         }
     };
@@ -67,7 +66,7 @@ const Prijava = () => {
         };
 
         const existingUser = users.find(
-            (user) => user.email === loggedUser.email && user.password === loggedUser.password
+            (user) => user.email === loggedUser.email && user.password === loggedUser.password && user.authProvider==='standard'
         );
         
         if (existingUser){

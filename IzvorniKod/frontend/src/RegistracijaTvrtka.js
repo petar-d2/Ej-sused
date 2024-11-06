@@ -24,6 +24,7 @@ const RegistracijaTvrtka = ({user2}) => {
         const newUser={
             email: user2.email,
             password: user2.password,
+            authProvider: user2.authProvider,
             vrsta: user2.vrsta,
             adresa: adresa,
             naziv: naziv,

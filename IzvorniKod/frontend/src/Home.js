@@ -5,8 +5,8 @@ import { GlobalContext } from './GlobalContext';
 
 const Home = () => {
 
-    const { users, kvartovi } = useContext(GlobalContext);
-    
+    const { kvartovi } = useContext(GlobalContext);
+
     return(
         <div className="home_main">
             {kvartovi.map((kvart) => (

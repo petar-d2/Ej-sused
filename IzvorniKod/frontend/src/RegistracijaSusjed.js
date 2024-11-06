@@ -8,7 +8,7 @@ const RegistracijaSusjed = ({user2}) => {
 
     const navigate = useNavigate();
 
-    const { users, setUsers, kvartovi } = useContext(GlobalContext);
+    const { users, setUsers, kvartovi, skills } = useContext(GlobalContext);
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const tekst = user ? "Uredi profil" : "Registracija";
@@ -18,6 +18,15 @@ const RegistracijaSusjed = ({user2}) => {
     const [ime, setIme] = useState(user && user.ime ? user.ime : "");
     const [prezime, setPrezime] = useState(user && user.prezime ? user.prezime : "");
     const [kvart, setKvart] = useState(user && user.kvart ? user.kvart : "Trešnjevka");
+    const [userSkills, setUserSkills] = useState(user && user.skills ? user.skills : []);
+
+    const handleSkillChange = (skill) => {
+        setUserSkills((prevSkills) =>
+            prevSkills.includes(skill)
+                ? prevSkills.filter((s) => s !== skill)
+                : [...prevSkills, skill]
+        );
+    };
 
     const handleSignup = (e) => {
         e.preventDefault();
@@ -25,11 +34,13 @@ const RegistracijaSusjed = ({user2}) => {
         const newUser={
             email: user2.email,
             password: user2.password,
+            authProvider: user2.authProvider,
             vrsta: user2.vrsta,
             adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
+            skills: userSkills,
             bodovi: user && user.bodovi ? user.bodovi : 0
         };
 
@@ -87,15 +98,34 @@ const RegistracijaSusjed = ({user2}) => {
                         required 
                     />
                 </div>
-                <select id="options" 
-                name="options" 
-                value={kvart}
-                onChange={(e) => setKvart(e.target.value)}
-                >
-                    {kvartovi.map((kvart, index) => (
-                        <option key={index} value={kvart.name}>{kvart.name}</option>
-                    ))}
-                </select>
+                <div className="form-group">
+                    <label>Kvart:</label>
+                    <select id="options" 
+                    name="options" 
+                    value={kvart}
+                    onChange={(e) => setKvart(e.target.value)}
+                    >
+                        {kvartovi.map((kvart, index) => (
+                            <option key={index} value={kvart.name}>{kvart.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group-skills">
+                    <label>Vještine:</label>
+                    <div className="skills-box">
+                        {skills.map((skill, index) => (
+                            <div key={index} className="skill-item">
+                                <input
+                                    type="checkbox"
+                                    id={`skill-${index}`}
+                                    checked={userSkills.includes(skill)}
+                                    onChange={() => handleSkillChange(skill)}
+                                />
+                                <label htmlFor={`skill-${index}`}>{skill}</label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
                 <button className="button_1" type="submit">{tekst2}</button>
             </form>
         </div>

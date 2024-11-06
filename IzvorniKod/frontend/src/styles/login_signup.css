@@ -19,7 +19,21 @@ form {
     justify-content: center;
     align-items: center;
 }
+
 .form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group select {
+    margin: 0 auto;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.form-group-skills {
     margin-bottom: 15px;
     width: 100%;
     max-width: 400px;
@@ -99,4 +113,55 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items:first baseline;
+}
+
+.skills-box {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 10px);
+    padding: 5px 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px 10px;
+}
+
+.skill-item input[type="checkbox"] {
+    justify-self: center;
+    width: 150px;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.skill-item label {
+    justify-self: start;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    margin: 0;
+}
+
+.skills-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.skills-box::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px;
+}
+
+.skills-box::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

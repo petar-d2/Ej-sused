@@ -18,7 +18,7 @@ const Registracija = () => {
         var userObject=jwtDecode(response.credential);
         const newUser={
             email: userObject.email,
-            password: "abc"
+            authProvider: 'google'
         };
 
         const existingUser = users.find((user) => user.email === newUser.email);
@@ -66,7 +66,8 @@ const Registracija = () => {
 
         const newUser={
             email: email,
-            password: password
+            password: password,
+            authProvider: 'standard'
         };
 
         const existingUser = users.find((user) => user.email === newUser.email);
@@ -82,7 +83,7 @@ const Registracija = () => {
 
     //const user = JSON.parse(localStorage.getItem("currentUser"));
 
-    if (! (user2 && user2.email && user2.password)){
+    if (! (user2 && user2.email)){
         return (
             <div className="login_signup-container">
                 <h2>Registracija</h2>

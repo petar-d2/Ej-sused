@@ -14,6 +14,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
         const newUser={
             email: user2.email,
             password: user2.password,
+            authProvider: user2.authProvider,
             vrsta: vrstaKorisnika
         };
         setUser2(newUser);
@@ -54,7 +55,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                                 Susjed
                             </label>
                         </div>
-                        <div>
+                        {/*<div>
                             <label>
                                 <input
                                     type="radio"
@@ -65,7 +66,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                                 />
                                 Volonter
                             </label>
-                        </div>
+                        </div>*/}
                     </div>
                     <button className="button_1" type="submit">Nastavi</button>
                 </form>
