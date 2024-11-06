@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from api.models import Korisnik 
 
 def main(request):
     return render(request, "index.html")
@@ -26,10 +27,10 @@ class registracija(APIView):
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
-        user = User.objects.filter(email=email)
+        user = Korisnik.objects.filter(email=email)
         if user.exists():
             return Response({'error': 'Email već registriran'}, status=status.HTTP_401_UNAUTHORIZED)
-        user = User.objects.create_user(username=email, email=email, password=password)
+        user = Korisnik.objects.create_user(username=email, email=email, password=password)
         user.save()
         return Response({})
 
