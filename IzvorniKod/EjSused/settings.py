@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,13 +42,17 @@ INSTALLED_APPS = [
     "frontend.apps.FrontendConfig",
     "api.apps.ApiConfig",
     "rest_framework",
-    "corsheaders"
+    "corsheaders",
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-    )
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 MIDDLEWARE = [
@@ -141,4 +146,12 @@ STATICFILES_DIRS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True 
+
 AUTH_USER_MODEL = 'api.Korisnik'
+
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
