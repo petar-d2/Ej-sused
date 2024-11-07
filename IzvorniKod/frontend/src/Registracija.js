@@ -15,6 +15,7 @@ const Registracija = () => {
 
     const { users } = useContext(GlobalContext);
 
+    /*
     const handleSignUpGoogle = (response) => {
         var userObject=jwtDecode(response.credential);
         const newUser={
@@ -31,7 +32,7 @@ const Registracija = () => {
     };
 
     useEffect(() => {
-        /* global google */
+        // global google
         google.accounts.id.initialize({
             client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
             callback: handleSignUpGoogle
@@ -47,7 +48,7 @@ const Registracija = () => {
             navigate('/');
         }
 
-    },[navigate]);
+    },[navigate]); */
 
 
 
