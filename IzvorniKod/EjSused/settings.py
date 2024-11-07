@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#p*uuvv_ye90q704p^its-i2gvox70w_f-a(2f0oz+8t#b@1$5"
+SECRET_KEY = os.environ.get("SECRET_KEY")
+#"django-insecure-#p*uuvv_ye90q704p^its-i2gvox70w_f-a(2f0oz+8t#b@1$5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOST").split(" ")
 
 
 # Application definition
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -93,7 +96,11 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
+database_url = os.environ.get("DATABASE_URL")
+# Replace the SQLite DATABASES configuration with PostgreSQL:
+# Replace the SQLite DATABASES configuration with PostgreSQL:
+DATABASES["default"] = dj_database_url.parse(database_url)
+        #'postgresql://default_edgw_user:8KQgjBsxmZ6H1BjaYobpJoLGw3km2iBw@dpg-csl8uuo8fa8c73bss11g-a.frankfurt-postgres.render.com/default_edgw'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
