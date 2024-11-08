@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import os
 import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,14 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-#"django-insecure-#p*uuvv_ye90q704p^its-i2gvox70w_f-a(2f0oz+8t#b@1$5"
+SECRET_KEY = "django-insecure-#p*uuvv_ye90q704p^its-i2gvox70w_f-a(2f0oz+8t#b@1$5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = True
 
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -43,13 +43,17 @@ INSTALLED_APPS = [
     "frontend.apps.FrontendConfig",
     "api.apps.ApiConfig",
     "rest_framework",
-    "corsheaders"
+    "corsheaders",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-    )
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 MIDDLEWARE = [
@@ -70,7 +74,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "frontend/public"),
+            os.path.join(BASE_DIR, "frontend/build"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -92,19 +96,11 @@ WSGI_APPLICATION = "EjSused.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        "postgresql://default_edgw_user:8KQgjBsxmZ6H1BjaYobpJoLGw3km2iBw@dpg-csl8uuo8fa8c73bss11g-a/default_edgw",
+        "postgresql://test:ykmKlaMbpcVBoMjuFtS8Wh019eHRXINF@dpg-csmur81u0jms73ftq520-a.frankfurt-postgres.render.com/ejsused_baza",
         default='postgresql://postgres:postgres@localhost:5432/mysite',
         conn_max_age=600    
     )
 }
-database_url = os.environ.get("DATABASE_URL")
-# Replace the SQLite DATABASES configuration with PostgreSQL:
-# Replace the SQLite DATABASES configuration with PostgreSQL:
-DATABASES["default"] = dj_database_url.parse(database_url)
-        #'postgresql://default_edgw_user:8KQgjBsxmZ6H1BjaYobpJoLGw3km2iBw@dpg-csl8uuo8fa8c73bss11g-a.frankfurt-postgres.render.com/default_edgw'
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -138,7 +134,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -146,8 +141,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'src'),  # Path to where your static files are stored
+    os.path.join(BASE_DIR, 'frontend/build/static'),  # Path to where your static files are stored
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True 
 AUTH_USER_MODEL = 'api.Korisnik'
+
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
+
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
