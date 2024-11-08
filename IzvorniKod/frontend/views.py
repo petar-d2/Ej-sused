@@ -2,10 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from api.models import Korisnik 
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 def main(request):
     return render(request, "index.html")
@@ -16,8 +16,8 @@ class prijava(APIView):
         password = request.data.get('password')
         user = authenticate(username=email, email=email, password=password)
         if user:
-            token = RefreshToken.for_user(user)
-            return Response({"access": str(token.access_token), "refresh": str(token)})
+            login(request, user)
+            return Response({})
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     
     def get(self, request):
@@ -37,15 +37,8 @@ class registracija(APIView):
     def get(self, request):
         return render(request, "index.html")
 
-class odjava(APIView):
-    def post(self, request):
-        try:
-            token = RefreshToken(request.data.get('refresh_token'))
-            token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-    
 
+
+#@login_required
 def home(request):
     return render(request, "index.html")
