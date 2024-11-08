@@ -9,9 +9,9 @@ export const GlobalProvider = ({ children }) => {
         return savedUsers ? JSON.parse(savedUsers) : [];
     });
     const [kvartovi, setKvartovi] = useState([
-        { id: 1, name: "Trešnjevka", image: "/images/header1.jpeg" },
-        { id: 2, name: "Maksimir", image: "/images/header1.jpeg" },
-        { id: 3, name: "Dubrava", image: "/images/header1.jpeg" },
+        { id: 1, name: "Trešnjevka", image: "/static/images/header1.jpeg" },
+        { id: 2, name: "Maksimir", image: "/static/images/header1.jpeg" },
+        { id: 3, name: "Dubrava", image: "/static/images/header1.jpeg" },
     ]);
     const [skills, setSkills] = useState([
         "Popravak namještaja",

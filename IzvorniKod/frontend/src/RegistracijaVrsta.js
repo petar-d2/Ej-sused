@@ -14,7 +14,6 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
         const newUser={
             email: user2.email,
             password: user2.password,
-            authProvider: user2.authProvider,
             vrsta: vrstaKorisnika
         };
         setUser2(newUser);

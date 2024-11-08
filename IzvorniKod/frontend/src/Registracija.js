@@ -15,24 +15,37 @@ const Registracija = () => {
 
     const { users } = useContext(GlobalContext);
 
-    /*
-    const handleSignUpGoogle = (response) => {
+    const handleSignUpGoogle = async (response) => {
         var userObject=jwtDecode(response.credential);
         const newUser={
             email: userObject.email,
-            authProvider: 'google'
+            password: 'abc'
         };
 
-        const existingUser = users.find((user) => user.email === newUser.email);
-        if (existingUser) {
-            alert("Korisnik s ovim mailom već postoji.");
-        } else {
-            setUser2(newUser);
+        try {
+
+            const checkEmailResponse = await axios.get(`http://localhost:8000/check-email?email=${email}`); //provjera postoji li mail
+
+            if (checkEmailResponse.data.exists) {
+                alert("Email je već registriran. Molimo unesite drugi email.");
+                return;
+            }
+            else{
+                const newUser={
+                    email: email,
+                    password: password
+                };
+                setUser2(newUser);
+            }
+        } catch (error) {
+          console.error('Registration failed:', error.response.data);
+          alert("Neuspješna registracija!");
+          return;
         }
     };
 
     useEffect(() => {
-        // global google
+        /* global google */
         google.accounts.id.initialize({
             client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
             callback: handleSignUpGoogle
@@ -48,7 +61,7 @@ const Registracija = () => {
             navigate('/');
         }
 
-    },[navigate]); */
+    },[navigate]);
 
 
 
@@ -66,12 +79,20 @@ const Registracija = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/registracija/', {
-                email,
-                password,
-            });
-            alert("Uspješno ste registrirani!");
-            navigate('/prijava');
+
+            const checkEmailResponse = await axios.get(`http://localhost:8000/check-email?email=${email}`); //provjera postoji li mail
+
+            if (checkEmailResponse.data.exists) {
+                alert("Email je već registriran. Molimo unesite drugi email.");
+                return;
+            }
+            else{
+                const newUser={
+                    email: email,
+                    password: password
+                };
+                setUser2(newUser);
+            }
         } catch (error) {
           console.error('Registration failed:', error.response.data);
           alert("Neuspješna registracija!");

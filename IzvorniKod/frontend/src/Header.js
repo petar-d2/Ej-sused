@@ -16,7 +16,7 @@ const Header = () => {
     if (!(user)){
         return(
             <div className="header">
-                <img className="header_slika" src='/images/header1.jpeg' />
+                <img className="header_slika" src='/static/images/header1.jpeg' />
                 <div className="header_grid">
                     <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                     <button style={{minWidth : "120px"}} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
