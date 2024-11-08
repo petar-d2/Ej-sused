@@ -2,6 +2,7 @@ import React, { useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
+import axios from 'axios';
 
 
 const RegistracijaSusjed = ({user2}) => {
@@ -28,43 +29,39 @@ const RegistracijaSusjed = ({user2}) => {
         );
     };
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser={
             email: user2.email,
             password: user2.password,
-            authProvider: user2.authProvider,
             vrsta: user2.vrsta,
             adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
             skills: userSkills,
-            bodovi: user && user.bodovi ? user.bodovi : 0
+            bodovi: user && user.bodovi ? user.bodovi : null
         };
 
-        const existingUser = users.find(
-            (user) => user.email === newUser.email
-        );
-        if (existingUser){
-            const updatedUsers = users.map((user) =>
-                user.email === existingUser.email ? newUser : user
-            );
-            localStorage.setItem('users', JSON.stringify(updatedUsers));
-            setUsers(updatedUsers);
-        }
-        else {
-            localStorage.setItem('users', JSON.stringify([...users, newUser]));
-            setUsers([...users, newUser]);
-        }
+        try {
+            const response = await axios.post('http://localhost:8000/registracija', newUser);
 
-        localStorage.setItem("currentUser", JSON.stringify(newUser));
-        setAdresa('');
-        setIme('');
-        setPrezime('');
-        setKvart('Trešnjevka');
-        navigate('/');
+            alert("Uspješno ste registrirani!");
+
+            localStorage.setItem("currentUser", JSON.stringify(newUser));
+            localStorage.setItem("users", JSON.stringify([...users, newUser]));
+            setUsers([...users, newUser]);
+            setAdresa('');
+            setIme('');
+            setPrezime('');
+            setKvart('Trešnjevka');
+
+            navigate('/');
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert("Neuspješna registracija. Pokušajte ponovo.");
+        }
     };
 
     return (
