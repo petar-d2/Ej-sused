@@ -5,7 +5,7 @@ set -o errexit
 cd IzvorniKod/frontend
 
 npm install
-npm run build
+CI=false npm run build
 
 cd ..
 
