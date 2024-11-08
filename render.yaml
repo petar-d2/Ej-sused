@@ -1,7 +1,7 @@
 databases:
   - name: EjSused-baza
     plan: free
-    databaseName: EjSused-baza
+    databaseName: baza
     user: test
 
 services:
