@@ -9,6 +9,7 @@ services:
     plan: free
     name: EjSused
     runtime: python
+    region: frankfurt
     buildCommand: "./build.sh"
     startCommand: "cd ./IzvorniKod && python -m gunicorn EjSused.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
