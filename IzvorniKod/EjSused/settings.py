@@ -96,8 +96,7 @@ WSGI_APPLICATION = "EjSused.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        "postgresql://test:ykmKlaMbpcVBoMjuFtS8Wh019eHRXINF@dpg-csmur81u0jms73ftq520-a.frankfurt-postgres.render.com/ejsused_baza",
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        default="postgresql://test:ykmKlaMbpcVBoMjuFtS8Wh019eHRXINF@dpg-csmur81u0jms73ftq520-a.frankfurt-postgres.render.com/ejsused_baza",
         conn_max_age=600    
     )
 }
