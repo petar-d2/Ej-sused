@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import Korisnik,Osoba,Tvrtka,Susjed,Nadlezna,Dogadaj,Komentar,PrijavljenNa,Zahtjev,VrstaUsluga,Prihvaca,Ponuda
+from .models import Korisnik,Tvrtka,Susjed,Nadlezna,Dogadaj,Komentar,PrijavljenNa,Zahtjev,VrstaUsluga,Prihvaca,Ponuda
 # Register your models here.
 admin.site.register(Korisnik)
-admin.site.register(Osoba)
 admin.site.register(Tvrtka)
 admin.site.register(Susjed)
 admin.site.register(Nadlezna)
