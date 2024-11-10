@@ -12,6 +12,13 @@ export const GlobalProvider = ({ children }) => {
         { id: 1, name: "Trešnjevka", image: "/static/images/header1.jpeg" },
         { id: 2, name: "Maksimir", image: "/static/images/header1.jpeg" },
         { id: 3, name: "Dubrava", image: "/static/images/header1.jpeg" },
+        { id: 4, name: "Trnje", image: "/static/images/header1.jpeg" },
+        { id: 5, name: "Žitnjak", image: "/static/images/header1.jpeg" },
+        { id: 6, name: "Črnomerec", image: "/static/images/header1.jpeg" },
+        { id: 7, name: "Vrapče", image: "/static/images/header1.jpeg" },
+        { id: 8, name: "Novi Zagreb", image: "/static/images/header1.jpeg" },
+        { id: 9, name: "Medveščak", image: "/static/images/header1.jpeg" },
+
     ]);
     const [skills, setSkills] = useState([
         "Popravak namještaja",
