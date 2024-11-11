@@ -87,9 +87,8 @@ class googleLoginView(APIView):
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
-
 # Home page (to be accessed with valid JWT)
-class home(APIView):
+class homeView(APIView):
     permission_classes = [IsAuthenticated]  # JWT token required to access
 
     def get(self, request):
