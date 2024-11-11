@@ -1,4 +1,5 @@
 .App{
     display: grid;
-    grid-template-rows: 30% 60% 10%;
+    grid-template-rows:  220px 1fr;
+    padding-bottom: 20px;
 }

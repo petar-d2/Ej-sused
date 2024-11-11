@@ -9,6 +9,8 @@
     width: 80%;
     margin-left: 10%;
     margin-top: 60px;
+    height: fit-content;
+
 }
 
 form {

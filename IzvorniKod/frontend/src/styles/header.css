@@ -1,11 +1,24 @@
+
 .header{
     display: flex;
     flex-direction: column;
+    background-color: black;
+    width: 84%;
+    margin: 0 8%;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .header_slika{
     height: 80%;
     max-height: 200px;
+    max-width: 1fr;
+}
+h1{
+    text-align: right;
+    color: white;
+    font-size: 75px;
+    margin: 0px 5vw 0px 0px;
 }
 
 .header_grid{
