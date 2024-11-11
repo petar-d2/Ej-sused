@@ -18,12 +18,11 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 # Funkcijski zahtjevi
 > Navedite ključne zahtjeve Vašeg projekta.
 
-
 # Tehnologije
+> React za frontend, Django za backend i Postgres za baze.
 
-#Instalcija
 # Članovi tima 
-> Popis članova tima/linkovi/ glavni doprinos
+> Mirko Bušić (voditelj tima), Petar Dušević, Tin Salopek, Lucijan Grgić, Vanja Vukmanović, Romano Randić i Jakov Piljek.
 >
 
 # Kontribucije
