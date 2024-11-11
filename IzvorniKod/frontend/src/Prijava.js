@@ -10,8 +10,6 @@ const Prijava = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { users } = useContext(GlobalContext);
-
     /*const handleLogInGoogle = (response) => {
         var userObject=jwtDecode(response.credential);
         const loggedUser={
@@ -51,6 +49,7 @@ const Prijava = () => {
 
     },[navigate]);*/
 
+    //ako je prijava uspjesna spremi tokene i posalji na pocetnu stranicu
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -58,16 +57,15 @@ const Prijava = () => {
             email,
             password,
           });
-          //localStorage.setItem('token', response.data.access);
-          navigate('/home');
+          localStorage.setItem('accessToken', response.data.access);
+          localStorage.setItem('refreshToken', response.data.refresh);
+          navigate('/');
         } catch (error) {
           console.error('Login failed:', error.response.data);
           alert("Neuspješna prijava!");
           return;
         }
     };
-
-
 
     return (
         <div className="login_signup-container">

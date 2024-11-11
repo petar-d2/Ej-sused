@@ -1,31 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import RegistracijaTvrtka from './RegistracijaTvrtka';
-import RegistracijaSusjed from './RegistracijaSusjed';
+import UrediProfilSusjed from './UrediProfilSusjed';
+import UrediProfilTvrtka from './UrediProfilTvrtka';
+import { GlobalContext } from './GlobalContext';
+import axios from 'axios';
 
 const UrediProfil = () => {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const [user, setUser] = useState(null);
 
+    const { refreshAccessToken } = useContext(GlobalContext);
+    
+    //uzmi podatke o korisniku preko tokena
     useEffect(() => {
-        if (!user || !user.vrsta) {
-            navigate('/');
-        }
-    }, [user, navigate]);
+        const fetchUserData = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('http://localhost:8000/user-info/', { access: accessToken });
+                setUser(response.data);
+            } catch (error) {
+                if (error.response && error.response.status === 401){
+                    try{
+                        await refreshAccessToken();
+                        const newAccessToken = localStorage.getItem('accessToken');
+                        const response = await axios.get('http://localhost:8000/user-info/', { access: newAccessToken });
+                        setUser(response.data);
+                    }
+                    catch(error){
+                        navigate('/prijava');
+                    }
+                }
+                else {
+                    console.error("An error occurred:", error);
+                    navigate('/prijava');
+                }
+            }
+        };
 
+        fetchUserData();
+    }, []);
+
+    //ako je tvrtka
     if (user && user.vrsta==="tvrtka") {
         return (
-            <RegistracijaTvrtka user2={user}/>
+           <UrediProfilTvrtka />
         );
     }
 
+    //ako je susjed/volonter
     else if (user && (user.vrsta==="susjed" || user.vrsta==="volonter")) {
         return (
-            <RegistracijaSusjed user2={user}/>
+            <UrediProfilSusjed />
         );
     }
 
+    //ovdje ne bi trebao program moći doći
     return null;
 };
 

@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './styles/header.css';
 import {useNavigate} from 'react-router-dom';
-
 
 const Header = () => {
     const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-
+    //odjava
     const handleLogout = () => {
-        localStorage.removeItem("currentUser");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         navigate('/');
     };
 
-    if (!(user)){
+    //ako ne postoji token, tj. ako nije ulogiran
+    if (!(localStorage.getItem("accessToken"))){
         return(
             <div className="header">
                 <img className="header_slika" src='/static/images/header1.jpeg' />
@@ -28,10 +28,11 @@ const Header = () => {
             </div>
         );
     }
+    //ako je ulogiran onda makni "prijava" i "registracija" i prikaži "odjavi se" i "uredi profil"
     else{
         return(
             <div className="header">
-                <img className="header_slika" src='/images/header1.jpeg' />
+                <img className="header_slika" src='/static/images/header1.jpeg' />
                 <div className="header_grid">
                     <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                     <button style={{minWidth : "120px"}} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
