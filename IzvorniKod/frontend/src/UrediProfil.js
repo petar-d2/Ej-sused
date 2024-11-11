@@ -17,16 +17,22 @@ const UrediProfil = () => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.post('http://localhost:8000/user-info/', { access: accessToken });
+                const response = await axios.get('http://localhost:8000/user-info/', { access: accessToken });
                 setUser(response.data);
             } catch (error) {
-                try{
-                    await refreshAccessToken();
-                    const newAccessToken = localStorage.getItem('accessToken');
-                    const response = await axios.post('http://localhost:8000/user-info/', { access: newAccessToken });
-                    setUser(response.data);
+                if (error.response && error.response.status === 401){
+                    try{
+                        await refreshAccessToken();
+                        const newAccessToken = localStorage.getItem('accessToken');
+                        const response = await axios.get('http://localhost:8000/user-info/', { access: newAccessToken });
+                        setUser(response.data);
+                    }
+                    catch(error){
+                        navigate('/prijava');
+                    }
                 }
-                catch(error){
+                else {
+                    console.error("An error occurred:", error);
                     navigate('/prijava');
                 }
             }

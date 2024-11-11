@@ -20,13 +20,22 @@ const UrediProfilSusjed = () => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.post('http://localhost:8000/user-info/', { access: accessToken });
+                const response = await axios.get('http://localhost:8000/user-info/', { access: accessToken });
                 setUser(response.data);
             } catch (error) {
-                try{
-                    refreshAccessToken();
+                if (error.response && error.response.status === 401){
+                    try{
+                        await refreshAccessToken();
+                        const newAccessToken = localStorage.getItem('accessToken');
+                        const response = await axios.get('http://localhost:8000/user-info/', { access: newAccessToken });
+                        setUser(response.data);
+                    }
+                    catch(error){
+                        navigate('/prijava');
+                    }
                 }
-                catch(error){
+                else {
+                    console.error("An error occurred:", error);
                     navigate('/prijava');
                 }
             }
@@ -66,7 +75,7 @@ const UrediProfilSusjed = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/registracija/', newUser);
+            const response = await axios.post('http://localhost:8000/user-edit/', newUser);
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješno uređivanje profila. Pokušajte ponovo.");
