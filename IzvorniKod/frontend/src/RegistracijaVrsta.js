@@ -8,6 +8,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
     const navigate = useNavigate();
     const [vrstaKorisnika, setVrstaKorisnika] = useState('tvrtka');
 
+    //unos vrste korisnika
     const handleSignup = (e) => {
         e.preventDefault();
 
@@ -18,11 +19,9 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
         };
         setUser2(newUser);
         setVrstaKorisnika('tvrtka');
-        //navigate('/prijava');
     };
 
-    //const user = JSON.parse(localStorage.getItem("currentUser"));
-
+    //ako nije odabrana vrsta
     if (!(user2 && user2.vrsta)){
         return (
             <div className="login_signup-container">
@@ -72,15 +71,18 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
             </div>
         );
     }
+
+    //ako je odabrana tvrtka
     else if (user2.vrsta==="tvrtka") {
         return (
-            <RegistracijaTvrtka user2={user2}/>
+            <RegistracijaTvrtka user2={user2} setUser2={setUser2}/>
         );
     }
 
+    //ako je odabran susjed/volonter
     else if (user2.vrsta==="susjed" || user2.vrsta==="volonter") {
         return (
-            <RegistracijaSusjed user2={user2}/>
+            <RegistracijaSusjed user2={user2} setUser2={setUser2}/>
         );
     }
 

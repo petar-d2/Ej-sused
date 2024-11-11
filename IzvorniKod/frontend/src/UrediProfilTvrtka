@@ -1,64 +1,70 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
-
-const RegistracijaSusjed = ({user2,setUser2}) => {
+const UrediProfilTvrtka = () => {
 
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
-    const { kvartovi, skills } = useContext(GlobalContext);
+    const { kvartovi, refreshAccessToken } = useContext(GlobalContext);
 
-    const tekst = "Registracija";
-    const tekst2 = "Registracija";
+    const tekst = "Uredi Profil";
+    const tekst2 = "Spremi";
+    
+    //uzmi podatke o korisniku preko tokena
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('http://localhost:8000/user-info/', { access: accessToken });
+                setUser(response.data);
+            } catch (error) {
+                if (error.response && error.response.status === 401){
+                    try{
+                        await refreshAccessToken();
+                        const newAccessToken = localStorage.getItem('accessToken');
+                        const response = await axios.get('http://localhost:8000/user-info/', { access: newAccessToken });
+                        setUser(response.data);
+                    }
+                    catch(error){
+                        navigate('/prijava');
+                    }
+                }
+                else {
+                    console.error("An error occurred:", error);
+                    navigate('/prijava');
+                }
+            }
+        };
 
-    const [adresa, setAdresa] = useState("");
-    const [ime, setIme] = useState("");
-    const [prezime, setPrezime] = useState("");
-    const [kvart, setKvart] = useState("Trešnjevka");
-    const [userSkills, setUserSkills] = useState([]);
+        fetchUserData();
+    }, []);
 
-    const handleSkillChange = (skill) => {
-        setUserSkills((prevSkills) =>
-            prevSkills.includes(skill)
-                ? prevSkills.filter((s) => s !== skill)
-                : [...prevSkills, skill]
-        );
-    };
+    const [adresa, setAdresa] = useState(user.adresa);
+    const [naziv, setNaziv] = useState(user.naziv);
+    const [kvart, setKvart] = useState(user.kvart);
 
-    //zahtjev za registraciju
+    //spremi promjene
     const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser={
-            email: user2.email,
-            password: user2.password,
-            vrsta: user2.vrsta,
+            email: user.email,
+            password: user.password,
+            vrsta: user.vrsta,
             adresa: adresa,
             kvart: kvart,
-            ime: ime,
-            prezime: prezime,
-            skills: userSkills
+            naziv: naziv
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/registracija/', newUser);
-
-            alert("Uspješno ste registrirani!");
-
-            setAdresa('');
-            setIme('');
-            setPrezime('');
-            setKvart('Trešnjevka');
-
-            navigate('/prijava');
+            const response = await axios.post('http://localhost:8000/user-edit/', newUser);
         } catch (error) {
             console.error('Error during registration:', error);
-            alert("Neuspješna registracija. Pokušajte ponovo.");
-            setUser2({});
-            navigate('/registracija');
+            alert("Neuspješno uređivanje profila. Pokušajte ponovo.");
         }
     };
 
@@ -127,4 +133,4 @@ const RegistracijaSusjed = ({user2,setUser2}) => {
     );
 }
 
-export default RegistracijaSusjed;
+export default UrediProfilTvrtka;
