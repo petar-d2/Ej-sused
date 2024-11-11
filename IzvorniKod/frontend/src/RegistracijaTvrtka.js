@@ -5,20 +5,20 @@ import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
 
-const RegistracijaTvrtka = ({user2}) => {
+const RegistracijaTvrtka = ({user2,setUser2}) => {
 
     const navigate = useNavigate();
 
-    const { users, setUsers, kvartovi } = useContext(GlobalContext);
+    const { kvartovi } = useContext(GlobalContext);
 
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-    const tekst = user ? "Uredi profil" : "Registracija";
-    const tekst2 = user ? "Spremi" : "Registracija";
+    const tekst = "Registracija";
+    const tekst2 = "Registracija";
 
-    const [adresa, setAdresa] = useState(user && user.adresa ? user.adresa : "");
-    const [naziv, setNaziv] = useState(user && user.naziv ? user.naziv : "");
-    const [kvart, setKvart] = useState(user && user.kvart ? user.kvart : "Trešnjevka");
+    const [adresa, setAdresa] = useState("");
+    const [naziv, setNaziv] = useState("");
+    const [kvart, setKvart] = useState("Trešnjevka");
 
+    //zahtjev za registraciju
     const handleSignup = async (e) => {
         e.preventDefault();
 
@@ -32,21 +32,20 @@ const RegistracijaTvrtka = ({user2}) => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/registracija', newUser);
+            const response = await axios.post('http://localhost:8000/registracija/', newUser);
 
             alert("Uspješno ste registrirani!");
 
-            localStorage.setItem("currentUser", JSON.stringify(newUser));
-            localStorage.setItem("users", JSON.stringify([...users, newUser]));
-            setUsers([...users, newUser]);
             setAdresa('');
             setNaziv('');
             setKvart('Trešnjevka');
 
-            navigate('/');
+            navigate('/prijava');
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješna registracija. Pokušajte ponovo.");
+            setUser2({});
+            navigate('/registracija');
         }
     };
 

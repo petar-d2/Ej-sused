@@ -1,13 +1,26 @@
+import axios from 'axios';
 import React, { createContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [users, setUsers] = useState(() => {
-        const savedUsers = localStorage.getItem('users');
-        return savedUsers ? JSON.parse(savedUsers) : [];
-    });
+
+    //kad istekne access zatrazi novi, ako je istekao refresh odlogiraj korisnika(makni tokene iz localStoragea)
+    const refreshAccessToken = async () => {
+        try {
+            const refreshToken = localStorage.getItem('refreshToken');
+            const response = await axios.post('http://localhost:8000/refresh/', { refresh: refreshToken });
+            localStorage.setItem('accessToken', response.data.access);
+        } catch (error) {
+            console.error("Greška prilikom osvježavanja tokena:", error);
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            throw new Error("Token refresh failed");
+        }
+    };
+
     const [kvartovi, setKvartovi] = useState([
         { id: 1, name: "Trešnjevka", image: "/static/images/header1.jpeg" },
         { id: 2, name: "Maksimir", image: "/static/images/header1.jpeg" },
@@ -47,7 +60,7 @@ export const GlobalProvider = ({ children }) => {
     ]);
 
     return (
-        <GlobalContext.Provider value={{ users, setUsers, kvartovi, setKvartovi, skills, setSkills }}>
+        <GlobalContext.Provider value={{ kvartovi, setKvartovi, skills, setSkills, refreshAccessToken }}>
             {children}
         </GlobalContext.Provider>
     );

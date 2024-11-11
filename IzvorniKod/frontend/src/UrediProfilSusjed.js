@@ -1,25 +1,47 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
 
-const RegistracijaSusjed = ({user2,setUser2}) => {
+const UrediProfilSusjed = () => {
 
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
-    const { kvartovi, skills } = useContext(GlobalContext);
+    const { kvartovi, skills, refreshAccessToken } = useContext(GlobalContext);
 
-    const tekst = "Registracija";
-    const tekst2 = "Registracija";
+    const tekst = "Uredi Profil";
+    const tekst2 = "Spremi";
+    
+    //uzmi podatke o korisniku preko tokena
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.post('http://localhost:8000/user-info/', { access: accessToken });
+                setUser(response.data);
+            } catch (error) {
+                try{
+                    refreshAccessToken();
+                }
+                catch(error){
+                    navigate('/prijava');
+                }
+            }
+        };
 
-    const [adresa, setAdresa] = useState("");
-    const [ime, setIme] = useState("");
-    const [prezime, setPrezime] = useState("");
-    const [kvart, setKvart] = useState("Trešnjevka");
-    const [userSkills, setUserSkills] = useState([]);
+        fetchUserData();
+    }, []);
 
+    const [adresa, setAdresa] = useState(user.adresa);
+    const [ime, setIme] = useState(user.ime);
+    const [prezime, setPrezime] = useState(user.prezime);
+    const [kvart, setKvart] = useState(user.kvart);
+    const [userSkills, setUserSkills] = useState(user.skills);
+
+    //spremi promjene u listi userSkills
     const handleSkillChange = (skill) => {
         setUserSkills((prevSkills) =>
             prevSkills.includes(skill)
@@ -28,14 +50,14 @@ const RegistracijaSusjed = ({user2,setUser2}) => {
         );
     };
 
-    //zahtjev za registraciju
+    //spremi promjene
     const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser={
-            email: user2.email,
-            password: user2.password,
-            vrsta: user2.vrsta,
+            email: user.email,
+            password: user.password,
+            vrsta: user.vrsta,
             adresa: adresa,
             kvart: kvart,
             ime: ime,
@@ -45,20 +67,9 @@ const RegistracijaSusjed = ({user2,setUser2}) => {
 
         try {
             const response = await axios.post('http://localhost:8000/registracija/', newUser);
-
-            alert("Uspješno ste registrirani!");
-
-            setAdresa('');
-            setIme('');
-            setPrezime('');
-            setKvart('Trešnjevka');
-
-            navigate('/prijava');
         } catch (error) {
             console.error('Error during registration:', error);
-            alert("Neuspješna registracija. Pokušajte ponovo.");
-            setUser2({});
-            navigate('/registracija');
+            alert("Neuspješno uređivanje profila. Pokušajte ponovo.");
         }
     };
 
@@ -127,4 +138,4 @@ const RegistracijaSusjed = ({user2,setUser2}) => {
     );
 }
 
-export default RegistracijaSusjed;
+export default UrediProfilSusjed;

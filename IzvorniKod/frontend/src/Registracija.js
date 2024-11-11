@@ -13,8 +13,6 @@ const Registracija = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user2, setUser2] = useState({});
 
-    const { users } = useContext(GlobalContext);
-
     /*
     const handleSignUpGoogle = (response) => {
         var userObject=jwtDecode(response.credential);
@@ -50,8 +48,6 @@ const Registracija = () => {
 
     },[navigate]); */
 
-
-
     const handleSignup = async (e) => {
         e.preventDefault();
 
@@ -64,23 +60,11 @@ const Registracija = () => {
             alert("Lozinke se ne podudaraju. Molimo pokušajte ponovno.");
             return;
         }
+         setUser2({email: email, password: password});
 
-        try {
-            await axios.post('http://localhost:8000/registracija/', {
-                email,
-                password,
-            });
-            alert("Uspješno ste registrirani!");
-            navigate('/prijava');
-        } catch (error) {
-          console.error('Registration failed:', error.response.data);
-          alert("Neuspješna registracija!");
-          return;
-        }
     };
 
-    //const user = JSON.parse(localStorage.getItem("currentUser"));
-
+    //ako nije upisan mail i password
     if (! (user2 && user2.email)){
         return (
             <div className="login_signup-container">
@@ -130,6 +114,7 @@ const Registracija = () => {
             </div>
         );
     }
+    //kad se upise mail i password
     else {
         return (
             <RegistracijaVrsta user2={user2} setUser2={setUser2}/>
