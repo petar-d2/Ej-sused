@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Korisnik,Tvrtka,Susjed,Nadlezna,Dogadaj,Komentar,PrijavljenNa,Zahtjev,VrstaUsluga,Prihvaca,Ponuda
+from .models import *
 # Register your models here.
 admin.site.register(Korisnik)
 admin.site.register(Tvrtka)
