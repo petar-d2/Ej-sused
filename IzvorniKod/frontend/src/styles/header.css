@@ -24,15 +24,19 @@
     position: absolute;
     left: 10px;
 }
-
+@font-face {
+    font-family: 'Naslov'; 
+    src: url('../../public/static/fonts/LeagueGothic-Regular.otf') format('truetype'); 
+}
 
 .header-title {
     flex: 1;
-    font-size: 24px;
+    font-size: 60px;
     color: #fff;
     text-align: center;
-    padding-right: 10px;
-    margin-top: 10px; 
+    margin-bottom: 0px;
+    margin-top: 15px;
+    font-family: 'Naslov', sans-serif;
 }
 
 .header_grid {
@@ -91,6 +95,9 @@
 @media (max-width: 768px) {
     .header_grid {
         display: none; 
+    }
+    .header_gumb{
+        border-radius: 0px;
     }
 }
 
