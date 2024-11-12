@@ -5,14 +5,12 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
     const navigate = useNavigate();
 
-    // Handle logout
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         navigate('/');
     };
 
-    // Check if the user is logged in
     const isLoggedIn = localStorage.getItem("accessToken");
 
     return (
@@ -24,7 +22,6 @@ const Header = () => {
                 <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
                 <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
 
-                 {/*Conditionally render buttons based on login status*/} 
                 {isLoggedIn ? (
                     <>
                         <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
