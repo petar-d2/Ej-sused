@@ -10,10 +10,10 @@
 # Opis projekta
 Ovaj projekt je reultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
 
-Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije »Zato što je to bio zadatak i nismo imali ideje za drugo.«). Koji problem rješavate?
-> Obzirom da je ovo zadani projekt navedite i što želite/jeste novo  naučili.
+Cilj je našeg projekta napraviti web aplikaciju koja će omogućiti ljudima koji trebaju neku pomoć ili uslugu da se povežu s drugima koji mogu na bilo koji način pomoći. Ono što nas je motiviralo bilo je razmišljanje da ljudi često trebaju neku vrstu usluge, a oni koji mogu pomoći nalaze se u blizini. Međutim, problem koji postoji je da ljudi ne mogu znati tko može i spreman je pomoći. Naša aplikacija orijentirana je na kvartove i potiče susjede da međusobno traže i daju usluge. Naravno, omogućili smo i raznim tvrtkama da koriste aplikaciju u slučaju nekih specijaliziranih usluga.
 
-> Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
+Radeći ovaj projekt naučili smo na koji način funkcionira proces razvoja programske potpore. Krenuli smo od problema koji smo htjeli rješiti, specificirali smo zahtjeve našeg budućeg rješenja i zatim smo počeli s oblikovanjem rješenja. Kroz rad na frontendu naučili smo koristiti alate kao što su Figma i framework React. Za rad na backendu bilo je potrebno upoznati se s Djangom i dobro oblikovati bazu podataka. Ovaj projekt rezultat je timskog rada i morali smo naučiti koristiti alate za verzioniranje koda kao što su Git i GitHub te smo naučili kako pisati kvalitetnu dokumentaciju kako bi olakšali drugim članovima tima, ali i ljudima koji će na bilo koji način sudjelovati u projektu.
+
 
 # Funkcijski zahtjevi
 > Navedite ključne zahtjeve Vašeg projekta.
