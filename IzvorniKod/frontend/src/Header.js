@@ -56,7 +56,7 @@ const Header = () => {
                 </>
             ) : (
                 <>
-                    <h1 className="header-title">EJ SUSED</h1>
+                    <h1 className="header-title">Ej Sused</h1>
                     <div className="header_grid">
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                         <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
