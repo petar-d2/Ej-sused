@@ -22,15 +22,15 @@ export const GlobalProvider = ({ children }) => {
     };
 
     const [kvartovi, setKvartovi] = useState([
-        { id: 1, name: "Trešnjevka", image: "/static/images/header1.jpeg" },
-        { id: 2, name: "Maksimir", image: "/static/images/header1.jpeg" },
-        { id: 3, name: "Dubrava", image: "/static/images/header1.jpeg" },
-        { id: 4, name: "Trnje", image: "/static/images/header1.jpeg" },
-        { id: 5, name: "Žitnjak", image: "/static/images/header1.jpeg" },
-        { id: 6, name: "Črnomerec", image: "/static/images/header1.jpeg" },
-        { id: 7, name: "Vrapče", image: "/static/images/header1.jpeg" },
-        { id: 8, name: "Novi Zagreb", image: "/static/images/header1.jpeg" },
-        { id: 9, name: "Medveščak", image: "/static/images/header1.jpeg" },
+        { id: 1, name: "Trešnjevka", image: "/static/images/tresnjevka.jpg" },
+        { id: 2, name: "Maksimir", image: "/static/images/maksimir.jpg" },
+        { id: 3, name: "Dubrava", image: "/static/images/dubrava.jpg" },
+        { id: 4, name: "Trnje", image: "/static/images/trnje.jpg" },
+        { id: 5, name: "Žitnjak", image: "/static/images/zitnjak.jpg" },
+        { id: 6, name: "Črnomerec", image: "/static/images/crnomerec.jpg" },
+        { id: 7, name: "Vrapče", image: "/static/images/vrapce.jpg" },
+        { id: 8, name: "Novi Zagreb", image: "/static/images/novizg.jpg" },
+        { id: 9, name: "Medveščak", image: "/static/images/medvescak.jpg" },
 
     ]);
     const [skills, setSkills] = useState([
