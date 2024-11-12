@@ -1,7 +1,6 @@
 import React, { useState,useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import { jwtDecode } from 'jwt-decode';
 import RegistracijaVrsta from './RegistracijaVrsta';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';

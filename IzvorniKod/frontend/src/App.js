@@ -10,11 +10,28 @@ import UrediProfil from './UrediProfil';
 import { GlobalProvider } from './GlobalContext';
 
 function App() {
-
-  return (
+    //ako ne postoji token, tj. ako nije ulogiran
+   /* if (!(localStorage.getItem("accessToken"))){
+      return(    
+        <GlobalProvider>
+        <Router>
+        <div className="App">
+        <Routes>
+            <Route path="/" element={<Prijava />} />
+            <Route path="/prijava" element={<Prijava/>} />
+            <Route path="/registracija" element={<Registracija />} />
+        </Routes>
+        </div>
+        </Router>
+        </GlobalProvider>
+        );
+        }
+    else {*/
+    return (
     <GlobalProvider>
     <Router>
       <div className="App">
+        
         <Header/>
         <Routes>
             <Route path="/" element={<Home />} />
@@ -28,7 +45,7 @@ function App() {
       </div>
     </Router>
     </GlobalProvider>
-  );
-}
+  );}
+//}
 
 export default App;

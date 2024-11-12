@@ -33,6 +33,8 @@ const UrediProfil = () => {
                 }
                 else {
                     console.error("An error occurred:", error);
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
                     navigate('/prijava');
                 }
             }
