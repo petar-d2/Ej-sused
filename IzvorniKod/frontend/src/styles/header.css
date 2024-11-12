@@ -13,11 +13,18 @@
     max-height: 200px;
     max-width: 1fr;
 }
+
+@font-face {
+    font-family: 'Naslov';
+    src: url('../../public/static/fonts/LeagueGothic-Regular.otf') format('truetype'); 
+}
+
 h1{
     text-align: right;
     color: white;
     font-size: 75px;
     margin: 0px 5vw 0px 0px;
+    font-family: 'Naslov', sans-serif;
 }
 
 .header_grid{
@@ -53,3 +60,5 @@ h1{
     background-color: black;
     border-color: lightgray;
 }
+
+

@@ -15,7 +15,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <h1>EJ SUSED</h1>
+            <h1>Ej Sused</h1>
             <div className="header_grid">
                 <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                 <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
