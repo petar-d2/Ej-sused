@@ -15,7 +15,7 @@ const Header = () => {
 
     const isLoggedIn = localStorage.getItem("accessToken");
 
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    const isMobile = useMediaQuery({ query: '(max-width: 900px)' });
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen); 
