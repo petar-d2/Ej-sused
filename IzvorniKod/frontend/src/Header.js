@@ -24,7 +24,7 @@ const Header = () => {
                 <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
                 <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
 
-                {/* Conditionally render buttons based on login status */}
+                 {/*Conditionally render buttons based on login status*/} 
                 {isLoggedIn ? (
                     <>
                         <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
