@@ -21,28 +21,31 @@ h1{
 }
 
 .header_grid{
-    margin-top: 30px;
+    margin-top: 10px;
     margin-left: 40%;
+    height: 100%;
     display: flex;
-    justify-content: right;
+    justify-content:right;
+    align-items: flex-start;
     flex-wrap: nowrap;
-    margin-right: 5%;
-
+   
 }
 
 .header_gumb{
     margin: 0 1vw;
-    border-radius: 10px;
+    border-radius: 20px;
     border-style: solid;
-    border-color: gray;
-    background-color: lightgray;
-    color: black;
+    border-color: black;
+    background-color: black;
+    color: white;
     border-width: 3px;
     height: 40px;
     cursor: pointer;
     text-align: center;
     padding: 6px;
     font-weight: bold;
+    align-items: flex-start;
+
 }
 
 .header_gumb:hover {
