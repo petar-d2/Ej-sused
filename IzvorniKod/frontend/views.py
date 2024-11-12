@@ -1,10 +1,7 @@
-# views.py
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from api.models import Korisnik
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -25,10 +22,8 @@ class prijava(APIView):
         
         # Authenticate user via Django's built-in authenticate method
         user = authenticate(username=email, password=password)
+
         if user:
-            login(request, user)  # Create session login (optional for JWT)
-            
-            # Issue JWT token
             refresh = RefreshToken.for_user(user)
             return Response({
                 "refresh": str(refresh),
@@ -86,6 +81,16 @@ class googleLoginView(APIView):
             })
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
+
+class odjava(APIView):
+    def post(self, request):
+        try:
+            token = RefreshToken(request.data.get('refresh_token'))
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
 
 # Home page (to be accessed with valid JWT)
 class homeView(APIView):

@@ -147,6 +147,7 @@ STATICFILES_DIRS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True 
+
 AUTH_USER_MODEL = 'api.Korisnik'
 
 SIMPLE_JWT = {
@@ -161,4 +162,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 GOOGLE_CLIENT_ID = 'your_google_client_id'
+
 GOOGLE_CLIENT_SECRET = 'your_google_client_secret'

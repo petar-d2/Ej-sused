@@ -8,5 +8,6 @@ urlpatterns = [
     path("ponude/", main),
     path("napravi-ponudu/", main),
     path("home/", homeView.as_view()),
+    path("odjava/", odjava.as_view(), name="odjava"),
     path("", main),
 ]
