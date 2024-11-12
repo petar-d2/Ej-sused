@@ -1,64 +1,97 @@
-.header{
+
+.header {
     display: flex;
     flex-direction: column;
-    background-color: black;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: #333;
+    padding: 20px;
+    color: white;
     width: 84%;
-    margin: 0 8%;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 10px;
+    position: relative;
 }
 
-.header_slika{
-    height: 80%;
-    max-height: 200px;
-    max-width: 1fr;
-}
 
-@font-face {
-    font-family: 'Naslov';
-    src: url('../../public/static/fonts/LeagueGothic-Regular.otf') format('truetype'); 
-}
-
-h1{
-    text-align: right;
+.hamburger {
+    font-size: 24px;
+    background: none;
+    border: none;
     color: white;
-    font-size: 75px;
-    margin: 0px 5vw 0px 0px;
-    font-family: 'Naslov', sans-serif;
-}
-
-.header_grid{
-    margin-top: 10px;
-    margin-left: 40%;
-    height: 100%;
-    display: flex;
-    justify-content:right;
-    align-items: flex-start;
-    flex-wrap: nowrap;
-   
-}
-
-.header_gumb{
-    margin: 0 1vw;
-    border-radius: 20px;
-    border-style: solid;
-    border-color: black;
-    background-color: black;
-    color: white;
-    border-width: 3px;
-    height: 40px;
     cursor: pointer;
-    text-align: center;
-    padding: 6px;
-    font-weight: bold;
-    align-items: flex-start;
+    position: absolute;
+    left: 10px;
+}
 
+
+.header-title {
+    flex: 1;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    padding-right: 10px;
+    margin-top: 10px; 
+}
+
+.header_grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.header_gumb {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 100px;
 }
 
 .header_gumb:hover {
+    background-color: #777;
+}
+.dropdown_menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #333;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 150px; 
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.dropdown_menu .header_gumb {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background-color: #555;
     color: white;
-    background-color: black;
-    border-color: lightgray;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+
+.dropdown_menu .header_gumb:hover {
+    background-color: #777;
+}
+
+@media (max-width: 768px) {
+    .header_grid {
+        display: none; 
+    }
 }
 
 
