@@ -1,4 +1,3 @@
-/* Container for the form */
 .login_signup-container {
     display: flex;
     flex-direction: column;
@@ -10,22 +9,20 @@
     width: 80%;
     margin-left: 10%;
     margin-top: 60px;
-    height: auto; /* Allow it to grow dynamically */
-    min-height: 100vh; /* Ensure full height on smaller screens */
-    position: relative; /* Ensure positioning is correct for centering */
+    height: auto;
+    min-height: 100vh;
+    position: relative;
 }
 
-/* Ensure the form itself is centered and responsive */
 form {
     width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 400px; /* Limit the width to keep form compact */
+    max-width: 400px;
 }
 
-/* Styling for input elements */
 input {
     width: 100%;
     padding: 8px;
@@ -33,14 +30,13 @@ input {
     border-radius: 4px;
     border: 1px solid #ccc;
     margin-bottom: 15px;
-    max-width: 100%; /* Ensures responsiveness */
-    box-sizing: border-box; /* Prevents inputs from overflowing */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-/* Button styling */
 .button_1, .button_2 {
     width: 100%;
-    max-width: 250px; /* Controls the button width */
+    max-width: 250px;
     padding: 10px;
     font-size: 18px;
     border-style: solid;
@@ -60,7 +56,6 @@ input {
     border-color: lightgray;
 }
 
-/* Additional styling for the redirect section */
 .redirect {
     display: flex;
     flex-direction: column;
@@ -68,7 +63,6 @@ input {
     align-items: center;
 }
 
-/* Horizontal line between the sections */
 .horizontalna_crta {
     height: 2px;
     background-color: black;
@@ -77,12 +71,10 @@ input {
     margin-bottom: 10px;
 }
 
-/* Styling for the Google login section */
 #GoogleDiv {
     margin-top: 30px;
 }
 
-/* Ensure the description input is responsive */
 .opis {
     height: 100px;
     resize: vertical;
@@ -93,7 +85,6 @@ input {
     border-color: rgb(204, 204, 204);
 }
 
-/* Skills box styling */
 .skills-box {
     width: 100%;
     max-height: 200px;
@@ -106,7 +97,6 @@ input {
     align-items: flex-start;
 }
 
-/* Style individual skill items */
 .skill-item {
     display: flex;
     align-items: center;
@@ -129,7 +119,6 @@ input {
     margin: 0;
 }
 
-/* Scrollbar styling */
 .skills-box::-webkit-scrollbar {
     width: 8px;
 }
