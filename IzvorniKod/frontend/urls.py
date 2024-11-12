@@ -7,6 +7,6 @@ urlpatterns = [
     path("dogadaji/", main),
     path("ponude/", main),
     path("napravi-ponudu/", main),
-    path("home/", home),
+    path("home/", homeView.as_view()),
     path("", main),
 ]
