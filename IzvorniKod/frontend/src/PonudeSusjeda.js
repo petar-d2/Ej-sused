@@ -11,7 +11,7 @@ const PonudeSusjeda = () => {
   // Fetch data from the API
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/ponude-susjeda/');
+      const response = await axios.get(window.location.href.replace(window.location.pathname,'/') + 'ponude-susjeda/');
       setSusjedi(response.data);  // Set fetched data to state
     } catch (error) {
       console.error('Error fetching data:', error);  // Log errors

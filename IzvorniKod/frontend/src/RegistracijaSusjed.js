@@ -59,7 +59,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/registracija/', newUser);
+            const response = await axios.post(window.location.href.replace(window.location.pathname,'/') + 'registracija/', newUser);
 
             alert("Uspješno ste registrirani!");
 

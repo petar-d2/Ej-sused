@@ -14,7 +14,7 @@ const Header = () => {
         var refresh = localStorage.getItem("refreshToken");
         var google = localStorage.getItem("googleToken");
         try{
-            await axios.post("http://localhost:8000/odjava/", { access, refresh, google });
+            await axios.post(window.location.href.replace(window.location.pathname,'/') + "odjava/", { access, refresh, google });
         } catch(error){ 
             console.log(error);
         }

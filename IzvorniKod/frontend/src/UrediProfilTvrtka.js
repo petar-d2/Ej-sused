@@ -19,14 +19,14 @@ const UrediProfilTvrtka = () => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
-                const response = await axios.get('http://localhost:8000/user-info/', { access: accessToken });
+                const response = await axios.get(window.location.href.replace(window.location.pathname,'/') + 'user-info/', { access: accessToken });
                 setUser(response.data);
             } catch (error) {
                 if (error.response && error.response.status === 401){
                     try{
                         await refreshAccessToken();
                         const newAccessToken = localStorage.getItem('accessToken');
-                        const response = await axios.get('http://localhost:8000/user-info/', { access: newAccessToken });
+                        const response = await axios.get(window.location.href.replace(window.location.pathname,'/') + 'user-info/', { access: newAccessToken });
                         setUser(response.data);
                     }
                     catch(error){
@@ -63,7 +63,7 @@ const UrediProfilTvrtka = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/user-edit/', newUser);
+            const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'user-edit/', newUser);
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješno uređivanje profila. Pokušajte ponovo.");

@@ -11,7 +11,7 @@ const DetaljiSusjed = () => {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/susjed/${id}/`);  // API call to get user details by ID
+                const response = await axios.get(window.location.href.replace(window.location.pathname,'/') + `susjed/${id}/`);  // API call to get user details by ID
                 setUser(response.data);
                 setLoading(false);
             } catch (error) {

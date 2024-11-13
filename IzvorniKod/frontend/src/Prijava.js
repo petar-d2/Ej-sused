@@ -20,7 +20,7 @@ const Prijava = () => {
         const params = {
             response_type: "code",
             client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
-            redirect_uri: "http://localhost:8000/google-login/",
+            redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
             prompt: "select_account",
             access_type: "offline",
             scope
@@ -34,7 +34,7 @@ const Prijava = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('http://localhost:8000/prijava/', {
+          const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'prijava/', {
             email,
             password,
           });

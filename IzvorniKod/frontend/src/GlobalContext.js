@@ -11,7 +11,7 @@ export const GlobalProvider = ({ children }) => {
     const refreshAccessToken = async () => {
         try {
             const refreshToken = localStorage.getItem('refreshToken');
-            const response = await axios.post('http://localhost:8000/refresh/', { refresh: refreshToken });
+            const response = await axios.post(window.location.href.replace(window.location.pathname,'/') + 'refresh/', { refresh: refreshToken });
             localStorage.setItem('accessToken', response.data.access);
         } catch (error) {
             console.error("Greška prilikom osvježavanja tokena:", error);
