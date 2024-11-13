@@ -4,13 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
 from api.models import Korisnik, Susjed, Tvrtka
-from google.oauth2 import id_token
-from google.auth.transport import requests
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import render
 from django.contrib.auth.hashers import make_password  # Import password hasher
+import requests
+from django.shortcuts import render, redirect
 
 
 # Render the main page
@@ -119,29 +117,41 @@ class registracija(APIView):
         return render(request, "index.html")
 
 
-# Google OAuth Login (JWT authentication)
-class googleLoginView(APIView):
-    def post(self, request):
-        token = request.data.get("token")
+# Google OAuth Login (sa JWT)"
+class googleLogin(APIView):
+    def get(self, request):
+        code = request.GET.get("code")
+        response = requests.post("https://oauth2.googleapis.com/token", data={
+            'code': code,
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'client_secret': settings.GOOGLE_CLIENT_SECRET,
+            'redirect_uri': "http://localhost:8000/google-login/",
+            'grant_type': 'authorization_code'
+        })
+        if not response.ok:
+            return Response({"error": "Could not get access token from Google.", "response": response}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        token = response.json()['access_token']
+        
         try:
             # Verify the token with Google
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
-            email = idinfo["email"]
+            response = requests.get("https://www.googleapis.com/oauth2/v3/userinfo", params={'access_token': token}).json()
+            email = response["email"]
             
             # Get or create the user
             user, created = Korisnik.objects.get_or_create(username=email, email=email)
             
             if created:
-                # Set an unusable password for Google login users
                 user.set_unusable_password()
                 user.save()
             
             # Issue JWT token for Google login
             refresh = RefreshToken.for_user(user)
-            return Response({
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
-            })
+            response = redirect("../home/")
+            response.set_cookie(key="refresh", value=str(refresh))
+            response.set_cookie(key="access", value=str(refresh.access_token))
+            response.set_cookie(key="google", value=str(token))
+            return response
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -164,10 +174,6 @@ class odjava(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Home page view - requires a valid JWT token to access
 class homeView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
-        return Response({"message": f"Hello, {request.user.username}!"})
+        return render(request, "index.html")

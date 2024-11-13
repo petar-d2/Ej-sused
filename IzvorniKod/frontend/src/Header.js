@@ -2,18 +2,46 @@ import React, { useState } from 'react';
 import './styles/header.css';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Header = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        var access = localStorage.getItem("accessToken");
+        var refresh = localStorage.getItem("refreshToken");
+        var google = localStorage.getItem("googleToken");
+        try{
+            await axios.post("http://localhost:8000/odjava/", { access, refresh, google });
+        } catch(error){ 
+            console.log(error);
+        }
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("googleToken");
+        Cookies.remove("access");
+        Cookies.remove("refresh");
+        Cookies.remove("google");
         navigate('/');
+        alert("Uspješno ste odjavljeni!");
     };
 
-    const isLoggedIn = localStorage.getItem("accessToken");
+    const isLoggedIn = () => {
+        return typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null;
+    };
+
+    { // login cookie check
+        var refresh = Cookies.get("refresh");
+        var access = Cookies.get("access");
+        var google = Cookies.get("google");
+        if (typeof(refresh) != undefined && typeof(access) != undefined && refresh != null && access != null){
+            localStorage.setItem('accessToken', refresh);
+            localStorage.setItem('refreshToken', access);
+            if (typeof(google) != undefined && google != null) localStorage.setItem('googleToken', google);
+        }
+    }
 
     const isMobile = useMediaQuery({ query: '(max-width: 900px)' });
 
@@ -64,7 +92,7 @@ const Header = () => {
                         <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
                         <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude Susjeda</button> 
                         <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
-                        {isLoggedIn ? (
+                        {isLoggedIn() ? (
                             <>
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
                                 <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>

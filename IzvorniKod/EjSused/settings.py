@@ -27,7 +27,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="django-insecure-#p*uuvv_ye90q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -160,7 +159,7 @@ SIMPLE_JWT = {
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-#Added new cliend ids for google
-GOOGLE_CLIENT_ID = '716381025425-9d1mu7stdncivne5gb3pf7p32fhc1909.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_CLIENT_ID = '696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com'
+
+GOOGLE_CLIENT_SECRET = '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'

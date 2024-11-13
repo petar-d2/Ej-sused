@@ -10,5 +10,6 @@ urlpatterns = [
     path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
     path("home/", homeView.as_view()),
     path("odjava/", odjava.as_view(), name="odjava"),
+    path("google-login/", googleLogin.as_view(), name="google_login"),
     path("", main),
 ]
