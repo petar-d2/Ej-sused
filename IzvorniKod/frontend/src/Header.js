@@ -39,6 +39,7 @@ const Header = () => {
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                             <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
                             <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Ponude</button>
+                            <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude Susjeda</button> {/* Added link */}
                             <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                             {isLoggedIn ? (
                                 <>
@@ -61,6 +62,7 @@ const Header = () => {
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                         <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
                         <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
+                        <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude Susjeda</button> 
                         <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
                         {isLoggedIn ? (
                             <>

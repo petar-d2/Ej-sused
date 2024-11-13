@@ -160,7 +160,7 @@ SIMPLE_JWT = {
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#Added new cliend ids for google
+GOOGLE_CLIENT_ID = '716381025425-9d1mu7stdncivne5gb3pf7p32fhc1909.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_ID = 'your_google_client_id'
-
-GOOGLE_CLIENT_SECRET = 'your_google_client_secret'
+GOOGLE_CLIENT_SECRET = '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'

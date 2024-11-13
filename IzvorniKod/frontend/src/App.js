@@ -7,7 +7,9 @@ import './styles/app.css';
 import Registracija from './Registracija';
 import NapraviPonudu from './NapraviPonudu';
 import UrediProfil from './UrediProfil';
+import DetaljiSusjed from './DetaljiSusjed';
 import { GlobalProvider } from './GlobalContext';
+import PonudeSusjeda from './PonudeSusjeda';
 
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
@@ -41,6 +43,8 @@ function App() {
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija />} />
             <Route path="/uredi-profil" element={<UrediProfil />} />
+            <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
+            <Route path="/susjed/:id" element={<DetaljiSusjed />} />
         </Routes>
       </div>
     </Router>

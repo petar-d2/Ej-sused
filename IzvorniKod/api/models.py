@@ -17,6 +17,7 @@ class Tvrtka(models.Model):
     kvartTvrtka = models.CharField(max_length=255)
     mjestoTvrtka = models.CharField(max_length=255)
     opisTvrtka = models.CharField(max_length=4095, null=True)
+    ocjena = models.FloatField(default=0.0)
 
     sifTvrtka = models.OneToOneField(
         Korisnik,
@@ -36,8 +37,9 @@ class Susjed(models.Model):
     opisSusjed = models.CharField(max_length=4095, null=True)
     ime = models.CharField(max_length=255)
     prezime = models.CharField(max_length=255)
+    ocjena = models.FloatField(default=0.0)
+    skills = models.TextField(default="")
     
-
     sifSusjed = models.OneToOneField(
         Korisnik,
         on_delete=models.CASCADE,

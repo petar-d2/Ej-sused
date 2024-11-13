@@ -1,0 +1,45 @@
+.susjed-card {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      
+      .susjed-card:hover {
+        transform: scale(1.05);
+      }
+      
+      .susjed-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.5em;
+      }
+      
+      .susjed-card p {
+        margin: 5px 0;
+      }
+      
+      .susjed-card strong {
+        font-weight: bold;
+      }
+      
+      /* Styling for the View on Maps button */
+      .view-map-button {
+        background-color: #4CAF50; /* Green button */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      
+      .view-map-button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+      

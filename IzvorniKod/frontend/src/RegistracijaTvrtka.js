@@ -1,34 +1,39 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
-
-const RegistracijaTvrtka = ({user2,setUser2}) => {
-
+const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     const navigate = useNavigate();
-
     const { kvartovi } = useContext(GlobalContext);
 
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
+    // State for form fields
     const [adresa, setAdresa] = useState("");
     const [naziv, setNaziv] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
+    const [mjesto, setMjesto] = useState(""); // New field for mjestoTvrtka
+    const [opis, setOpis] = useState(""); // New field for opisTvrtka
 
-    //zahtjev za registraciju
+    // Request to register a new Tvrtka
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        const newUser={
+        const newUser = {
             email: user2.email,
             password: user2.password,
-            vrsta: user2.vrsta,
+            isSusjed: false, // Indicates that this user is not a Susjed
+            isTvrtka: true,  // Indicates that this user is a Tvrtka
+            isNadlezna: false, // If Nadlezna is applicable, you can adjust this
             adresa: adresa,
             naziv: naziv,
-            kvart: kvart
+            kvart: kvart,
+            mjestoTvrtka: mjesto, // Add mjestoTvrtka to the request data
+            opisTvrtka: opis, // Add opisTvrtka to the request data
+            ocjena: 0.0
         };
 
         try {
@@ -39,6 +44,8 @@ const RegistracijaTvrtka = ({user2,setUser2}) => {
             setAdresa('');
             setNaziv('');
             setKvart('Trešnjevka');
+            setMjesto('Zagreb');
+            setOpis('');
 
             navigate('/prijava');
         } catch (error) {
@@ -60,7 +67,7 @@ const RegistracijaTvrtka = ({user2,setUser2}) => {
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
                         required 
-                        placeholder={adresa}
+                        placeholder="Unesite adresu"
                     />
                 </div>
                 <div className="form-group">
@@ -70,18 +77,40 @@ const RegistracijaTvrtka = ({user2,setUser2}) => {
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
                         required 
-                        placeholder={naziv}
+                        placeholder="Unesite naziv tvrtke"
                     />
                 </div>
-                <select id="options" 
-                name="options" 
-                value={kvart}
-                onChange={(e) => setKvart(e.target.value)}
-                >
-                    {kvartovi.map((kvart, index) => (
-                        <option key={index} value={kvart.name}>{kvart.name}</option>
-                    ))}
-                </select>
+                <div className="form-group">
+                    <label>Kvart:</label>
+                    <select 
+                        id="options" 
+                        name="options" 
+                        value={kvart}
+                        onChange={(e) => setKvart(e.target.value)}
+                    >
+                        {kvartovi.map((kvart, index) => (
+                            <option key={index} value={kvart.name}>{kvart.name}</option>
+                        ))}
+                    </select>
+                </div>
+                {/*<div className="form-group">
+                    <label>Mjesto:</label>
+                    <input 
+                        type="text" 
+                        value={mjesto} 
+                        onChange={(e) => setMjesto(e.target.value)} 
+                        required 
+                        placeholder="Unesite mjesto tvrtke"
+                    />
+                </div>*/}
+                <div className="form-group">
+                    <label>Opis Tvrtke:</label>
+                    <textarea 
+                        value={opis} 
+                        onChange={(e) => setOpis(e.target.value)} 
+                        placeholder="Unesite opis tvrtke (opcionalno)"
+                    />
+                </div>
                 <button className="button_1" type="submit">{tekst2}</button>
             </form>
         </div>
