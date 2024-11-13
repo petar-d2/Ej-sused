@@ -1,45 +1,48 @@
-.susjed-card {
-        border: 1px solid #ccc;
+.star-rating {
+        color: #FFD700; /* Gold color for the stars */
+        font-size: 1.2rem;
+    }
+    
+    .susjed-card {
+        border: 1px solid #ddd;
         padding: 20px;
-        margin: 10px;
-        border-radius: 8px;
-        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
-        transition: transform 0.2s ease;
-      }
-      
-      .susjed-card:hover {
-        transform: scale(1.05);
-      }
-      
-      .susjed-card h3 {
-        margin: 0 0 10px;
-        font-size: 1.5em;
-      }
-      
-      .susjed-card p {
-        margin: 5px 0;
-      }
-      
-      .susjed-card strong {
-        font-weight: bold;
-      }
-      
-      /* Styling for the View on Maps button */
-      .view-map-button {
-        background-color: #4CAF50; /* Green button */
+        transition: transform 0.2s;
+    }
+    
+    .susjed-card:hover {
+        transform: scale(1.03);
+    }
+    
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0;
+    }
+    
+    .skill-badge {
+        background-color: #555;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    
+    .view-map-button {
+        background-color: #333;
         color: white;
         border: none;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
+        padding: 8px 16px;
         border-radius: 5px;
         cursor: pointer;
-        margin-top: 15px;
-      }
-      
-      .view-map-button:hover {
-        background-color: #45a049; /* Darker green on hover */
-      }
-      
+        transition: background-color 0.3s;
+    }
+    
+    .view-map-button:hover {
+        background-color: #555;
+    }
+    

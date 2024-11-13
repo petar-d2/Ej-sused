@@ -57,4 +57,16 @@
     .user-details-container button:last-child:hover {
         background-color: #5a6268;
     }
+    .view-map-button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
     
+    .view-map-button:hover {
+        background-color: #555;
+    }

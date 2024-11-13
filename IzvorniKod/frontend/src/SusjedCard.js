@@ -6,28 +6,46 @@ const SusjedCard = ({ user }) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        const userId = user.sifSusjed ? user.sifSusjed.id : user.korinsnik_id;
+        const userId = user.sifSusjed ? user.sifSusjed.id : user.korisnik_id;
         navigate(`/susjed/${userId}`);
     };
-
-    // Function to handle the "View on Maps" button click
+    /*
     const handleViewOnMapsClick = () => {
-        const location = `${user.mjestoSusjed}, ${user.kvartSusjed}`; // Combine the city and neighborhood
-        const encodedLocation = encodeURIComponent(location);  // URL-encode the location
-        const mapsUrl = `https://www.google.com/maps?q=${encodedLocation}`;  // Google Maps URL with the encoded location
-        
-        // Open the location in a new tab (or you can use window.location.href to navigate in the same window)
+        const location = `${user.mjestoSusjed}, ${user.kvartSusjed}`;
+        const encodedLocation = encodeURIComponent(location);
+        const mapsUrl = `https://www.google.com/maps?q=${encodedLocation}`;
         window.open(mapsUrl, '_blank');
+    };
+    */
+    const skillsArray = user.skills ? user.skills.split(',').map(skill => skill.trim()) : [];
+
+    // Function to generate star rating based on `ocjena`
+    const renderStars = () => {
+        const totalStars = 5;
+        const fullStars = Math.floor(user.ocjena); // Full stars based on ocjena
+        const halfStar = user.ocjena % 1 >= 0.5; // Check if there's a half star
+        const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
+
+        return (
+            <>
+                {'★'.repeat(fullStars)}
+                {halfStar && '☆'}
+                {'☆'.repeat(emptyStars)}
+            </>
+        );
     };
 
     return (
         <div className="susjed-card" onClick={handleCardClick}>
             <h3>{user.ime} {user.prezime}</h3>
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Vještine:</strong> {user.skills ? user.skills.split(',').map(skill => skill.trim()).join(', ') : 'N/A'}</p>
-            <p><strong>Ocjena:</strong> {user.ocjena}</p>
-            <p><strong>Bodovi:</strong> {user.bodovi}</p>
-            <button className="view-map-button" onClick={handleViewOnMapsClick}>View on Maps</button>
+            <p><strong>Vještine:</strong></p>
+            <div className="skills-container">
+                {skillsArray.map((skill, index) => (
+                    <span key={index} className="skill-badge">{skill}</span>
+                ))}
+            </div>
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.ocjena})</p>
         </div>
     );
 };

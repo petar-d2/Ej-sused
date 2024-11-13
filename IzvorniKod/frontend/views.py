@@ -174,6 +174,16 @@ class odjava(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+#API za detaljan prikaz susjeda
+class detaljiSusjedView(APIView):
+    def get(self, request, sifSusjed):
+        try:
+            user = Susjed.objects.get(sifSusjed=sifSusjed)
+            serializer = SusjedSerializer(user)
+            return Response(serializer.data)
+        except Susjed.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)
+
 class homeView(APIView):
     def get(self, request):
         return render(request, "index.html")
