@@ -1,0 +1,74 @@
+/* Container for the page content and other */
+.ponude-susjeda-container {
+        text-align: center;
+        padding: 20px;
+        width: 84%;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
+    
+    /* Header for name of page*/
+    .ponude-susjeda-container h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    /* Container in witch SusjedCards are shown */
+    .susjed-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px 0;
+    }
+    .spinner {
+        border: 4px solid #f3f3f3; /* Light gray background */
+        border-top: 4px solid #007bff; /* Blue color for spinner */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        margin: 0 auto; /* Center the spinner */
+    }
+    
+    /* Keyframes for the spinner rotation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Centering the loading container */
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full screen height */
+        background-color: rgba(255, 255, 255, 0.7); /* Optional semi-transparent background */
+    }
+    /* Error message container */
+.error-message {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8d7da; /* Light red background for error */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #721c24; /* Dark red color for text */
+    text-align: center;
+}
+
+/* Error heading */
+.error-message h3 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+/* Error message description */
+.error-message p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}

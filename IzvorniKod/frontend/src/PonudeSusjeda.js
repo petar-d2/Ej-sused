@@ -28,7 +28,11 @@ const PonudeSusjeda = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+        <div className="loading-container">
+            <div className="spinner"></div>
+        </div>
+    );
   }
 
   return (

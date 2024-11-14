@@ -1,4 +1,4 @@
-from EjSused.serializers import SusjedSerializer
+from EjSused.serializers import SusjedSerializer, TvrtkaSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -164,6 +164,18 @@ class ponudeSusjedaListView(APIView):
         serializer = SusjedSerializer(susjedi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class tvrtkeListView(APIView):
+    def get(self, request):
+        # Fetch all Tvrtka instances from the database
+        tvrtke = Tvrtka.objects.all()
+        print(len(tvrtke))
+        
+        # Serialize the Tvrtka instances
+        serializer = TvrtkaSerializer(tvrtke, many=True)
+        
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 # Logout view - blacklist the refresh token
 class odjava(APIView):
     def post(self, request):
@@ -182,6 +194,15 @@ class detaljiSusjedView(APIView):
             serializer = SusjedSerializer(user)
             return Response(serializer.data)
         except Susjed.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)
+
+class detaljiTvrtkaView(APIView):
+    def get(self, request, sifTvrtka):
+        try:
+            user = Tvrtka.objects.get(sifTvrtka=sifTvrtka)
+            serializer = TvrtkaSerializer(user)
+            return Response(serializer.data)
+        except Tvrtka.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
 
 class homeView(APIView):

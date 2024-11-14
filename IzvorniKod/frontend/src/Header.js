@@ -43,7 +43,7 @@ const Header = () => {
         }
     }
 
-    const isMobile = useMediaQuery({ query: '(max-width: 900px)' });
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen); 
@@ -66,7 +66,7 @@ const Header = () => {
                         <div className="dropdown_menu">
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                             <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
-                            <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Ponude</button>
+                            <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
                             <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude Susjeda</button> {/* Added link */}
                             <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                             {isLoggedIn ? (
@@ -89,7 +89,7 @@ const Header = () => {
                     <div className="header_grid">
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                         <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
-                        <button className="header_gumb" onClick={() => navigate('/ponude')}>Ponude</button>
+                        <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
                         <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude Susjeda</button> 
                         <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
                         {isLoggedIn() ? (

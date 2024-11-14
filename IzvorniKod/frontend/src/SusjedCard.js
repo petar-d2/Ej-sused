@@ -17,6 +17,7 @@ const SusjedCard = ({ user }) => {
         window.open(mapsUrl, '_blank');
     };
     */
+   
     const skillsArray = user.skills ? user.skills.split(',').map(skill => skill.trim()) : [];
 
     // Function to generate star rating based on `ocjena`

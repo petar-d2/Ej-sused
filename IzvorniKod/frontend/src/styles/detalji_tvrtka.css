@@ -121,6 +121,7 @@
 }
 /* Star rating styling */
 .star-rating {
-    color: #FFD700; /* Gold color for the stars */
-    font-size: 1.2rem;
-}
+        color: #FFD700; /* Gold color for the stars */
+        font-size: 1.2rem;
+    }
+    
