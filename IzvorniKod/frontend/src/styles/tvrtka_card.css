@@ -6,7 +6,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: transform 0.2s;
-        background-color: #f9f9f9;
+        width: 700px;
     }
     
     /* Hover effect to slightly enlarge the card */
@@ -17,20 +17,20 @@
     /* Title for the company name */
 .tvrtka-card h3 {
         font-size: 1.2rem;
-        color: #333;
+        color: #000000;
         margin: 0;
 }
     
     /* Each piece of text in the card */
     .tvrtka-card p {
         margin: 10px 0;
-        color: #555;
+        color: #000000;
     }
     
     /* Style for the address and other location details */
     .tvrtka-location {
         font-size: 0.9rem;
-        color: #777;
+        color: #000000;
     }
     
     /* Star rating styling */
