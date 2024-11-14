@@ -10,6 +10,7 @@ import UrediProfil from './UrediProfil';
 import DetaljiSusjed from './DetaljiSusjed';
 import { GlobalProvider } from './GlobalContext';
 import PonudeSusjeda from './PonudeSusjeda';
+import RegistracijaVrsta from './RegistracijaVrsta';
 
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
@@ -42,6 +43,7 @@ function App() {
             <Route path="/dogadaji" element={<Prijava />} />
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija />} />
+            <Route path="/registracija-vrsta" element={<RegistracijaVrsta />} />
             <Route path="/uredi-profil" element={<UrediProfil />} />
             <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
             <Route path="/susjed/:id" element={<DetaljiSusjed />} />

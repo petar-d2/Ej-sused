@@ -43,7 +43,7 @@ const Registracija = () => {
             alert("Lozinke se ne podudaraju. Molimo pokušajte ponovno.");
             return;
         }
-
+        /*
         try {
             await axios.post(window.location.href.replace(window.location.pathname,'/') + 'registracija/', {
                 email,
@@ -56,7 +56,8 @@ const Registracija = () => {
           alert("Neuspješna registracija!");
           return;
         }
-
+        */
+        setUser2({email: email, password: password});
     };
 
     //ako nije upisan mail i password
