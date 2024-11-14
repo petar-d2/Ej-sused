@@ -109,6 +109,8 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 
                         placeholder="Unesite opis tvrtke (opcionalno)"
+                        rows="5"      // Increase the height
+                        cols="50"     // Increase the width 
                     />
                 </div>
                 <button className="button_1" type="submit">{tekst2}</button>

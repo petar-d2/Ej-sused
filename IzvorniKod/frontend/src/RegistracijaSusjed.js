@@ -141,6 +141,8 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
                         placeholder="Unesite opis (opcionalno)"
+                        rows="6"      // Increase the height with more rows
+                        cols="50"     // Increase the width with more columns
                     />
                 </div>
                 <div className="form-group">

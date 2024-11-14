@@ -1,34 +1,40 @@
-/* detalji_susjed.css */
-
-.user-details-container {
-        max-width: 600px;
+.tvrtka-details-container {
+        width: 780px;
+        max-width: 90%;        /* Allow it to shrink on smaller screens */
         margin: 20px auto;
         padding: 20px;
         background-color: #f9f9f9;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
-        color: #333;
+        color: #000000;
     }
     
-    .user-details-container h2 {
+    @media (max-width: 780px) {
+        .tvrtka-details-container {
+            width: 100%;       /* Full width on smaller screens */
+            padding: 10px;     /* Adjust padding to save space */
+        }
+    }
+    
+    .tvrtka-details-container h2 {
         text-align: center;
         color: #007bff;
         font-size: 1.8em;
         margin-bottom: 20px;
     }
     
-    .user-details-container p {
+    .tvrtka-details-container p {
         font-size: 1.1em;
         line-height: 1.6;
         margin: 10px 0;
     }
     
-    .user-details-container p strong {
+    .tvrtka-details-container p strong {
         color: #555;
     }
     
-    .user-details-container button {
+    .tvrtka-details-container button {
         display: block;
         width: calc(50% - 10px);
         padding: 10px;
@@ -42,19 +48,19 @@
         transition: background-color 0.3s;
     }
     
-    .user-details-container button:hover {
+    .tvrtka-details-container button:hover {
         background-color: #0056b3;
     }
     
-    .user-details-container button:active {
+    .tvrtka-details-container button:active {
         background-color: #00408b;
     }
     
-    .user-details-container button:last-child {
+    .tvrtka-details-container button:last-child {
         background-color: #6c757d;
     }
     
-    .user-details-container button:last-child:hover {
+    .tvrtka-details-container button:last-child:hover {
         background-color: #5a6268;
     }
     .view-map-button {

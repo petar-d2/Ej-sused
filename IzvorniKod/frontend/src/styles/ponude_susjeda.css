@@ -12,8 +12,9 @@
 /* Header for name of page*/
 .ponude-susjeda-container h2 {
     font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
+        margin-bottom: 20px;
+        color: #000000;
+        margin-left: 20px; /* Adjust value as needed */
 }
 
 /* Container in witch SusjedCards are shown */
