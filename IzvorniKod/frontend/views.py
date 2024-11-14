@@ -147,7 +147,7 @@ class googleLogin(APIView):
             
             # Issue JWT token for Google login
             refresh = RefreshToken.for_user(user)
-            response = redirect("../home/")
+            response = redirect("../")
             response.set_cookie(key="refresh", value=str(refresh))
             response.set_cookie(key="access", value=str(refresh.access_token))
             response.set_cookie(key="google", value=str(token))

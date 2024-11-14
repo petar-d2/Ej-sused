@@ -44,14 +44,14 @@ const UrediProfil = () => {
     }, []);
 
     //ako je tvrtka
-    if (user && user.vrsta==="tvrtka") {
+    if (user && user.isTvrtka) {
         return (
            <UrediProfilTvrtka />
         );
     }
 
     //ako je susjed/volonter
-    else if (user && (user.vrsta==="susjed" || user.vrsta==="volonter")) {
+    else if (user && user.isSusjed) {
         return (
             <UrediProfilSusjed />
         );

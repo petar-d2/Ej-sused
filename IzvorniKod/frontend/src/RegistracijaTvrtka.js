@@ -11,28 +11,26 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
-    // State for form fields
     const [adresa, setAdresa] = useState("");
     const [naziv, setNaziv] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
-    const [mjesto, setMjesto] = useState(""); // New field for mjestoTvrtka
-    const [opis, setOpis] = useState(""); // New field for opisTvrtka
+    const [mjesto, setMjesto] = useState("Zagreb");
+    const [opis, setOpis] = useState("");
 
-    // Request to register a new Tvrtka
     const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser = {
             email: user2.email,
             password: user2.password,
-            isSusjed: false, // Indicates that this user is not a Susjed
-            isTvrtka: true,  // Indicates that this user is a Tvrtka
-            isNadlezna: false, // If Nadlezna is applicable, you can adjust this
+            isSusjed: false,
+            isTvrtka: true,
+            isNadlezna: false,
             adresa: adresa,
             naziv: naziv,
             kvart: kvart,
-            mjestoTvrtka: mjesto, // Add mjestoTvrtka to the request data
-            opisTvrtka: opis, // Add opisTvrtka to the request data
+            mjestoTvrtka: mjesto,
+            opisTvrtka: opis,
             ocjena: 0.0
         };
 
@@ -66,8 +64,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
-                        placeholder="Unesite adresu"
+                        required
                     />
                 </div>
                 <div className="form-group">
@@ -76,12 +73,11 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         type="text" 
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
-                        required 
-                        placeholder="Unesite naziv tvrtke"
+                        required
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
                         name="options" 

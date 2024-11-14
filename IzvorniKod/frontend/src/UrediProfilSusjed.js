@@ -50,7 +50,9 @@ const UrediProfilSusjed = () => {
     const [ime, setIme] = useState(user.ime);
     const [prezime, setPrezime] = useState(user.prezime);
     const [kvart, setKvart] = useState(user.kvart);
-    const [userSkills, setUserSkills] = useState(user.skills);
+    const [isVolonter, setIsVolonter] = useState(user.isVolonter);
+    const [userSkills, setUserSkills] = useState(user.skills.split(",").map(skill => skill.trim()));
+    const [opisSusjed, setOpisSusjed] = useState(user.opisSusjed);
 
     //spremi promjene u listi userSkills
     const handleSkillChange = (skill) => {
@@ -65,15 +67,23 @@ const UrediProfilSusjed = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
 
+        const skillsString = userSkills.join(", ");
         const newUser={
             email: user.email,
             password: user.password,
-            vrsta: user.vrsta,
             adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
-            skills: userSkills
+            skills: skillsString,
+            bodovi: user.bodovi,
+            isVolonter: isVolonter,
+            mjestoSusjed: user.mjestoSusjed,
+            opisSusjed: opisSusjed,
+            isSusjed: user.isSusjed,
+            isTvrtka: user.isTvrtka,
+            isNadlezna: user.isNadlezna,
+            ocjena: user.ocjena
         };
 
         try {
@@ -112,20 +122,47 @@ const UrediProfilSusjed = () => {
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
+                        required
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
-                    <select id="options" 
-                    name="options" 
-                    value={kvart}
-                    onChange={(e) => setKvart(e.target.value)}
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
+                    <select 
+                        id="options" 
+                        name="options" 
+                        value={kvart}
+                        onChange={(e) => setKvart(e.target.value)}
                     >
                         {kvartovi.map((kvart, index) => (
                             <option key={index} value={kvart.name}>{kvart.name}</option>
                         ))}
                     </select>
+                </div>
+
+                {/* <div className="form-group">
+                    <label>Mjesto:</label>
+                    <input 
+                        type="text" 
+                        value={mjestoSusjed} 
+                        onChange={(e) => setMjestoSusjed(e.target.value)} 
+                        required 
+                    />
+                </div> */}
+                <div className="form-group">
+                    <label>Opis susjeda:</label>
+                    <textarea 
+                        value={opisSusjed} 
+                        onChange={(e) => setOpisSusjed(e.target.value)} 
+                        placeholder="Unesite opis (opcionalno)"
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Volonter:</label>
+                    <input 
+                        type="checkbox" 
+                        checked={isVolonter} 
+                        onChange={(e) => setIsVolonter(e.target.checked)} 
+                    />
                 </div>
                 <div className="form-group-skills">
                     <label>Vještine:</label>

@@ -38,9 +38,9 @@ function App() {
         <Header/>
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/napravi-ponudu" element={<NapraviPonudu />} />
-            <Route path="/ponude" element={<Prijava />} />
-            <Route path="/dogadaji" element={<Prijava />} />
+            <Route path="/dogadaji" element={<Home />} />
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija />} />
             <Route path="/registracija-vrsta" element={<RegistracijaVrsta />} />

@@ -11,15 +11,14 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
-    // State for form fields
     const [adresa, setAdresa] = useState("");
     const [ime, setIme] = useState("");
     const [prezime, setPrezime] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
     const [userSkills, setUserSkills] = useState([]);
-    const [isVolonter, setIsVolonter] = useState(false); // Volunteer status
-    const [mjestoSusjed, setMjestoSusjed] = useState(""); // New field for location
-    const [opisSusjed, setOpisSusjed] = useState(""); // New field for description
+    const [isVolonter, setIsVolonter] = useState(false);
+    const [mjestoSusjed, setMjestoSusjed] = useState("Zagreb");
+    const [opisSusjed, setOpisSusjed] = useState("");
 
     const handleSkillChange = (skill) => {
         setUserSkills((prevSkills) =>
@@ -29,17 +28,14 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         );
     };
 
-    // Request for registration
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        // Check that fields are filled out
         if (!ime || !prezime || !adresa || userSkills.length === 0) {
             alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
             return;
         }
-        const skillsString = userSkills.join(", ")
-        // New user object for Susjed registration
+        const skillsString = userSkills.join(", ");
         const newUser = {
             email: user2.email,
             password: user2.password,
@@ -52,7 +48,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
             isVolonter: isVolonter,
             mjestoSusjed: mjestoSusjed,
             opisSusjed: opisSusjed,
-            isSusjed: true,  // Set isSusjed to true
+            isSusjed: true,
             isTvrtka: false,
             isNadlezna: false,
             ocjena: 0.0
@@ -63,7 +59,6 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
 
             alert("Uspješno ste registrirani!");
 
-            // Clear fields after successful registration
             setAdresa('');
             setIme('');
             setPrezime('');
@@ -109,11 +104,11 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
+                        required
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
                         name="options" 
@@ -136,7 +131,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                     />
                 </div> */}
                 <div className="form-group">
-                    <label>Opis Susjeda:</label>
+                    <label>Opis susjeda:</label>
                     <textarea 
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
