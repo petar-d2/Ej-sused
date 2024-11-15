@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import './styles//napraviPonudu.css';
+import './styles//napravi_ponudu.css';
 
 const NapraviPonudu = () => {
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const  [naslov, setNaslov] = useState("");
     const  [opis, setOpis] = useState("");
     const  [cijena, setCijena] = useState("");
@@ -24,6 +24,12 @@ const NapraviPonudu = () => {
         setBrojMobitela("");
     };
     
+    //ako nije ulogiran, posalji ga na prijavu
+    useEffect(() => {
+        if(!localStorage.getItem("accessToken")){
+            navigate("/prijava");
+        }
+    },[]);
 
     return (
     <div className='upitnik'>

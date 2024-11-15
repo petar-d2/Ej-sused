@@ -1,24 +1,50 @@
-import React,{useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import GoogleButton from "react-google-button";
 
 const Prijava = () => {
     const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    
+    const onGoogleLoginSuccess = () => {
+        const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+        
+        const scope = [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile"
+        ].join(' ');
+        
+        const params = {
+            response_type: "code",
+            client_id: "371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com",
+            redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
+            prompt: "select_account",
+            access_type: "offline",
+            scope
+        };
+        const urlParams = new URLSearchParams(params).toString();
+        window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
+    };
 
-    const handleLogin = (e) => {
+    //ako je prijava uspjesna spremi tokene i posalji na pocetnu stranicu
+    const handleLogin = async (e) => {
         e.preventDefault();
-
-        if (!email || !password) {
-            alert("Molimo unesite i email i lozinku.");
-            return;
+        try {
+          const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'prijava/', {
+            email,
+            password,
+          });
+          localStorage.setItem('accessToken', response.data.access);
+          localStorage.setItem('refreshToken', response.data.refresh);
+          navigate('/');
+        } catch (error) {
+          console.error('Login failed:', error.response.data);
+          alert("Neuspješna prijava!");
+          return;
         }
-
-        setEmail('');
-        setPassword('');
-        navigate('/home');
-
     };
 
     return (
@@ -45,6 +71,7 @@ const Prijava = () => {
                 </div>
                 <button className="button_1" type="submit">Prijava</button>
             </form>
+            <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
             <div className="horizontalna_crta" style={{ 
                 height: '2px', 
                 backgroundColor: 'black',
@@ -60,4 +87,4 @@ const Prijava = () => {
     );
 }
 
-export default Prijava
+export default Prijava;
