@@ -1,5 +1,7 @@
 # EJ SUSED
-  
+Trenutno je uključena prva verzija programa u početnoj fazi razvoja, aplikacija se sporo učitava u Renderu na linku(napisan u samom repozitoriju) jer ne koristimo plaćenu verziju, koja dolazi sa sporijim dohvaćanjem iz baze i još nekolicinu nedostataka pa ćemo u budućnosti uključiti plaćenu verziju ako bude potrebno.
+
+Branchevi na kojima su se predavali commitovi su dev i frontend.
 
 # Opis projekta
 Ovaj projekt je reultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
@@ -29,10 +31,16 @@ Radeći ovaj projekt naučili smo na koji način funkcionira proces razvoja prog
 - korisnicima je omogućen prikaz i uređivanje vlastitih zahtjeva za pomoć
 - tvrtkama je omogućen prikaz i promjena vlastitih usluga
 - moderatorima je omogućeno odobravanje postavljenih događaja i pregledavanje i brisanje neprikladnih komentara
-- administratori provode dodjelu uloga i daje disciplinske mjere 
+- administratori provode dodjelu uloga i daju disciplinske mjere 
 
 # Tehnologije
-React za frontend, Django za backend i PostgreSQL za baze, Render za hostanje baze i deployment.
+React za frontend, 
+Django za backend, 
+PostgreSQL za baze, 
+Render za hostanje baze i deployment,
+Discord i Whatsapp za komunikaciju,
+VSC za pisanje koda, 
+Astah za izradu dijagrama
 
 # Članovi tima 
 Mirko Bušić (voditelj tima), Petar Dušević, Tin Salopek, Lucijan Grgić, Vanja Vukmanović, Romano Randić i Jakov Piljek.
