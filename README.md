@@ -4,16 +4,14 @@
 # Opis projekta
 Ovaj projekt je reultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. 
 
-Cilj je ovog projekta omogućiti ljudima da čine dobra djela i unapređuju svoju lokalnu zajednicu. Kako bismo to postigli, želimo ostvariti laganu, brzu i pouzdanu platformu koja će omogućiti ljudima koji trebaju neku pomoć ili uslugu da se povežu s drugima koji mogu na bilo koji način pomoći.
+Cilj ovog projekta je omogućiti ljudima da se povežu sa susjedima i lokalnom zajednicom te kako bi unapredili svoju lokalnu zajednicu i pojednostavili si život. Kako bismo to postigli, želimo ostvariti laganu, brzu i pouzdanu platformu koja će omogućiti ljudima koji trebaju neku pomoć ili uslugu da se povežu s drugima koji mogu, na neki način, pomoći.
 
-Ljudi imaju zauzete živote. Zadnje što nam treba je da se pokvari perilica, ili nakupi snijeg. Nije nam lako potrošiti cijelo jutro, večer, dan ili više njih na ovakve probleme. Često nam treba neka vrsta usluge, a oni koji nam mogu pomoći nalaze se u blizini. Međutim, problem je u tome što mi uopće ni ne znamo da je susjed možda baš danas slobodan i može pomoći.
+Ljudi imaju zauzete živote. Zadnje što nam treba je da se pokvari perilica ili pokvari auto prije posla. Nije svima svejedno hoće li potrošiti cijelo jutro ili dan tražeći mehaničare i elektroničare koji mogu pomoći. Čak i da se pronađe netko, on je često zauzet do kraja mjeseca i živi u drugom gradu.
 
-Da bismo postigli da korisnici mogu lako i primati i davati pomoć, odlučili smo se da aplikacija bude orijentirana na kvartove. Umjesto da putuješ pola sata preko grada, pomažeš upravo onima najbližima sebi. U tu je svrhu dizajniran i prikaz aktualnih zahtjeva na karti, kako bi već na prvi pogled znao gdje je potrebna pomoć.
+Da bismo postigli da korisnici mogu lako i primati i pružati pomoć, odlučili smo da aplikacija bude orijentirana na kvartove. Umjesto putovanja preko cijelog grada, pomažeš upravo onima najbližima sebi, ali i ostali tebi dolaze pomoći u roku nekoliko minuta. U tu je svrhu dizajniran i prikaz aktualnih zahtjeva na karti, kako bi već na prvi pogled znao gdje je potrebna pomoć, ali i da ostali vide gdje ti mogu pomoći.
 
-Naša web aplikacija potiče susjede da međusobno traže i daju usluge. Međutim, postoje situacije u kojima je potrebna profesionalna, verificirana pomoć. Zato omogućujemo i raznim tvrtkama, obrtima i majstorima da koriste aplikaciju u slučaju nekih specijaliziranih usluga.
-
-Kako bi korisnik znao je li netko doista vjerodostojan, postoji i sustav ocjenjivanja. Nakon izvršenog posla, osoba koja je zadala zahtjev može (ali ne mora) ocijeniti pomagača i ostaviti komentar. Isto vrijedi i za profesionalne usluge!
-
+Naša web-aplikacija potiče susjede da međusobno traže i pružaju usluge za bodove, ali zapravo, besplatno. Međutim, postoje situacije u kojima je potrebna profesionalna pomoć za neke zahtjevnije zadatke. Zato omogućujemo i raznim tvrtkama, obrtima i majstorima da koriste aplikaciju u slučaju nekih specijaliziranih plaćenih usluga prikazanih korisnicima tog kvarta te s komentarima i ocjenom zadovoljstva usluge.
+---
 Radeći ovaj projekt naučili smo na koji način funkcionira proces razvoja programske potpore. Krenuli smo od problema koji smo htjeli rješiti, specificirali smo zahtjeve našeg budućeg rješenja i zatim smo počeli s oblikovanjem rješenja. Kroz rad na frontendu naučili smo koristiti alate kao što su Figma i framework React. Za rad na backendu bilo je potrebno upoznati se s Djangom i dobro oblikovati bazu podataka. Ovaj projekt rezultat je timskog rada i morali smo naučiti koristiti alate za verzioniranje koda kao što su Git i GitHub te smo naučili kako pisati kvalitetnu dokumentaciju kako bi olakšali drugim članovima tima, ali i ljudima koji će na bilo koji način sudjelovati u projektu.
 
 
@@ -34,7 +32,7 @@ Radeći ovaj projekt naučili smo na koji način funkcionira proces razvoja prog
 - administratori provode dodjelu uloga i daje disciplinske mjere 
 
 # Tehnologije
-React za frontend, Django za backend i Postgres za baze.
+React za frontend, Django za backend i PostgreSQL za baze, Render za hostanje baze i deployment.
 
 # Članovi tima 
 Mirko Bušić (voditelj tima), Petar Dušević, Tin Salopek, Lucijan Grgić, Vanja Vukmanović, Romano Randić i Jakov Piljek.
