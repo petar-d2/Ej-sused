@@ -161,6 +161,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-GOOGLE_CLIENT_ID = '696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com'
+GOOGLE_CLIENT_ID = '371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_CLIENT_SECRET = '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'
