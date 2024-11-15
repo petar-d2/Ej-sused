@@ -38,10 +38,10 @@ React za frontend, Django za backend i Postgres za baze.
 
 # Članovi tima 
 Mirko Bušić (voditelj tima), Petar Dušević, Tin Salopek, Lucijan Grgić, Vanja Vukmanović, Romano Randić i Jakov Piljek.
->
+
 
 # Kontribucije
->Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
+Kontrbucije članova tima možete pogledati ovdje: [Contributing Guidelines](CONTRIBUTING.md)
 
 
 
