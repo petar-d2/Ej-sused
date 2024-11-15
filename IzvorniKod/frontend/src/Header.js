@@ -65,7 +65,7 @@ const Header = () => {
                     {isDropdownOpen && (
                         <div className="dropdown_menu">
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
-                            {isLoggedIn ? (
+                            {isLoggedIn() ? (
                                 <>
                                     <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
