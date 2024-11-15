@@ -125,7 +125,7 @@ class googleLogin(APIView):
             'code': code,
             'client_id': settings.GOOGLE_CLIENT_ID,
             'client_secret': settings.GOOGLE_CLIENT_SECRET,
-            'redirect_uri': "http://localhost:8000/google-login/",
+            'redirect_uri': settings.BASE_URL + "/google-login/",
             'grant_type': 'authorization_code'
         })
         if not response.ok:
@@ -158,8 +158,7 @@ class googleLogin(APIView):
 class ponudeSusjedaListView(APIView):
     def get(self, request):
         #Fetch from database
-        susjedi = Susjed.objects.all()  
-        print(len(susjedi))
+        susjedi = Susjed.objects.all()
         #Serijalization of users
         serializer = SusjedSerializer(susjedi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -168,7 +167,6 @@ class tvrtkeListView(APIView):
     def get(self, request):
         # Fetch all Tvrtka instances from the database
         tvrtke = Tvrtka.objects.all()
-        print(len(tvrtke))
         
         # Serialize the Tvrtka instances
         serializer = TvrtkaSerializer(tvrtke, many=True)

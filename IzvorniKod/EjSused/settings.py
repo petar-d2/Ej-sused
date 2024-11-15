@@ -26,8 +26,16 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="django-insecure-#p*uuvv_ye90q
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+RENDER = os.environ.get('RENDER')
+if RENDER:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
+
+BASE_URL = "http://localhost:8000"
+RENDER_EXTERNAL_URL = os.environ.get('RENDER_EXTERNAL_URL')
+if RENDER_EXTERNAL_URL:
+    BASE_URL = RENDER_EXTERNAL_URL
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
