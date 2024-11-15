@@ -22,16 +22,23 @@ form {
     justify-content: center;
     align-items: center;
     max-width: 400px;
+    margin-bottom: 20px;
 }
 
-input {
-    width: 100%;
+select {
+    margin-left: calc(50%-48px);
+    margin-bottom: 15px;
+}
+
+input, textarea {
+    width: 30vw;
     padding: 8px;
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    margin: 0px;
     margin-bottom: 15px;
-    max-width: 100%;
+    max-width: 400px;
     box-sizing: border-box;
 }
 
@@ -67,10 +74,6 @@ input {
     margin-bottom: 10px;
 }
 
-#GoogleDiv {
-    margin-top: 30px;
-}
-
 .opis {
     height: 100px;
     resize: vertical;
@@ -82,15 +85,15 @@ input {
 }
 
 .skills-box {
-    width: 100%;
+    width: 30vw;
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid #ccc;
-    padding: 10px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    max-width: 400px;
 }
 
 .skill-item {
@@ -105,7 +108,7 @@ input {
 
 .skill-item input[type="checkbox"] {
     justify-self: center;
-    width: 150px;
+    width: 100px;
     margin: 0;
 }
 

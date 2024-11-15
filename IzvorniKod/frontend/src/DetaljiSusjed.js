@@ -75,7 +75,6 @@ const DetaljiSusjed = () => {
             <p><strong>Ime:</strong> {user.ime}</p>
             <p><strong>Prezime:</strong> {user.prezime}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Adresa:</strong> {user.adresa}</p>
             <p><strong>Kvart:</strong> {user.kvartSusjed}</p>
             <p><strong>Broj bodova:</strong> {user.bodovi || 'N/A'}</p>
             <p><strong>Opis:</strong> {user.opis || 'N/A'}</p>

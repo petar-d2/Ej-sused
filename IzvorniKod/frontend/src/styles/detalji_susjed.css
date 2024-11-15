@@ -1,7 +1,8 @@
 /* detalji_susjed.css */
 
 .user-details-container {
-        width: 780px;
+        width: 40vw;
+        min-width: 300px;
         margin: 20px auto;
         padding: 20px;
         background-color: #f9f9f9;
@@ -30,9 +31,11 @@
     
     .user-details-container button {
         display: block;
-        width: calc(50% - 10px);
+        width: 50%;
         padding: 10px;
-        margin: 15px 5px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 25%;
         font-size: 1em;
         color: #fff;
         background-color: #007bff;

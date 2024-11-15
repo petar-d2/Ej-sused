@@ -48,18 +48,24 @@ const UrediProfilTvrtka = () => {
     const [adresa, setAdresa] = useState(user.adresa);
     const [naziv, setNaziv] = useState(user.naziv);
     const [kvart, setKvart] = useState(user.kvart);
+    const [opis, setOpis] = useState(user.opis);
 
     //spremi promjene
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        const newUser={
+        const newUser = {
             email: user.email,
             password: user.password,
-            vrsta: user.vrsta,
+            isSusjed: false,
+            isTvrtka: true,
+            isNadlezna: false,
             adresa: adresa,
+            naziv: naziv,
             kvart: kvart,
-            naziv: naziv
+            mjestoTvrtka: user.mjesto,
+            opisTvrtka: opis,
+            ocjena: user.ocjena
         };
 
         try {
@@ -75,59 +81,53 @@ const UrediProfilTvrtka = () => {
             <h2>{tekst}</h2>
             <form onSubmit={handleSignup}>
                 <div className="form-group">
-                    <label>Ime:</label>
-                    <input 
-                        type="text" 
-                        value={ime} 
-                        onChange={(e) => setIme(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Prezime:</label>
-                    <input 
-                        type="text" 
-                        value={prezime} 
-                        onChange={(e) => setPrezime(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div className="form-group">
                     <label>Adresa:</label>
                     <input 
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
+                        required
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
-                    <select id="options" 
-                    name="options" 
-                    value={kvart}
-                    onChange={(e) => setKvart(e.target.value)}
+                    <label>Naziv:</label>
+                    <input 
+                        type="text" 
+                        value={naziv} 
+                        onChange={(e) => setNaziv(e.target.value)} 
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
+                    <select 
+                        id="options" 
+                        name="options" 
+                        value={kvart}
+                        onChange={(e) => setKvart(e.target.value)}
                     >
                         {kvartovi.map((kvart, index) => (
                             <option key={index} value={kvart.name}>{kvart.name}</option>
                         ))}
                     </select>
                 </div>
-                <div className="form-group-skills">
-                    <label>Vještine:</label>
-                    <div className="skills-box">
-                        {skills.map((skill, index) => (
-                            <div key={index} className="skill-item">
-                                <input
-                                    type="checkbox"
-                                    id={`skill-${index}`}
-                                    checked={userSkills.includes(skill)}
-                                    onChange={() => handleSkillChange(skill)}
-                                />
-                                <label htmlFor={`skill-${index}`}>{skill}</label>
-                            </div>
-                        ))}
-                    </div>
+                {/*<div className="form-group">
+                    <label>Mjesto:</label>
+                    <input 
+                        type="text" 
+                        value={mjesto} 
+                        onChange={(e) => setMjesto(e.target.value)} 
+                        required 
+                        placeholder="Unesite mjesto tvrtke"
+                    />
+                </div>*/}
+                <div className="form-group">
+                    <label>Opis tvrtke:</label>
+                    <textarea 
+                        value={opis} 
+                        onChange={(e) => setOpis(e.target.value)} 
+                        placeholder="Unesite opis tvrtke (opcionalno)"
+                    />
                 </div>
                 <button className="button_1" type="submit">{tekst2}</button>
             </form>

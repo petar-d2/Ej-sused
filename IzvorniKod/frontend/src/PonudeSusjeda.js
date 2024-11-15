@@ -37,7 +37,7 @@ const PonudeSusjeda = () => {
 
   return (
     <div>
-      <h2>Ponude Susjeda</h2>
+      <h2>Ponude susjeda</h2>
       
       {/* Display list of users using SusjedCard */}
       <div className="susjed-card-container">

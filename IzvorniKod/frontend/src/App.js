@@ -40,6 +40,7 @@ function App() {
         <Header/>
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/napravi-ponudu" element={<NapraviPonudu />} />
             <Route path="/tvrtke" element={<Tvrtke />} />
             <Route path="/dogadaji" element={<Home />} />

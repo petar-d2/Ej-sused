@@ -15,7 +15,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     const [adresa, setAdresa] = useState("");
     const [naziv, setNaziv] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
-    const [mjesto, setMjesto] = useState(""); // New field for mjestoTvrtka
+    const [mjesto, setMjesto] = useState("Zagreb"); // New field for mjestoTvrtka
     const [opis, setOpis] = useState(""); // New field for opisTvrtka
 
     // Request to register a new Tvrtka
@@ -81,7 +81,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
                         name="options" 

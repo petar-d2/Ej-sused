@@ -18,7 +18,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
     const [kvart, setKvart] = useState("Trešnjevka");
     const [userSkills, setUserSkills] = useState([]);
     const [isVolonter, setIsVolonter] = useState(false); // Volunteer status
-    const [mjestoSusjed, setMjestoSusjed] = useState(""); // New field for location
+    const [mjestoSusjed, setMjestoSusjed] = useState("Zagreb"); // New field for location
     const [opisSusjed, setOpisSusjed] = useState(""); // New field for description
 
     const handleSkillChange = (skill) => {
@@ -113,7 +113,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Kvart:</label>
+                    <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
                         name="options" 

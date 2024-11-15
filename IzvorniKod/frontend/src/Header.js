@@ -43,7 +43,7 @@ const Header = () => {
         }
     }
 
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    const isMobile = useMediaQuery({ query: '(max-width: 875px)' });
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen); 
@@ -65,14 +65,14 @@ const Header = () => {
                     {isDropdownOpen && (
                         <div className="dropdown_menu">
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
-                            <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
-                            <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                            <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude Susjeda</button> {/* Added link */}
-                            <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                             {isLoggedIn ? (
                                 <>
+                                    <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
+                                    <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
+                                    <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> {/* Added link */}
+                                    <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                    {/*<button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>*/}
                                 </>
                             ) : (
                                 <>
@@ -88,14 +88,13 @@ const Header = () => {
                     <h1 className="header-title">Ej Sused</h1>
                     <div className="header_grid">
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
-                        <button style={{ minWidth: "120px" }} className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
-                        <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
-                        <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude Susjeda</button> 
-                        <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
                         {isLoggedIn() ? (
                             <>
-                                <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>
+                                <button className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
+                                <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
+                                <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button> 
+                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button><button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
+                                {/*<button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>*/}
                             </>
                         ) : (
                             <>
