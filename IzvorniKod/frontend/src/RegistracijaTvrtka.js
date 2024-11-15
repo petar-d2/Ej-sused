@@ -11,28 +11,28 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
-    // State for form fields
+    // stanja za polja u formu
     const [adresa, setAdresa] = useState("");
     const [naziv, setNaziv] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
-    const [mjesto, setMjesto] = useState("Zagreb"); // New field for mjestoTvrtka
-    const [opis, setOpis] = useState(""); // New field for opisTvrtka
+    const [mjesto, setMjesto] = useState("Zagreb");
+    const [opis, setOpis] = useState("");
 
-    // Request to register a new Tvrtka
+    // signup zahtjev
     const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser = {
             email: user2.email,
             password: user2.password,
-            isSusjed: false, // Indicates that this user is not a Susjed
-            isTvrtka: true,  // Indicates that this user is a Tvrtka
-            isNadlezna: false, // If Nadlezna is applicable, you can adjust this
+            isSusjed: false,
+            isTvrtka: true, 
+            isNadlezna: false,
             adresa: adresa,
             naziv: naziv,
             kvart: kvart,
-            mjestoTvrtka: mjesto, // Add mjestoTvrtka to the request data
-            opisTvrtka: opis, // Add opisTvrtka to the request data
+            mjestoTvrtka: mjesto, //zasad samo Zagreb
+            opisTvrtka: opis,
             ocjena: 0.0
         };
 
@@ -109,8 +109,8 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 
                         placeholder="Unesite opis tvrtke (opcionalno)"
-                        rows="5"      // Increase the height
-                        cols="50"     // Increase the width 
+                        rows="5"
+                        cols="50"
                     />
                 </div>
                 <button className="button_1" type="submit">{tekst2}</button>

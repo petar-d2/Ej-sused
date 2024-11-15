@@ -32,7 +32,7 @@ const Header = () => {
         return typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null;
     };
 
-    { // login cookie check
+    { // login cookie provjera
         var refresh = Cookies.get("refresh");
         var access = Cookies.get("access");
         var google = Cookies.get("google");

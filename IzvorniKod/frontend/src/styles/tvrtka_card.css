@@ -1,4 +1,4 @@
-/* Style for the card container */
+/* kontejner s karticama tvrtki */
 .tvrtka-card {
     border: 1px solid #ddd;
     padding: 20px;
@@ -8,39 +8,37 @@
     transition: transform 0.2s;
     width: 40vw;
     min-width: 250px;
+    margin: 15px;
 }
     
-/* Hover effect to slightly enlarge the card */
+/* povecaj malo karticu na hover */
 .tvrtka-card:hover {
     transform: scale(1.03);
 }
 
-/* Title for the company name */
 .tvrtka-card h3 {
     font-size: 1.2rem;
     color: #000000;
     margin: 0;
 }
 
-/* Each piece of text in the card */
 .tvrtka-card p {
     margin: 10px 0;
     color: #000000;
 }
 
-/* Style for the address and other location details */
 .tvrtka-location {
     font-size: 0.9rem;
     color: #000000;
 }
 
-/* Star rating styling */
+/* zvjezdice za rating */
 .star-rating {
-    color: #FFD700; /* Gold color for the stars */
+    color: #FFD700; /* zlatna boja */
     font-size: 1.2rem;
 }
 
-/* Button for any additional actions (if needed, like View on Maps) */
+/* gumb za kartu */
 .view-map-button {
     background-color: #333;
     color: white;

@@ -39,10 +39,9 @@ const PonudeSusjeda = () => {
     <div>
       <h2>Ponude susjeda</h2>
       
-      {/* Display list of users using SusjedCard */}
       <div className="susjed-card-container">
         {users.map((user) => (
-          <SusjedCard key={user.korisnik_id} user={user} /> // Load SusjedCard for each user
+          <SusjedCard key={user.korisnik_id} user={user} /> // pokazi za svakog usera karticu
         ))}
       </div>
     </div>
