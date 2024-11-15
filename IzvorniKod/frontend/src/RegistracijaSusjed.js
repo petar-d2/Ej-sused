@@ -1,25 +1,25 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
-
-const RegistracijaSusjed = ({user2}) => {
-
+const RegistracijaSusjed = ({ user2, setUser2 }) => {
     const navigate = useNavigate();
+    const { kvartovi, skills } = useContext(GlobalContext);
 
-    const { users, setUsers, kvartovi, skills } = useContext(GlobalContext);
+    const tekst = "Registracija";
+    const tekst2 = "Registracija";
 
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-    const tekst = user ? "Uredi profil" : "Registracija";
-    const tekst2 = user ? "Spremi" : "Registracija";
-
-    const [adresa, setAdresa] = useState(user && user.adresa ? user.adresa : "");
-    const [ime, setIme] = useState(user && user.ime ? user.ime : "");
-    const [prezime, setPrezime] = useState(user && user.prezime ? user.prezime : "");
-    const [kvart, setKvart] = useState(user && user.kvart ? user.kvart : "Trešnjevka");
-    const [userSkills, setUserSkills] = useState(user && user.skills ? user.skills : []);
+    // State for form fields
+    const [adresa, setAdresa] = useState("");
+    const [ime, setIme] = useState("");
+    const [prezime, setPrezime] = useState("");
+    const [kvart, setKvart] = useState("Trešnjevka");
+    const [userSkills, setUserSkills] = useState([]);
+    const [isVolonter, setIsVolonter] = useState(false); // Volunteer status
+    const [mjestoSusjed, setMjestoSusjed] = useState(""); // New field for location
+    const [opisSusjed, setOpisSusjed] = useState(""); // New field for description
 
     const handleSkillChange = (skill) => {
         setUserSkills((prevSkills) =>
@@ -29,38 +29,55 @@ const RegistracijaSusjed = ({user2}) => {
         );
     };
 
+    // Request for registration
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        const newUser={
+        // Check that fields are filled out
+        if (!ime || !prezime || !adresa || userSkills.length === 0) {
+            alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
+            return;
+        }
+        const skillsString = userSkills.join(", ")
+        // New user object for Susjed registration
+        const newUser = {
             email: user2.email,
             password: user2.password,
-            vrsta: user2.vrsta,
             adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
-            skills: userSkills,
-            bodovi: user && user.bodovi ? user.bodovi : null
+            skills: skillsString,
+            bodovi: 5,  // Fixed number of points
+            isVolonter: isVolonter,
+            mjestoSusjed: mjestoSusjed,
+            opisSusjed: opisSusjed,
+            isSusjed: true,  // Set isSusjed to true
+            isTvrtka: false,
+            isNadlezna: false,
+            ocjena: 0.0
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/registracija', newUser);
+            const response = await axios.post(window.location.href.replace(window.location.pathname,'/') + 'registracija/', newUser);
 
             alert("Uspješno ste registrirani!");
 
-            localStorage.setItem("currentUser", JSON.stringify(newUser));
-            localStorage.setItem("users", JSON.stringify([...users, newUser]));
-            setUsers([...users, newUser]);
+            // Clear fields after successful registration
             setAdresa('');
             setIme('');
             setPrezime('');
             setKvart('Trešnjevka');
-
-            navigate('/');
+            setUserSkills([]);
+            setIsVolonter(false);
+            setMjestoSusjed('Zagreb');
+            setOpisSusjed('');
+            navigate('/prijava');
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješna registracija. Pokušajte ponovo.");
+            setUser2({});
+            navigate('/registracija');
         }
     };
 
@@ -97,15 +114,44 @@ const RegistracijaSusjed = ({user2}) => {
                 </div>
                 <div className="form-group">
                     <label>Kvart:</label>
-                    <select id="options" 
-                    name="options" 
-                    value={kvart}
-                    onChange={(e) => setKvart(e.target.value)}
+                    <select 
+                        id="options" 
+                        name="options" 
+                        value={kvart}
+                        onChange={(e) => setKvart(e.target.value)}
                     >
                         {kvartovi.map((kvart, index) => (
                             <option key={index} value={kvart.name}>{kvart.name}</option>
                         ))}
                     </select>
+                </div>
+
+                {/* <div className="form-group">
+                    <label>Mjesto:</label>
+                    <input 
+                        type="text" 
+                        value={mjestoSusjed} 
+                        onChange={(e) => setMjestoSusjed(e.target.value)} 
+                        required 
+                    />
+                </div> */}
+                <div className="form-group">
+                    <label>Opis Susjeda:</label>
+                    <textarea 
+                        value={opisSusjed} 
+                        onChange={(e) => setOpisSusjed(e.target.value)} 
+                        placeholder="Unesite opis (opcionalno)"
+                        rows="6"      // Increase the height with more rows
+                        cols="50"     // Increase the width with more columns
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Volonter:</label>
+                    <input 
+                        type="checkbox" 
+                        checked={isVolonter} 
+                        onChange={(e) => setIsVolonter(e.target.checked)} 
+                    />
                 </div>
                 <div className="form-group-skills">
                     <label>Vještine:</label>

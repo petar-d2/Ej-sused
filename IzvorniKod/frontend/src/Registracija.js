@@ -1,10 +1,9 @@
-import React, { useState,useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import { jwtDecode } from 'jwt-decode';
 import RegistracijaVrsta from './RegistracijaVrsta';
-import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
+import GoogleButton from "react-google-button";
 
 const Registracija = () => {
     const navigate = useNavigate();
@@ -12,61 +11,41 @@ const Registracija = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user2, setUser2] = useState({});
-
-    const { users } = useContext(GlobalContext);
-
-    /*
-    const handleSignUpGoogle = (response) => {
-        var userObject=jwtDecode(response.credential);
-        const newUser={
-            email: userObject.email,
-            authProvider: 'google'
-        };
-
-        const existingUser = users.find((user) => user.email === newUser.email);
-        if (existingUser) {
-            alert("Korisnik s ovim mailom već postoji.");
-        } else {
-            setUser2(newUser);
-        }
-    };
-
-    useEffect(() => {
-        // global google
-        google.accounts.id.initialize({
+    
+    const onGoogleLoginSuccess = () => {
+        const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+        
+        const scope = [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile"
+        ].join(' ');
+        
+        const params = {
+            response_type: "code",
             client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
-            callback: handleSignUpGoogle
-        });
-
-        google.accounts.id.renderButton(
-            document.getElementById('GoogleDiv'),
-            {theme: "outline", size: "large"}
-        );
-
-        const user = JSON.parse(localStorage.getItem("currentUser"));
-        if (user) {
-            navigate('/');
-        }
-
-    },[navigate]); */
-
-
-
+            redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
+            prompt: "select_account",
+            access_type: "offline",
+            scope
+        };
+        
+        const urlParams = new URLSearchParams(params).toString();
+        window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
+    };
+    
     const handleSignup = async (e) => {
         e.preventDefault();
-
         if (!email || !password || !confirmPassword) {
             alert("Molimo unesite i email i lozinku.");
             return;
         }
-
         if (password !== confirmPassword) {
             alert("Lozinke se ne podudaraju. Molimo pokušajte ponovno.");
             return;
         }
-
+        /*
         try {
-            await axios.post('http://localhost:8000/registracija/', {
+            await axios.post(window.location.href.replace(window.location.pathname,'/') + 'registracija/', {
                 email,
                 password,
             });
@@ -77,10 +56,11 @@ const Registracija = () => {
           alert("Neuspješna registracija!");
           return;
         }
+        */
+        setUser2({email: email, password: password});
     };
 
-    //const user = JSON.parse(localStorage.getItem("currentUser"));
-
+    //ako nije upisan mail i password
     if (! (user2 && user2.email)){
         return (
             <div className="login_signup-container">
@@ -115,7 +95,7 @@ const Registracija = () => {
                     </div>
                     <button className="button_1" type="submit">Registracija</button>
                 </form>
-                <div id='GoogleDiv'></div>
+                <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
                 <div className="horizontalna_crta" style={{ 
                     height: '2px', 
                     backgroundColor: 'black',
@@ -130,6 +110,7 @@ const Registracija = () => {
             </div>
         );
     }
+    //kad se upise mail i password
     else {
         return (
             <RegistracijaVrsta user2={user2} setUser2={setUser2}/>

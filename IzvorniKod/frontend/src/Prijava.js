@@ -1,73 +1,52 @@
-import React, { useState,useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import { jwtDecode } from 'jwt-decode';
-import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
+import GoogleButton from "react-google-button";
 
 const Prijava = () => {
     const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const { users } = useContext(GlobalContext);
-
-    /*const handleLogInGoogle = (response) => {
-        var userObject=jwtDecode(response.credential);
-        const loggedUser={
-            email: userObject.email,
-        };
-
-        const existingUser = users.find(
-            (user) => user.email === loggedUser.email && user.authProvider === 'google'
-        );
+    
+    const onGoogleLoginSuccess = () => {
+        const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
         
-        if (existingUser){
-            localStorage.setItem("currentUser", JSON.stringify(existingUser));
-            navigate('/');
-        }
-        else {
-            alert('Nepostojeći korisnički račun. Morate se prvo registrirati.');
-            setPassword('');
-        }
+        const scope = [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile"
+        ].join(' ');
+        
+        const params = {
+            response_type: "code",
+            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
+            redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
+            prompt: "select_account",
+            access_type: "offline",
+            scope
+        };
+        
+        const urlParams = new URLSearchParams(params).toString();
+        window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
     };
 
-    useEffect(() => {
-        // global google
-        google.accounts.id.initialize({
-            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
-            callback: handleLogInGoogle
-        });
-
-        google.accounts.id.renderButton(
-            document.getElementById('GoogleDiv'),
-            {theme: "outline", size: "large"}
-        );
-
-        const user = JSON.parse(localStorage.getItem("currentUser"));
-        if (user) {
-            navigate('/');
-        }
-
-    },[navigate]);*/
-
+    //ako je prijava uspjesna spremi tokene i posalji na pocetnu stranicu
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('http://localhost:8000/prijava/', {
+          const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'prijava/', {
             email,
             password,
           });
-          //localStorage.setItem('token', response.data.access);
-          navigate('/home');
+          localStorage.setItem('accessToken', response.data.access);
+          localStorage.setItem('refreshToken', response.data.refresh);
+          navigate('/');
         } catch (error) {
           console.error('Login failed:', error.response.data);
           alert("Neuspješna prijava!");
           return;
         }
     };
-
-
 
     return (
         <div className="login_signup-container">
@@ -93,7 +72,7 @@ const Prijava = () => {
                 </div>
                 <button className="button_1" type="submit">Prijava</button>
             </form>
-            <div id='GoogleDiv'></div>
+            <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
             <div className="horizontalna_crta" style={{ 
                 height: '2px', 
                 backgroundColor: 'black',

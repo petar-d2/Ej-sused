@@ -27,7 +27,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="django-insecure-#p*uuvv_ye90q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -147,10 +146,11 @@ STATICFILES_DIRS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True 
+
 AUTH_USER_MODEL = 'api.Korisnik'
 
 SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
      'ROTATE_REFRESH_TOKENS': True,
      'BLACKLIST_AFTER_ROTATION': True
@@ -159,3 +159,7 @@ SIMPLE_JWT = {
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+GOOGLE_CLIENT_ID = '696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com'
+
+GOOGLE_CLIENT_SECRET = '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'

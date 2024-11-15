@@ -1,36 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-import uuid
 
 # Create your models here.
 
 class Korisnik(AbstractUser):
     isTvrtka = models.BooleanField(default=False)
+    isSusjed = models.BooleanField(default=True)
+    isNadlezna = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
 
-class Osoba(models.Model):
-    ime = models.CharField(max_length=255)
-    prezime = models.CharField(max_length=255)
-    isNadlezna = models.BooleanField(default=False)
-
-    sifOsoba = models.OneToOneField(
-        Korisnik,
-        on_delete=models.CASCADE,
-        primary_key=True,
-        related_name="osoba"
-    )
-     
-    def __str__(self):
-        return f"{self.ime} {self.prezime}"
-     
 class Tvrtka(models.Model):
     nazivTvrtka = models.CharField(max_length=255)
     adresaTvrtka = models.CharField(max_length=255)
     kvartTvrtka = models.CharField(max_length=255)
     mjestoTvrtka = models.CharField(max_length=255)
     opisTvrtka = models.CharField(max_length=4095, null=True)
+    ocjena = models.FloatField(default=0.0)
 
     sifTvrtka = models.OneToOneField(
         Korisnik,
@@ -48,26 +35,30 @@ class Susjed(models.Model):
     mjestoSusjed = models.CharField(max_length=255)
     kvartSusjed = models.CharField(max_length=255)
     opisSusjed = models.CharField(max_length=4095, null=True)
-
+    ime = models.CharField(max_length=255)
+    prezime = models.CharField(max_length=255)
+    ocjena = models.FloatField(default=0.0)
+    skills = models.TextField(default="")
+    
     sifSusjed = models.OneToOneField(
-        Osoba,
+        Korisnik,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="susjed_osoba"
+        related_name="susjed"
     )
 
     def __str__(self):
-        return self.sifSusjed
+        return f"{self.ime} {self.prezime}"
 
 
 class Nadlezna(models.Model):
     isAdmin = models.BooleanField(default=False)
 
     sifNadlezna = models.OneToOneField(
-        Osoba,
+        Korisnik,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="nadlezna_osoba"
+        related_name="nadlezna"
     )
 
     def __str__(self):
