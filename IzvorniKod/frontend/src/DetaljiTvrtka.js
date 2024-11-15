@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import './styles/detalji_tvrtka.css';
 
 const DetaljiTvrtka = () => {
@@ -9,11 +9,10 @@ const DetaljiTvrtka = () => {
     const [tvrtka, setTvrtka] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch tvrtka details with ID
+    // Fetchaj podatke o tvrtci preko id-a
     useEffect(() => {
         const fetchTvrtkaDetails = async () => {
             try {
-                // Adjust API URL to correctly fetch tvrtka details
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `tvrtka/${id}/`;
                 const response = await axios.get(apiUrl); 
                 setTvrtka(response.data);
@@ -34,11 +33,11 @@ const DetaljiTvrtka = () => {
         window.open(mapsUrl, '_blank');
     };
 
-    // Function to generate star rating based on `ocjena`
+    // zvjezdice ovisno o ratingu
     const renderStars = () => {
         const totalStars = 5;
-        const fullStars = Math.floor(tvrtka.ocjena); // Full stars based on ocjena
-        const halfStar = tvrtka.ocjena % 1 >= 0.5; // Check if there's a half star
+        const fullStars = Math.floor(tvrtka.ocjena); // cijele zvjezdice
+        const halfStar = tvrtka.ocjena % 1 >= 0.5; // pola zvjezdice ako ima
         const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
 
         return (

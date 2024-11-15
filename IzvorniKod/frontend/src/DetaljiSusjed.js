@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import './styles/detalji_susjed.css';
 
 const DetaljiSusjed = () => {
@@ -9,11 +9,10 @@ const DetaljiSusjed = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch user details with ID
+    // Fetchaj podatke o korisniku preko id-a
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                // Adjust API URL to correctly fetch user details
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `susjed/${id}/`;
                 const response = await axios.get(apiUrl); 
                 setUser(response.data);
@@ -79,7 +78,7 @@ const DetaljiSusjed = () => {
             <p><strong>Broj bodova:</strong> {user.bodovi || 'N/A'}</p>
             <p><strong>Opis:</strong> {user.opis || 'N/A'}</p>
             <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.ocjena})</p>
-            <button onClick={() => navigate(-1)}>Povratak</button> {/* Navigate back */}
+            <button onClick={() => navigate(-1)}>Povratak</button> {/* vrati se nazad */}
             
         </div>
     );

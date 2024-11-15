@@ -11,15 +11,15 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
-    // State for form fields
+    // stanja za polja u formu
     const [adresa, setAdresa] = useState("");
     const [ime, setIme] = useState("");
     const [prezime, setPrezime] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
     const [userSkills, setUserSkills] = useState([]);
-    const [isVolonter, setIsVolonter] = useState(false); // Volunteer status
-    const [mjestoSusjed, setMjestoSusjed] = useState("Zagreb"); // New field for location
-    const [opisSusjed, setOpisSusjed] = useState(""); // New field for description
+    const [isVolonter, setIsVolonter] = useState(false); // je li volonter
+    const [mjestoSusjed, setMjestoSusjed] = useState("Zagreb");
+    const [opisSusjed, setOpisSusjed] = useState("");
 
     const handleSkillChange = (skill) => {
         setUserSkills((prevSkills) =>
@@ -29,17 +29,17 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         );
     };
 
-    // Request for registration
+    // signup zahtjev
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        // Check that fields are filled out
+        // provjera polja
         if (!ime || !prezime || !adresa || userSkills.length === 0) {
             alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
             return;
         }
         const skillsString = userSkills.join(", ")
-        // New user object for Susjed registration
+        // objekt user
         const newUser = {
             email: user2.email,
             password: user2.password,
@@ -48,11 +48,11 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
             ime: ime,
             prezime: prezime,
             skills: skillsString,
-            bodovi: 5,  // Fixed number of points
+            bodovi: 5,  // fiksni broj bodova
             isVolonter: isVolonter,
             mjestoSusjed: mjestoSusjed,
             opisSusjed: opisSusjed,
-            isSusjed: true,  // Set isSusjed to true
+            isSusjed: true,
             isTvrtka: false,
             isNadlezna: false,
             ocjena: 0.0
@@ -63,7 +63,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
 
             alert("Uspješno ste registrirani!");
 
-            // Clear fields after successful registration
+            // ocisti polja
             setAdresa('');
             setIme('');
             setPrezime('');
@@ -141,8 +141,8 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
                         placeholder="Unesite opis (opcionalno)"
-                        rows="6"      // Increase the height with more rows
-                        cols="50"     // Increase the width with more columns
+                        rows="6"
+                        cols="50"
                     />
                 </div>
                 <div className="form-group">

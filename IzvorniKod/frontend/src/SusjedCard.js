@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles/SusjedCard.css';
+import './styles/susjed_card.css';
 
 const SusjedCard = ({ user }) => {
     const navigate = useNavigate();
@@ -20,11 +20,11 @@ const SusjedCard = ({ user }) => {
    
     const skillsArray = user.skills ? user.skills.split(',').map(skill => skill.trim()) : [];
 
-    // Function to generate star rating based on `ocjena`
+    // zvjezdice na temelju ocjene
     const renderStars = () => {
         const totalStars = 5;
-        const fullStars = Math.floor(user.ocjena); // Full stars based on ocjena
-        const halfStar = user.ocjena % 1 >= 0.5; // Check if there's a half star
+        const fullStars = Math.floor(user.ocjena); // cijele zvjezdice
+        const halfStar = user.ocjena % 1 >= 0.5; // pola zvjezdice ako je ima
         const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
 
         return (

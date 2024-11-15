@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './styles/tvrtke.css'; // Assuming this CSS is already created
+import './styles/tvrtke.css';
 import TvrtkaCard from './TvrtkaCard';
 import axios from 'axios';
 
 const Tvrtke = () => {
-  const [users, setTvrtke] = useState([]); // State for 
-  const [loading, setLoading] = useState(true); // Loading state
+  const [users, setTvrtke] = useState([]);
+  const [loading, setLoading] = useState(true); // ucitavanje da/ne
+
   //dohvati popis tvrtki
   const fetchData = async () => {
     try {
@@ -16,7 +17,7 @@ const Tvrtke = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setLoading(false); // Set loading to false when data is fetched
+      setLoading(false); // kad se ucitalo
     }
   };
 
@@ -36,10 +37,9 @@ const Tvrtke = () => {
     <div>
       <h2>Tvrtke</h2>
       
-      {/* Display list of users using SusjedCard */}
       <div className="susjed-card-container">
         {users.map((tvrtka) => (
-          <TvrtkaCard key={tvrtka.korisnik_id} tvrtka={tvrtka} /> // Load SusjedCard for each user
+          <TvrtkaCard key={tvrtka.korisnik_id} tvrtka={tvrtka} /> // za svaku tvrtku prikazi karticu
         ))}
       </div>
     </div>

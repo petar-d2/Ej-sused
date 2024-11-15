@@ -1,5 +1,6 @@
+/* zvjezdice za rating */
 .star-rating {
-    color: #FFD700; /* Gold color for the stars */
+    color: #FFD700;
     font-size: 1.2rem;
 }
 
@@ -12,6 +13,7 @@
     transition: transform 0.2s;
     width: 40vw;
     min-width: 250px;
+    margin: 15px;
 }
 
 .susjed-card:hover {

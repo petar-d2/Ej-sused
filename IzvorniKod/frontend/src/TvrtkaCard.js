@@ -10,11 +10,11 @@ const TvrtkaCard = ({ tvrtka }) => {
         navigate(`/tvrtka/${tvrtkaId}`);
     };
 
-    // Function to generate star rating based on `ocjena`
+    // zvjezdice na temelju ocjene
     const renderStars = () => {
         const totalStars = 5;
-        const fullStars = Math.floor(tvrtka.ocjena); // Full stars based on ocjena
-        const halfStar = tvrtka.ocjena % 1 >= 0.5; // Check if there's a half star
+        const fullStars = Math.floor(tvrtka.ocjena); // cijele zvjezdice
+        const halfStar = tvrtka.ocjena % 1 >= 0.5; // pola zvjezdice ako je ima
         const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
 
         return (
