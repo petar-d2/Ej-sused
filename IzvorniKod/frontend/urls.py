@@ -13,5 +13,6 @@ urlpatterns = [
     path("home/", homeView.as_view()),
     path("odjava/", odjava.as_view(), name="odjava"),
     path("google-login/", googleLogin.as_view(), name="google_login"),
+    path("search/", searchSortView.as_view(), name='search'),
     path("", main),
 ]

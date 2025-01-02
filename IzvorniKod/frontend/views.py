@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
 from django.shortcuts import render, redirect
+from django.db.models import Q
 
 
 # Render the main page
@@ -203,6 +204,65 @@ class detaljiTvrtkaView(APIView):
         except Tvrtka.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
 
+
+
+
+class searchSortView(APIView):
+    modelMapping = {
+        'susjed': {
+            'model': Susjed,
+            'serializer': SusjedSerializer,
+            'fields': ['ime', 'prezime', 'skills','ocjena']
+        },
+        'tvrtka': {
+            'model': Tvrtka,
+            'serializer': TvrtkaSerializer,
+            'fields': ['nazivTvrtka', 'opisTvrtka']
+        },
+    }
+    def get(self, request):
+        #string koji se pretrazuje
+        searchQuery = request.GET.get('search', None)
+        #iz koje tablice se pretrazuje
+        modelName = request.GET.get('model', 'susjed')
+        # po cemu se sortira
+        sortBy = request.GET.get('sort_by', None)
+         #primjer url-a: http://localhost:8000/search/?search=horvat&model=susjed&sort_by=ocjena
+
+        if modelName not in self.modelMapping:
+            return Response(
+                {"error": f"Invalid model '{modelName}'."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        modelStruct = self.modelMapping[modelName]
+        model = modelStruct['model']
+        serializerClass = modelStruct['serializer']
+        fields = modelStruct['fields']
+
+        queryset = model.objects.all()
+        if searchQuery:
+            query = Q()
+            words = searchQuery.split()  
+
+            
+            for word in words:
+                word_query = Q()
+                for field in fields:
+                    word_query |= Q(**{f"{field}__icontains": word})
+                query &= word_query 
+
+            queryset = queryset.filter(query)
+
+        if sortBy and sortBy in fields:
+                queryset = queryset.order_by(f'-{sortBy}')
+
+        serializer = serializerClass(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 class homeView(APIView):
     def get(self, request):
         return render(request, "index.html")
+
