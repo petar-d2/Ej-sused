@@ -43,13 +43,14 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/napravi-ponudu" element={<NapraviPonudu />} />
             <Route path="/tvrtke" element={<Tvrtke />} />
-            <Route path="/dogadaji" element={<Home />} />
+            <Route path="/dogadaji" element={<Dogadaji />} />
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija />} />
             <Route path="/registracija-vrsta" element={<RegistracijaVrsta />} />
             <Route path="/uredi-profil" element={<UrediProfil />} />
             <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
             <Route path="/susjed/:id" element={<DetaljiSusjed />} />
+            <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
             <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
         </Routes>
       </div>

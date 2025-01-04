@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Korisnik, Susjed, Tvrtka
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -260,7 +260,61 @@ class searchSortView(APIView):
         serializer = serializerClass(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+# API for creating a new event (Dogadaj)
+class createDogadajView(APIView):
+    def post(self, request):
+        # Retrieve fields from the request data
+        kadZadano = request.data.get('kadZadano')
+        sifVolonter_id = request.data.get('sifVolonter')  # Primary key of the associated Komentar
+        datumDogadaj = request.data.get('datumDogadaj')
+        vrijemeDogadaj = request.data.get('vrijemeDogadaj')
+        nazivDogadaj = request.data.get('nazivDogadaj')
+        adresaDogadaj = request.data.get('adresaDogadaj')
+        statusDogadaj = request.data.get('statusDogadaj')
+        vrstaDogadaj = request.data.get('vrstaDogadaj')
+        opisDogadaj = request.data.get('opisDogadaj', None)  # Optional field
+        nagradaBod = request.data.get('nagradaBod')
 
+        # Validate required fields
+        if not all([kadZadano, sifVolonter_id, datumDogadaj, vrijemeDogadaj, nazivDogadaj, adresaDogadaj, statusDogadaj, vrstaDogadaj, nagradaBod]):
+            return Response({"error": "All fields are required except 'opisDogadaj'."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve the related Komentar instance
+            sifVolonter = Komentar.objects.get(id=sifVolonter_id)
+
+            # Create the Dogadaj instance
+            dogadaj = Dogadaj.objects.create(
+                kadZadano=kadZadano,
+                sifVolonter=sifVolonter,
+                datumDogadaj=datumDogadaj,
+                vrijemeDogadaj=vrijemeDogadaj,
+                nazivDogadaj=nazivDogadaj,
+                adresaDogadaj=adresaDogadaj,
+                statusDogadaj=statusDogadaj,
+                vrstaDogadaj=vrstaDogadaj,
+                opisDogadaj=opisDogadaj,
+                nagradaBod=nagradaBod
+            )
+
+            dogadaj.save()
+
+            return Response({"message": "Event created successfully", "dogadaj_id": dogadaj.id}, status=status.HTTP_201_CREATED)
+
+        except Komentar.DoesNotExist:
+            return Response({"error": "Komentar with the given ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class dogadajiListView(APIView):
+    def get(self, request):
+        # Fetch all Dogadaj instances from the database
+        dogadaji = Dogadaj.objects.all()
+
+        # Serialize the Dogadaj instances
+        serializer = DogadajSerializer(dogadaji, many=True)
+
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class homeView(APIView):
     def get(self, request):

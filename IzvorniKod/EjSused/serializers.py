@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Susjed, Tvrtka
+from api.models import Dogadaj, Susjed, Tvrtka
 
 class TvrtkaSerializer(serializers.ModelSerializer):
     
@@ -22,3 +22,15 @@ class SusjedSerializer(serializers.ModelSerializer):
         model = Susjed
         fields = ['korisnik_id', 'ime', 'prezime', 'skills', 'ocjena', 'email', 'bodovi', 'isVolonter', 'mjestoSusjed', 'kvartSusjed', 'opisSusjed']
         depth = 1  # Optional: This can help with nested related fields (like 'email')
+
+class DogadajSerializer(serializers.ModelSerializer):
+    # Assuming 'sifVolonter' is a foreign key to 'Komentar' model
+    volonter_email = serializers.CharField(source='sifVolonter.email', read_only=True)
+    volonter_id = serializers.IntegerField(source='sifVolonter.id', read_only=True)
+
+    class Meta:
+        model = Dogadaj
+        fields = ['id', 'kadZadano', 'sifVolonter', 'volonter_email', 'volonter_id', 
+                  'datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'adresaDogadaj', 
+                  'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
+        depth = 1  # This can be useful for nested relationships if you want to include related model fields
