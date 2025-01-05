@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import './styles/detalji_susjed.css';
 
 const DetaljiSusjed = () => {
@@ -9,11 +9,10 @@ const DetaljiSusjed = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch user details with ID
+    // Fetchaj podatke o korisniku preko id-a
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                // Adjust API URL to correctly fetch user details
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `susjed/${id}/`;
                 const response = await axios.get(apiUrl); 
                 setUser(response.data);
@@ -29,6 +28,21 @@ const DetaljiSusjed = () => {
     const handleViewOnMapsClick = () => {
         alert("POLAKO, NISMO TOLIKO BAŠ BRZI")
     }
+    const renderStars = () => {
+        const totalStars = 5;
+        const fullStars = Math.floor(user.ocjena);
+        const halfStar = user.ocjena % 1 >= 0.5;
+        const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
+
+        return (
+            <>
+                {'★'.repeat(fullStars)}
+                {halfStar && '☆'}
+                {'☆'.repeat(emptyStars)}
+            </>
+        );
+    };
+
     /*
     const handleViewOnMapsClick = () => {
         const location = `${user.mjestoSusjed}, ${user.kvartSusjed}`;
@@ -38,28 +52,33 @@ const DetaljiSusjed = () => {
     };
     */
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="loading-container">
+                <div className="spinner"></div>
+            </div>
+        );
     }
 
     if (!user) {
-        return <div>User not found.</div>;
+        return (
+            <div className="error-message">
+                <h3>Susjed nije pronađen</h3>
+                <p>Nismo uspjeli pronaći tog susjeda! Molimo pokušajte opet!</p>
+                <button onClick={() => navigate('/')}>Povratak</button> 
+            </div>
+        );
     }
-
     return (
         <div className="user-details-container">
             <h2>Detalji korisnika</h2>
             <p><strong>Ime:</strong> {user.ime}</p>
             <p><strong>Prezime:</strong> {user.prezime}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Adresa:</strong> {user.adresa}</p>
             <p><strong>Kvart:</strong> {user.kvartSusjed}</p>
             <p><strong>Broj bodova:</strong> {user.bodovi || 'N/A'}</p>
             <p><strong>Opis:</strong> {user.opis || 'N/A'}</p>
-
-            <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
-                View On Map
-            </button>
-            <button onClick={() => navigate(-1)}>Back</button> {/* Navigate back */}
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.ocjena})</p>
+            <button onClick={() => navigate(-1)}>Povratak</button> {/* vrati se nazad */}
             
         </div>
     );

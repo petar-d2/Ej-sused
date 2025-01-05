@@ -26,8 +26,16 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="django-insecure-#p*uuvv_ye90q
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+RENDER = os.environ.get('RENDER')
+if RENDER:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
+
+BASE_URL = "http://localhost:8000"
+RENDER_EXTERNAL_URL = os.environ.get('RENDER_EXTERNAL_URL')
+if RENDER_EXTERNAL_URL:
+    BASE_URL = RENDER_EXTERNAL_URL
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -47,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "rest_framework_simplejwt.token_blacklist",
+    "django_extensions"
 ]
 
 REST_FRAMEWORK = {
@@ -98,7 +107,7 @@ WSGI_APPLICATION = "EjSused.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://test:ykmKlaMbpcVBoMjuFtS8Wh019eHRXINF@dpg-csmur81u0jms73ftq520-a.frankfurt-postgres.render.com/ejsused_baza",
+        default="postgresql://susjed_user:qh9tyixwT8WhmzU2eo9YIMCIlWkb9lXb@dpg-ctn9tttds78s73c2jd90-a.frankfurt-postgres.render.com/susjed",
         conn_max_age=600    
     )
 }
@@ -160,6 +169,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-GOOGLE_CLIENT_ID = '696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com'
+GOOGLE_CLIENT_ID = '371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com'
 
-GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_CLIENT_SECRET = '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'

@@ -122,7 +122,7 @@ const UrediProfilTvrtka = () => {
                     />
                 </div>*/}
                 <div className="form-group">
-                    <label>Opis Tvrtke:</label>
+                    <label>Opis tvrtke:</label>
                     <textarea 
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 

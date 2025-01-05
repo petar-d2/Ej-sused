@@ -11,12 +11,13 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
+    // stanja za polja u formu
     const [adresa, setAdresa] = useState("");
     const [ime, setIme] = useState("");
     const [prezime, setPrezime] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
     const [userSkills, setUserSkills] = useState([]);
-    const [isVolonter, setIsVolonter] = useState(false);
+    const [isVolonter, setIsVolonter] = useState(false); // je li volonter
     const [mjestoSusjed, setMjestoSusjed] = useState("Zagreb");
     const [opisSusjed, setOpisSusjed] = useState("");
 
@@ -28,14 +29,17 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         );
     };
 
+    // signup zahtjev
     const handleSignup = async (e) => {
         e.preventDefault();
 
+        // provjera polja
         if (!ime || !prezime || !adresa || userSkills.length === 0) {
             alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
             return;
         }
-        const skillsString = userSkills.join(", ");
+        const skillsString = userSkills.join(", ")
+        // objekt user
         const newUser = {
             email: user2.email,
             password: user2.password,
@@ -44,7 +48,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
             ime: ime,
             prezime: prezime,
             skills: skillsString,
-            bodovi: 5,  // Fixed number of points
+            bodovi: 5,  // fiksni broj bodova
             isVolonter: isVolonter,
             mjestoSusjed: mjestoSusjed,
             opisSusjed: opisSusjed,
@@ -59,6 +63,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
 
             alert("Uspješno ste registrirani!");
 
+            // ocisti polja
             setAdresa('');
             setIme('');
             setPrezime('');
@@ -136,6 +141,8 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
                         placeholder="Unesite opis (opcionalno)"
+                        rows="6"
+                        cols="50"
                     />
                 </div>
                 <div className="form-group">

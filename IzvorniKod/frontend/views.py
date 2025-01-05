@@ -1,14 +1,15 @@
-from EjSused.serializers import SusjedSerializer
+from EjSused.serializers import SusjedSerializer, TvrtkaSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Korisnik, Susjed, Tvrtka
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
 from django.shortcuts import render, redirect
+from django.db.models import Q
 
 
 # Render the main page
@@ -125,7 +126,7 @@ class googleLogin(APIView):
             'code': code,
             'client_id': settings.GOOGLE_CLIENT_ID,
             'client_secret': settings.GOOGLE_CLIENT_SECRET,
-            'redirect_uri': "http://localhost:8000/google-login/",
+            'redirect_uri': settings.BASE_URL + "/google-login/",
             'grant_type': 'authorization_code'
         })
         if not response.ok:
@@ -158,12 +159,22 @@ class googleLogin(APIView):
 class ponudeSusjedaListView(APIView):
     def get(self, request):
         #Fetch from database
-        susjedi = Susjed.objects.all()  
-        print(len(susjedi))
+        susjedi = Susjed.objects.all()
         #Serijalization of users
         serializer = SusjedSerializer(susjedi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class tvrtkeListView(APIView):
+    def get(self, request):
+        # Fetch all Tvrtka instances from the database
+        tvrtke = Tvrtka.objects.all()
+        
+        # Serialize the Tvrtka instances
+        serializer = TvrtkaSerializer(tvrtke, many=True)
+        
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 # Logout view - blacklist the refresh token
 class odjava(APIView):
     def post(self, request):
@@ -184,6 +195,128 @@ class detaljiSusjedView(APIView):
         except Susjed.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
 
+class detaljiTvrtkaView(APIView):
+    def get(self, request, sifTvrtka):
+        try:
+            user = Tvrtka.objects.get(sifTvrtka=sifTvrtka)
+            serializer = TvrtkaSerializer(user)
+            return Response(serializer.data)
+        except Tvrtka.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)
+
+
+
+
+class searchSortView(APIView):
+    modelMapping = {
+        'susjed': {
+            'model': Susjed,
+            'serializer': SusjedSerializer,
+            'fields': ['ime', 'prezime', 'skills','ocjena']
+        },
+        'tvrtka': {
+            'model': Tvrtka,
+            'serializer': TvrtkaSerializer,
+            'fields': ['nazivTvrtka', 'opisTvrtka']
+        },
+    }
+    def get(self, request):
+        #string koji se pretrazuje
+        searchQuery = request.GET.get('search', None)
+        #iz koje tablice se pretrazuje
+        modelName = request.GET.get('model', 'susjed')
+        # po cemu se sortira
+        sortBy = request.GET.get('sort_by', None)
+         #primjer url-a: http://localhost:8000/search/?search=horvat&model=susjed&sort_by=ocjena
+
+        if modelName not in self.modelMapping:
+            return Response(
+                {"error": f"Invalid model '{modelName}'."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        modelStruct = self.modelMapping[modelName]
+        model = modelStruct['model']
+        serializerClass = modelStruct['serializer']
+        fields = modelStruct['fields']
+
+        queryset = model.objects.all()
+        if searchQuery:
+            query = Q()
+            words = searchQuery.split()  
+
+            
+            for word in words:
+                word_query = Q()
+                for field in fields:
+                    word_query |= Q(**{f"{field}__icontains": word})
+                query &= word_query 
+
+            queryset = queryset.filter(query)
+
+        if sortBy and sortBy in fields:
+                queryset = queryset.order_by(f'-{sortBy}')
+
+        serializer = serializerClass(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# API for creating a new event (Dogadaj)
+class createDogadajView(APIView):
+    def post(self, request):
+        # Retrieve fields from the request data
+        kadZadano = request.data.get('kadZadano')
+        sifVolonter_id = request.data.get('sifVolonter')  # Primary key of the associated Komentar
+        datumDogadaj = request.data.get('datumDogadaj')
+        vrijemeDogadaj = request.data.get('vrijemeDogadaj')
+        nazivDogadaj = request.data.get('nazivDogadaj')
+        adresaDogadaj = request.data.get('adresaDogadaj')
+        statusDogadaj = request.data.get('statusDogadaj')
+        vrstaDogadaj = request.data.get('vrstaDogadaj')
+        opisDogadaj = request.data.get('opisDogadaj', None)  # Optional field
+        nagradaBod = request.data.get('nagradaBod')
+
+        # Validate required fields
+        if not all([kadZadano, sifVolonter_id, datumDogadaj, vrijemeDogadaj, nazivDogadaj, adresaDogadaj, statusDogadaj, vrstaDogadaj, nagradaBod]):
+            return Response({"error": "All fields are required except 'opisDogadaj'."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve the related Komentar instance
+            sifVolonter = Komentar.objects.get(id=sifVolonter_id)
+
+            # Create the Dogadaj instance
+            dogadaj = Dogadaj.objects.create(
+                kadZadano=kadZadano,
+                sifVolonter=sifVolonter,
+                datumDogadaj=datumDogadaj,
+                vrijemeDogadaj=vrijemeDogadaj,
+                nazivDogadaj=nazivDogadaj,
+                adresaDogadaj=adresaDogadaj,
+                statusDogadaj=statusDogadaj,
+                vrstaDogadaj=vrstaDogadaj,
+                opisDogadaj=opisDogadaj,
+                nagradaBod=nagradaBod
+            )
+
+            dogadaj.save()
+
+            return Response({"message": "Event created successfully", "dogadaj_id": dogadaj.id}, status=status.HTTP_201_CREATED)
+
+        except Komentar.DoesNotExist:
+            return Response({"error": "Komentar with the given ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class dogadajiListView(APIView):
+    def get(self, request):
+        # Fetch all Dogadaj instances from the database
+        dogadaji = Dogadaj.objects.all()
+
+        # Serialize the Dogadaj instances
+        serializer = DogadajSerializer(dogadaji, many=True)
+
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class homeView(APIView):
     def get(self, request):
         return render(request, "index.html")
+

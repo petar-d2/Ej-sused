@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import './styles//napraviPonudu.css';
+import './styles//napravi_ponudu.css';
 
 const NapraviPonudu = () => {
     const navigate = useNavigate();

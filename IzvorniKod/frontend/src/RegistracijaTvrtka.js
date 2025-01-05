@@ -11,12 +11,14 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     const tekst = "Registracija";
     const tekst2 = "Registracija";
 
+    // stanja za polja u formu
     const [adresa, setAdresa] = useState("");
     const [naziv, setNaziv] = useState("");
     const [kvart, setKvart] = useState("Trešnjevka");
     const [mjesto, setMjesto] = useState("Zagreb");
     const [opis, setOpis] = useState("");
 
+    // signup zahtjev
     const handleSignup = async (e) => {
         e.preventDefault();
 
@@ -24,12 +26,12 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
             email: user2.email,
             password: user2.password,
             isSusjed: false,
-            isTvrtka: true,
+            isTvrtka: true, 
             isNadlezna: false,
             adresa: adresa,
             naziv: naziv,
             kvart: kvart,
-            mjestoTvrtka: mjesto,
+            mjestoTvrtka: mjesto, //zasad samo Zagreb
             opisTvrtka: opis,
             ocjena: 0.0
         };
@@ -105,6 +107,8 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 
                         placeholder="Unesite opis tvrtke (opcionalno)"
+                        rows="5"
+                        cols="50"
                     />
                 </div>
                 <button className="button_1" type="submit">{tekst2}</button>

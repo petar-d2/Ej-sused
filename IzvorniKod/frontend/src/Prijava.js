@@ -19,13 +19,12 @@ const Prijava = () => {
         
         const params = {
             response_type: "code",
-            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
+            client_id: "371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com",
             redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
             prompt: "select_account",
             access_type: "offline",
             scope
         };
-        
         const urlParams = new URLSearchParams(params).toString();
         window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
     };

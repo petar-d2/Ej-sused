@@ -11,6 +11,8 @@ import DetaljiSusjed from './DetaljiSusjed';
 import { GlobalProvider } from './GlobalContext';
 import PonudeSusjeda from './PonudeSusjeda';
 import RegistracijaVrsta from './RegistracijaVrsta';
+import Tvrtke from './Tvrtke';
+import DetaljiTvrtka from './DetaljiTvrtka';
 
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
@@ -40,13 +42,16 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/napravi-ponudu" element={<NapraviPonudu />} />
-            <Route path="/dogadaji" element={<Home />} />
+            <Route path="/tvrtke" element={<Tvrtke />} />
+            <Route path="/dogadaji" element={<Dogadaji />} />
             <Route path="/prijava" element={<Prijava/>} />
             <Route path="/registracija" element={<Registracija />} />
             <Route path="/registracija-vrsta" element={<RegistracijaVrsta />} />
             <Route path="/uredi-profil" element={<UrediProfil />} />
             <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
             <Route path="/susjed/:id" element={<DetaljiSusjed />} />
+            <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
+            <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
         </Routes>
       </div>
     </Router>
