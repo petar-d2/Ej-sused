@@ -5,6 +5,7 @@ import UrediProfilSusjed from './UrediProfilSusjed';
 import UrediProfilTvrtka from './UrediProfilTvrtka';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const UrediProfil = () => {
     const navigate = useNavigate();
@@ -28,13 +29,23 @@ const UrediProfil = () => {
                         setUser(response.data);
                     }
                     catch(error){
+                        localStorage.removeItem("accessToken");
+                        localStorage.removeItem("refreshToken");
+                        localStorage.removeItem("googleToken");
+                        Cookies.remove("access");
+                        Cookies.remove("refresh");
+                        Cookies.remove("google");
                         navigate('/prijava');
                     }
                 }
                 else {
                     console.error("An error occurred:", error);
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    localStorage.removeItem("googleToken");
+                    Cookies.remove("access");
+                    Cookies.remove("refresh");
+                    Cookies.remove("google");
                     navigate('/prijava');
                 }
             }

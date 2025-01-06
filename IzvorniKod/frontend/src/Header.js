@@ -72,7 +72,7 @@ const Header = () => {
                                     <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> {/* Added link */}
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
-                                    {/*<button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>*/}
+                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
                                 </>
                             ) : (
                                 <>
@@ -90,11 +90,12 @@ const Header = () => {
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                         {isLoggedIn() ? (
                             <>
+                                
                                 <button className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
                                 <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
                                 <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button> 
                                 <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button><button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                {/*<button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>*/}
+                                <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>
                             </>
                         ) : (
                             <>

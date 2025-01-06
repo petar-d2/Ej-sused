@@ -13,6 +13,7 @@ import PonudeSusjeda from './PonudeSusjeda';
 import RegistracijaVrsta from './RegistracijaVrsta';
 import Tvrtke from './Tvrtke';
 import DetaljiTvrtka from './DetaljiTvrtka';
+import Dogadaji from './Dogadaji';
 
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
