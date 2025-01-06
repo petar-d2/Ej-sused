@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './styles/kreirajDogadaj.css'; // Stilovi, ako ih koristiš
-
+//promjeniti ID volontera
 const KreirajDogadaj = () => {
   const [formData, setFormData] = useState({
-    kadZadano: '',
-    sifVolonter: '', // ID povezanog komentara
+    kadZadano: Date.now(),
+    sifVolonter: '1', // ID povezanog komentara
     datumDogadaj: '',
     vrijemeDogadaj: '',
     nazivDogadaj: '',
     adresaDogadaj: '',
-    statusDogadaj: '',
+    statusDogadaj: 'ODOBRAVANJE',
     vrstaDogadaj: '',
     opisDogadaj: '',
     nagradaBod: 0,
@@ -33,7 +33,7 @@ const KreirajDogadaj = () => {
     e.preventDefault();
 
     // Proveravamo da li su obavezna polja popunjena
-    if (!formData.kadZadano || !formData.sifVolonter || !formData.datumDogadaj || !formData.vrijemeDogadaj || !formData.nazivDogadaj || !formData.adresaDogadaj || !formData.statusDogadaj || !formData.vrstaDogadaj || !formData.nagradaBod) {
+    if (!formData.datumDogadaj || !formData.vrijemeDogadaj || !formData.nazivDogadaj || !formData.adresaDogadaj || !formData.vrstaDogadaj || !formData.nagradaBod) {
       setErrorMessage('Sva polja osim opisa su obavezna.');
       setSuccessMessage('');
       return;
@@ -41,19 +41,19 @@ const KreirajDogadaj = () => {
 
     try {
       const response = await axios.post(
-        window.location.href.replace(window.location.pathname, '/') + 'dogadaji/',
+        window.location.href.replace(window.location.pathname, '/') + 'kreiraj-dogadaj/',
         formData
       );
       setSuccessMessage('Događaj uspešno kreiran!');
       setErrorMessage('');
       setFormData({
-        kadZadano: '',
-        sifVolonter: '',
+        kadZadano: Date.now(),
+        sifVolonter: '1',
         datumDogadaj: '',
         vrijemeDogadaj: '',
         nazivDogadaj: '',
         adresaDogadaj: '',
-        statusDogadaj: '',
+        statusDogadaj: 'ODOBRAVANJE',
         vrstaDogadaj: '',
         opisDogadaj: '',
         nagradaBod: 0,
@@ -71,30 +71,6 @@ const KreirajDogadaj = () => {
       {successMessage && <div className="alert alert-success">{successMessage}</div>}
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       <form onSubmit={handleSubmit} className="dogadaj-form">
-        <div className="form-group">
-          <label htmlFor="kadZadano">Kad Zadano (ID ili vrednost):</label>
-          <input
-            type="text"
-            id="kadZadano"
-            name="kadZadano"
-            value={formData.kadZadano}
-            onChange={handleChange}
-            required
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="sifVolonter">Šifra Volontera (ID Komentara):</label>
-          <input
-            type="text"
-            id="sifVolonter"
-            name="sifVolonter"
-            value={formData.sifVolonter}
-            onChange={handleChange}
-            required
-            className="form-control"
-          />
-        </div>
         <div className="form-group">
           <label htmlFor="nazivDogadaj">Naziv Događaja:</label>
           <input
@@ -138,18 +114,6 @@ const KreirajDogadaj = () => {
             id="adresaDogadaj"
             name="adresaDogadaj"
             value={formData.adresaDogadaj}
-            onChange={handleChange}
-            required
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="statusDogadaj">Status:</label>
-          <input
-            type="text"
-            id="statusDogadaj"
-            name="statusDogadaj"
-            value={formData.statusDogadaj}
             onChange={handleChange}
             required
             className="form-control"

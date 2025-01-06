@@ -263,6 +263,8 @@ class searchSortView(APIView):
 # API for creating a new event (Dogadaj)
 class createDogadajView(APIView):
     def post(self, request):
+        print("ENTRY POST")
+        print("Request Data:", request.data)
         # Retrieve fields from the request data
         kadZadano = request.data.get('kadZadano')
         sifVolonter_id = request.data.get('sifVolonter')  # Primary key of the associated Komentar
@@ -274,15 +276,15 @@ class createDogadajView(APIView):
         vrstaDogadaj = request.data.get('vrstaDogadaj')
         opisDogadaj = request.data.get('opisDogadaj', None)  # Optional field
         nagradaBod = request.data.get('nagradaBod')
-
+        print(kadZadano, sifVolonter_id, datumDogadaj, vrijemeDogadaj, nazivDogadaj, adresaDogadaj, statusDogadaj, vrstaDogadaj, opisDogadaj, nagradaBod)
         # Validate required fields
         if not all([kadZadano, sifVolonter_id, datumDogadaj, vrijemeDogadaj, nazivDogadaj, adresaDogadaj, statusDogadaj, vrstaDogadaj, nagradaBod]):
             return Response({"error": "All fields are required except 'opisDogadaj'."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Retrieve the related Komentar instance
-            sifVolonter = Komentar.objects.get(id=sifVolonter_id)
-
+            sifVolonter = '1'
+            print("SIFVOLONTER", sifVolonter)
             # Create the Dogadaj instance
             dogadaj = Dogadaj.objects.create(
                 kadZadano=kadZadano,
@@ -296,13 +298,11 @@ class createDogadajView(APIView):
                 opisDogadaj=opisDogadaj,
                 nagradaBod=nagradaBod
             )
-
+            print(dogadaj)
             dogadaj.save()
 
             return Response({"message": "Event created successfully", "dogadaj_id": dogadaj.id}, status=status.HTTP_201_CREATED)
 
-        except Komentar.DoesNotExist:
-            return Response({"error": "Komentar with the given ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class dogadajiListView(APIView):

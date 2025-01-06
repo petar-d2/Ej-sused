@@ -65,9 +65,8 @@ class Nadlezna(models.Model):
         return self.sifNadlezna
     
 class Dogadaj(models.Model):
-    kadZadano = models.IntegerField()
-    sifVolonter = models.ForeignKey('Komentar', on_delete=models.CASCADE)
-
+    kadZadano = models.CharField(max_length=255)
+    sifVolonter = models.IntegerField()
     datumDogadaj = models.DateField()
     vrijemeDogadaj = models.TimeField()
     nazivDogadaj = models.CharField(max_length=255)

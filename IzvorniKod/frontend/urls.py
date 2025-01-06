@@ -6,7 +6,7 @@ urlpatterns = [
     path("registracija/", registracija.as_view(), name="registracija"),
     path("dogadaji/", dogadajiListView.as_view(), name='dogadaji'),
     #path("dogadaji/<int:sifDogadaj>/", dogadajDetailView.as_view(), name='dogadaj-detail'),
-    path("kreiraDogadaj/", createDogadajView.as_view(), name='kreiraj-dogadaj'),
+    path("kreiraj-dogadaj/", createDogadajView.as_view(), name='kreiraj-dogadaj'),
     path("tvrtke/", tvrtkeListView.as_view(), name='tvrtke_list'),
     path("napravi-ponudu/", main),
     path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
