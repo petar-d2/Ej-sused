@@ -34,7 +34,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         e.preventDefault();
 
         // provjera polja
-        if (!ime || !prezime || !adresa || userSkills.length === 0) {
+        if (!ime || !prezime || userSkills.length === 0) {
             alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
             return;
         }
