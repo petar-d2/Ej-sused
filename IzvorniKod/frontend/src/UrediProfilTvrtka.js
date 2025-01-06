@@ -4,10 +4,9 @@ import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
-const UrediProfilTvrtka = () => {
+const UrediProfilTvrtka = ({ user, setUser }) => {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
 
     const { kvartovi, refreshAccessToken } = useContext(GlobalContext);
 
@@ -15,7 +14,7 @@ const UrediProfilTvrtka = () => {
     const tekst2 = "Spremi";
     
     //uzmi podatke o korisniku preko tokena
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
@@ -43,12 +42,12 @@ const UrediProfilTvrtka = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, []);*/
 
-    const [adresa, setAdresa] = useState(user.adresa);
-    const [naziv, setNaziv] = useState(user.naziv);
-    const [kvart, setKvart] = useState(user.kvart);
-    const [opis, setOpis] = useState(user.opis);
+    const [adresa, setAdresa] = useState(user.adresaTvrtka);
+    const [naziv, setNaziv] = useState(user.nazivTvrtka);
+    const [kvart, setKvart] = useState(user.kvartTvrtka);
+    const [opis, setOpis] = useState(user.opisTvrtka);
 
     //spremi promjene
     const handleSignup = async (e) => {
@@ -70,6 +69,7 @@ const UrediProfilTvrtka = () => {
 
         try {
             const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'user-edit/', newUser);
+            navigate('/');
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješno uređivanje profila. Pokušajte ponovo.");

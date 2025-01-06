@@ -5,7 +5,7 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka
 from django.conf import settings
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
 from django.shortcuts import render, redirect
@@ -320,3 +320,127 @@ class homeView(APIView):
     def get(self, request):
         return render(request, "index.html")
 
+class userInfo(APIView):
+    def get(self, request):
+        # Dohvati Authorization header
+        authorization = request.headers.get('Authorization')
+        if not authorization:
+            return Response({"error": "Authorization header missing"}, status=status.HTTP_400_BAD_REQUEST)
+
+        token = authorization.split(' ')[1]  # Uzmite token iz "Bearer <token>"
+
+        try:
+            # Dekodiraj token i dohvati korisnički ID
+            token_obj = AccessToken(token)
+            user_id = token_obj["user_id"]  # Provjerite da li je ovo ispravan ključ
+
+            # Dohvati korisnika na temelju ID-a
+            user = Korisnik.objects.get(id=user_id)
+
+            # Pripremi podatke korisnika
+            user_data = {
+                "id": user.id,
+                "email": user.email,
+                "isSusjed": user.isSusjed,
+                "isTvrtka": user.isTvrtka,
+                "isNadlezna": user.isNadlezna,
+            }
+
+            # Dodatni podaci za Susjeda ili Tvrtku
+            if user.isSusjed:
+                susjed = Susjed.objects.get(sifSusjed=user)
+                user_data.update({
+                    "ime": susjed.ime,
+                    "prezime": susjed.prezime,
+                    "bodovi": susjed.bodovi,
+                    "skills": susjed.skills,
+                    "kvartSusjed": susjed.kvartSusjed,
+                    "opisSusjed": susjed.opisSusjed,
+                    "isVolonter": susjed.isVolonter
+                })
+            elif user.isTvrtka:
+                tvrtka = Tvrtka.objects.get(sifTvrtka=user)
+                user_data.update({
+                    "nazivTvrtka": tvrtka.nazivTvrtka,
+                    "adresaTvrtka": tvrtka.adresaTvrtka,
+                    "opisTvrtka": tvrtka.opisTvrtka,
+                    "kvartTvrtka": tvrtka.kvartTvrtka
+                })
+
+            return Response(user_data, status=status.HTTP_200_OK)
+
+        except AccessToken.InvalidTokenError:
+            return Response({"error": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except Korisnik.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)   
+
+class userEdit(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        adresa = request.data.get('adresa')
+        kvart = request.data.get('kvart')
+        isSusjed = request.data.get('isSusjed', False)
+        isTvrtka = request.data.get('isTvrtka', False)
+        isNadlezna = request.data.get('isNadlezna', False)
+        ocjena = request.data.get('ocjena', 0.0)
+
+        # New fields for Tvrtka registration
+        nazivTvrtka = request.data.get('nazivTvrtka', '')
+        mjestoTvrtka = request.data.get('mjestoTvrtka', '')
+        opisTvrtka = request.data.get('opisTvrtka', '')
+
+        # New fields for Susjed registration
+        ime = request.data.get('ime', '')
+        prezime = request.data.get('prezime', '')
+        isVolonter = request.data.get('isVolonter', False)
+        mjestoSusjed = request.data.get('mjestoSusjed', '')
+        opisSusjed = request.data.get('opisSusjed', '')
+        skills = request.data.get('skills', [])
+
+        # Find existing user by email
+        try:
+            user = Korisnik.objects.get(email=email)
+        except Korisnik.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Update user fields
+        if password:
+            user.password = make_password(password)  # Hash the new password
+        user.isSusjed = isSusjed
+        user.isTvrtka = isTvrtka
+        user.isNadlezna = isNadlezna
+        user.save()
+
+        # If user is registering as Susjed, update the Susjed instance
+        if isSusjed:
+            susjed, created = Susjed.objects.get_or_create(sifSusjed=user)
+            susjed.bodovi = 5  # Update default points or any other logic
+            susjed.isVolonter = isVolonter
+            susjed.mjestoSusjed = mjestoSusjed
+            susjed.kvartSusjed = kvart
+            susjed.opisSusjed = opisSusjed
+            susjed.ime = ime
+            susjed.prezime = prezime
+            susjed.skills = skills
+            susjed.ocjena = ocjena
+            susjed.save()
+
+        # If user is registering as Tvrtka, update the Tvrtka instance
+        elif isTvrtka:
+            tvrtka, created = Tvrtka.objects.get_or_create(sifTvrtka=user)
+            tvrtka.nazivTvrtka = nazivTvrtka
+            tvrtka.adresaTvrtka = adresa
+            tvrtka.kvartTvrtka = kvart
+            tvrtka.mjestoTvrtka = mjestoTvrtka
+            tvrtka.opisTvrtka = opisTvrtka
+            tvrtka.ocjena = ocjena
+            tvrtka.save()
+
+        # Return successful update response
+        return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+
+    def get(self, request):
+        return render(request, "index.html")

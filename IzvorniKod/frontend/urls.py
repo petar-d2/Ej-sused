@@ -14,5 +14,7 @@ urlpatterns = [
     path("odjava/", odjava.as_view(), name="odjava"),
     path("google-login/", googleLogin.as_view(), name="google_login"),
     path("search/", searchSortView.as_view(), name='search'),
+    path("user-info/", userInfo.as_view(), name='user-info'),
+    path("user-edit/", userEdit.as_view(), name='user-edit'),
     path("", main),
 ]

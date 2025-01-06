@@ -37,7 +37,7 @@ const Dogadaji = () => {
 
   return (
     <div>
-      <h2>Dogadaji</h2>
+      <h2>Događaji</h2>
       
       <div className="dogadaj-card-container">
         {events.map((event) => (

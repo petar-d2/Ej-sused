@@ -43,7 +43,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         const newUser = {
             email: user2.email,
             password: user2.password,
-            adresa: adresa,
+            //adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
@@ -103,7 +103,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         required 
                     />
                 </div>
-                <div className="form-group">
+                {/*<div className="form-group">
                     <label>Adresa:</label>
                     <input 
                         type="text" 
@@ -111,7 +111,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         onChange={(e) => setAdresa(e.target.value)} 
                         required
                     />
-                </div>
+                </div>*/}
                 <div className="form-group">
                     <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 

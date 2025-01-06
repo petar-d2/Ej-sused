@@ -29,7 +29,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
             isTvrtka: true, 
             isNadlezna: false,
             adresa: adresa,
-            naziv: naziv,
+            nazivTvrtka: naziv,
             kvart: kvart,
             mjestoTvrtka: mjesto, //zasad samo Zagreb
             opisTvrtka: opis,
