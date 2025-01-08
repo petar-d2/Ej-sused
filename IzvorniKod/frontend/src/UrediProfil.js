@@ -43,6 +43,7 @@ const UrediProfil = () => {
                         Cookies.remove("access");
                         Cookies.remove("refresh");
                         Cookies.remove("google");
+                        localStorage.removeItem('user');
                         navigate('/prijava');
                     }
                 }
@@ -54,6 +55,7 @@ const UrediProfil = () => {
                     Cookies.remove("access");
                     Cookies.remove("refresh");
                     Cookies.remove("google");
+                    localStorage.removeItem('user');
                     navigate('/prijava');
                 }
             }

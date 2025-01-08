@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/header.css';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
@@ -8,6 +8,7 @@ import axios from 'axios';
 const Header = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loggedUser, setLoggedUser] = useState(null);
 
     const handleLogout = async () => {
         var access = localStorage.getItem("accessToken");
@@ -24,6 +25,7 @@ const Header = () => {
         Cookies.remove("access");
         Cookies.remove("refresh");
         Cookies.remove("google");
+        localStorage.removeItem('user');
         navigate('/');
         alert("Uspješno ste odjavljeni!");
     };
@@ -42,6 +44,15 @@ const Header = () => {
             if (typeof(google) != undefined && google != null) localStorage.setItem('googleToken', google);
         }
     }
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            setLoggedUser(userData); // Update state with user data
+        } else {
+            setLoggedUser(null); // Reset state if logged out
+        }
+    }, []);
 
     const isMobile = useMediaQuery({ query: '(max-width: 875px)' });
 
@@ -71,6 +82,17 @@ const Header = () => {
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> {/* Added link */}
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
+                                    {loggedUser?.isSusjed && (
+                                        <>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
+                                            {loggedUser?.isVolonter && (
+                                                <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
+                                            )}
+                                        </>
+                                    )}
+                                    {loggedUser?.isTvrtka && (
+                                        <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
+                                    )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
                                 </>
@@ -94,7 +116,19 @@ const Header = () => {
                                 <button className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
                                 <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
                                 <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button> 
-                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button><button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
+                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
+                                {loggedUser?.isSusjed && (
+                                    <>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
+                                        {loggedUser?.isVolonter && (
+                                            <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
+                                        )}
+                                    </>
+                                )}
+                                {loggedUser?.isTvrtka && (
+                                    <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
+                                )}
+                                <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
                                 <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>
                             </>
                         ) : (

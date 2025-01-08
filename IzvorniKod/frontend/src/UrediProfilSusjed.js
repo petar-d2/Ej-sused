@@ -5,11 +5,11 @@ import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
 
-const UrediProfilSusjed = ({ user, setUser }) => {
+const UrediProfilSusjed = ({ user, setUser2 }) => {
 
     const navigate = useNavigate();
 
-    const { kvartovi, skills, refreshAccessToken } = useContext(GlobalContext);
+    const { kvartovi, skills, refreshAccessToken, setUser } = useContext(GlobalContext);
 
     const tekst = "Uredi Profil";
     const tekst2 = "Spremi";
@@ -87,6 +87,7 @@ const UrediProfilSusjed = ({ user, setUser }) => {
 
         try {
             const response = await axios.post(window.location.href.replace(window.location.pathname,'/') + 'user-edit/', newUser);
+            localStorage.setItem('user', JSON.stringify(newUser));
             navigate('/');
         } catch (error) {
             console.error('Error during registration:', error);

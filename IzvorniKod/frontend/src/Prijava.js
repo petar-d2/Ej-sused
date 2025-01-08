@@ -39,6 +39,13 @@ const Prijava = () => {
           });
           localStorage.setItem('accessToken', response.data.access);
           localStorage.setItem('refreshToken', response.data.refresh);
+          const response2 = await axios.get(window.location.href.replace(window.location.pathname,'/') + 'user-info/', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+          });
+          localStorage.setItem('user',JSON.stringify(response2.data));
+          //console.log(response2.data);
           navigate('/');
         } catch (error) {
           console.error('Login failed:', error.response.data);
