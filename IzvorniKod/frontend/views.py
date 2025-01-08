@@ -157,15 +157,17 @@ class googleLogin(APIView):
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
 class ponudeSusjedaListView(APIView):
-    def get(self, request):
+    def post(self, request):
         #Fetch from database
         susjedi = Susjed.objects.all()
         #Serijalization of users
         serializer = SusjedSerializer(susjedi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
 
 class tvrtkeListView(APIView):
-    def get(self, request):
+    def post(self, request):
         # Fetch all Tvrtka instances from the database
         tvrtke = Tvrtka.objects.all()
         
@@ -174,6 +176,8 @@ class tvrtkeListView(APIView):
         
         # Return serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
     
 # Logout view - blacklist the refresh token
 class odjava(APIView):
@@ -187,22 +191,26 @@ class odjava(APIView):
 
 #API za detaljan prikaz susjeda
 class detaljiSusjedView(APIView):
-    def get(self, request, sifSusjed):
+    def post(self, request, sifSusjed):
         try:
             user = Susjed.objects.get(sifSusjed=sifSusjed)
             serializer = SusjedSerializer(user)
             return Response(serializer.data)
         except Susjed.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
+    def get(self, request, sifSusjed):
+        return render(request, "index.html")
 
 class detaljiTvrtkaView(APIView):
-    def get(self, request, sifTvrtka):
+    def post(self, request, sifTvrtka):
         try:
             user = Tvrtka.objects.get(sifTvrtka=sifTvrtka)
             serializer = TvrtkaSerializer(user)
             return Response(serializer.data)
         except Tvrtka.DoesNotExist:
             return Response({"detail": "User not found"}, status=404)
+    def get(self, request, sifTvrtka):
+        return render(request, "index.html")
 
 
 
@@ -305,8 +313,10 @@ class createDogadajView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-class dogadajiListView(APIView):
     def get(self, request):
+        return render(request, "index.html")
+class dogadajiListView(APIView):
+    def post(self, request):
         # Fetch all Dogadaj instances from the database
         dogadaji = Dogadaj.objects.all()
 
@@ -315,6 +325,8 @@ class dogadajiListView(APIView):
 
         # Return serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
 
 class homeView(APIView):
     def get(self, request):

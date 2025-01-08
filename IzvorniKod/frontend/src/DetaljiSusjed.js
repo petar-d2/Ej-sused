@@ -14,7 +14,7 @@ const DetaljiSusjed = () => {
         const fetchUserDetails = async () => {
             try {
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `susjed/${id}/`;
-                const response = await axios.get(apiUrl); 
+                const response = await axios.post(apiUrl); 
                 setUser(response.data);
                 setLoading(false);
             } catch (error) {

@@ -11,7 +11,7 @@ const Dogadaji = () => {
   // Fetch data from the views.py/API
   const fetchData = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         window.location.href.replace(window.location.pathname, '/') + 'dogadaji/'
       );
       setEvents(response.data); // Set fetched data to state

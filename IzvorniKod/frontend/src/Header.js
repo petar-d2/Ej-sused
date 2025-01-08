@@ -106,7 +106,6 @@ const Header = () => {
                                 <>
                                     <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> {/* Added link */}
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     {isSusjed2() && (
                                         <>
@@ -123,7 +122,7 @@ const Header = () => {
                                     {isTvrtka2() && (
                                         <>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                            <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-ponudu')}>Nova Ponuda</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
                                         </>
                                     )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
@@ -146,7 +145,6 @@ const Header = () => {
                         {isLoggedIn() ? (
                             <>
                                 
-                                <button className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
                                 <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
                                 <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button> 
                                 <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
@@ -165,7 +163,7 @@ const Header = () => {
                                 {isTvrtka2() && (
                                     <>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                        <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-ponudu')}>Nova Ponuda</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>

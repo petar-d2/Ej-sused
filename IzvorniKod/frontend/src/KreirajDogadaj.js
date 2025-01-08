@@ -41,7 +41,7 @@ const KreirajDogadaj = () => {
 
     try {
       const response = await axios.post(
-        window.location.href.replace(window.location.pathname, '/') + 'kreiraj-dogadaj/',
+        window.location.href.replace(window.location.pathname, '/') + 'novi-dogadaj/',
         formData
       );
       setSuccessMessage('Događaj uspešno kreiran!');

@@ -14,7 +14,7 @@ const DetaljiTvrtka = () => {
         const fetchTvrtkaDetails = async () => {
             try {
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `tvrtka/${id}/`;
-                const response = await axios.get(apiUrl); 
+                const response = await axios.post(apiUrl); 
                 setTvrtka(response.data);
                 setLoading(false);
             } catch (error) {

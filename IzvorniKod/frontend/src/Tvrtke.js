@@ -10,7 +10,7 @@ const Tvrtke = () => {
   //dohvati popis tvrtki
   const fetchData = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         window.location.href.replace(window.location.pathname, '/') + 'tvrtke/'
       );
       setTvrtke(response.data);
