@@ -8,8 +8,9 @@ const DetaljiTvrtka = () => {
     const navigate = useNavigate();
     const [tvrtka, setTvrtka] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [rating, setRating] = useState(0);
+    const [komentar, setKomentar] = useState('');
 
-    // Fetchaj podatke o tvrtci preko id-a
     useEffect(() => {
         const fetchTvrtkaDetails = async () => {
             try {
@@ -25,7 +26,7 @@ const DetaljiTvrtka = () => {
 
         fetchTvrtkaDetails();
     }, [id]);
-    
+
     const handleViewOnMapsClick = () => {
         const location = `${tvrtka.adresaTvrtka}`;
         const encodedLocation = encodeURIComponent(location);
@@ -33,20 +34,34 @@ const DetaljiTvrtka = () => {
         window.open(mapsUrl, '_blank');
     };
 
-    // zvjezdice ovisno o ratingu
-    const renderStars = () => {
+    const renderStars = (selectedRating = 0, interactive = false, isSecondRow = false) => {
         const totalStars = 5;
-        const fullStars = Math.floor(tvrtka.ocjena); // cijele zvjezdice
-        const halfStar = tvrtka.ocjena % 1 >= 0.5; // pola zvjezdice ako ima
-        const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
-
         return (
-            <>
-                {'★'.repeat(fullStars)}
-                {halfStar && '☆'}
-                {'☆'.repeat(emptyStars)}
-            </>
+            <div className={`star-rating ${isSecondRow ? 'second-row' : ''}`}>
+                {[...Array(totalStars)].map((_, index) => {
+                    const starValue = index + 1;
+                    return (
+                        <span
+                            key={index}
+                            className={starValue <= selectedRating ? 'filled' : ''}
+                            onClick={() => isSecondRow && interactive && setRating(starValue)}
+                        >
+                            {starValue <= selectedRating ? '★' : '☆'}
+                        </span>
+                    );
+                })}
+            </div>
         );
+    };
+    
+
+    const handleSubmitRating = () => {
+        console.log('Rating submitted:', rating);
+    };
+
+    const handleSubmitComment = () => {
+        console.log('Comment submitted:', komentar);
+        setKomentar('');  // Clear textarea after submission
     };
 
     if (loading) {
@@ -69,18 +84,43 @@ const DetaljiTvrtka = () => {
 
     return (
         <div className="tvrtka-details-container">
-                <h2>Detalji tvrtke</h2>
-                <p><strong>Naziv:</strong> {tvrtka.nazivTvrtka}</p>
-                <p><strong>Kontakt:</strong> {tvrtka.email}</p>
-                <p><strong>Adresa:</strong> {tvrtka.adresaTvrtka}</p>
-                <p><strong>Kvart:</strong> {tvrtka.kvartTvrtka}</p>
-                <p><strong>Opis:</strong> {tvrtka.opisTvrtka || 'N/A'}</p>
-                <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({tvrtka.ocjena})</p>
-                <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
-                        Pogledaj lokaciju na karti
-                </button>
-                <button onClick={() => navigate(-1)}>Povratak</button>
+            <h2>Detalji tvrtke</h2>
+            <p><strong>Naziv:</strong> {tvrtka.nazivTvrtka}</p>
+            <p><strong>Kontakt:</strong> {tvrtka.email}</p>
+            <p><strong>Adresa:</strong> {tvrtka.adresaTvrtka}</p>
+            <p><strong>Kvart:</strong> {tvrtka.kvartTvrtka}</p>
+            <p><strong>Opis:</strong> {tvrtka.opisTvrtka || 'N/A'}</p>
+            <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
+                Pogledaj lokaciju na karti
+            </button>
+            <p className="ocjena">
+                <strong>Ocjena:</strong>
+                <span className="star-rating">{renderStars(tvrtka.ocjena)}</span>
+                ({tvrtka.ocjena})
+            </p>
+
+            <p className='ocjena'>
+                <strong>Ocijeni:</strong>
+                <div className="star-rate">
+                    {renderStars(rating, true, true)} {/* Second row with interactivity */}
+            </div>
+            </p>
+
+            <button onClick={handleSubmitRating}>Pošalji ocjenu</button>
+            
+            <textarea 
+                value={komentar} 
+                onChange={(e) => setKomentar(e.target.value)} 
+                placeholder="Dodaj komentar..."
+                rows="5"
+                cols="50"
+            />
+            
+            <button onClick={handleSubmitComment}>Pošaljite komentar</button>
+
+            <button onClick={() => navigate(-1)}>Povratak</button>
         </div>
     );
 };
+
 export default DetaljiTvrtka;

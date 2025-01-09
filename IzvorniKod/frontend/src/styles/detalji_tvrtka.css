@@ -10,6 +10,20 @@
     color: #000000;
 }
 
+
+textarea{
+    border: #000000 10px;
+    display: block;
+    width: 50%;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 25%;
+    margin-right: 25%;
+    max-width: max-content;
+    min-width:20px ;
+}
+
 .tvrtka-details-container h2 {
     text-align: center;
     color: #007bff;
@@ -121,6 +135,36 @@ line-height: 1.6;
 
 /* zvjezdice za rating */
 .star-rating {
-    color: #FFD700; /* zlatna boja */
-    font-size: 1.2rem;
+    color: #FFD700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* Align stars vertically with text */
+
 }
+
+.star-rating span , .star-rate {
+    transition: color 0.2s ease;
+    margin-right: 5px; /* Space between stars */
+}
+
+/* Second row: only these stars are interactive */
+.star-rate {
+    cursor: pointer;
+}
+
+.star-rate.interactive span:hover,
+.star-rate span.filled {
+    color: #FFCC00;
+}
+
+.star-rate span:hover,
+.star-rate span.filled:hover {
+    font-weight: bold;
+}
+
+
+.ocjena{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+} 
