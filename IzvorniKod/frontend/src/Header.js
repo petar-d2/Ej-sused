@@ -114,7 +114,7 @@ const Header = () => {
                                             {isVolonter2() && (
                                                 <>
                                                     <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
-                                                    <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi Dogadaj</button>
+                                                    <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
                                                 </>
                                             )}
                                         </>
@@ -155,7 +155,7 @@ const Header = () => {
                                         {isVolonter2() && (
                                             <>
                                                 <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
-                                                <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi Dogadaj</button>
+                                                <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
                                             </>
                                         )}
                                     </>

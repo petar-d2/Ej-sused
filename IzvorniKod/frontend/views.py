@@ -212,6 +212,16 @@ class detaljiTvrtkaView(APIView):
     def get(self, request, sifTvrtka):
         return render(request, "index.html")
 
+class detaljiDogadajView(APIView):
+    def post(self, request, sifDogadaj):
+        try:
+            user = Dogadaj.objects.get(id=sifDogadaj)
+            serializer = DogadajSerializer(user)
+            return Response(serializer.data)
+        except Dogadaj.DoesNotExist:
+            return Response({"detail": "User not found"}, status=404)
+    def get(self, request, sifDogadaj):
+        return render(request, "index.html")
 
 
 
@@ -291,12 +301,10 @@ class createDogadajView(APIView):
 
         try:
             # Retrieve the related Komentar instance
-            sifVolonter = '1'
-            print("SIFVOLONTER", sifVolonter)
             # Create the Dogadaj instance
             dogadaj = Dogadaj.objects.create(
                 kadZadano=kadZadano,
-                sifVolonter=sifVolonter,
+                sifVolonter=sifVolonter_id,
                 datumDogadaj=datumDogadaj,
                 vrijemeDogadaj=vrijemeDogadaj,
                 nazivDogadaj=nazivDogadaj,
@@ -309,7 +317,7 @@ class createDogadajView(APIView):
             print(dogadaj)
             dogadaj.save()
 
-            return Response({"message": "Event created successfully", "dogadaj_id": dogadaj.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Event created successfully", "dogadaj_id": dogadaj.id, "id" : sifVolonter_id}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

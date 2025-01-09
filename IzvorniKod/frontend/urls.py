@@ -12,6 +12,7 @@ urlpatterns = [
     path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
     path('susjed/<int:sifSusjed>/', detaljiSusjedView.as_view(), name='susjed-detail'),
     path('tvrtka/<int:sifTvrtka>/', detaljiTvrtkaView.as_view(), name='tvrtka-detail'),
+    path('dogadaj/<int:sifDogadaj>/', detaljiDogadajView.as_view(), name='dogadaj-detail'),
     path("home/", homeView.as_view()),
     path("odjava/", odjava.as_view(), name="odjava"),
     path("google-login/", googleLogin.as_view(), name="google_login"),

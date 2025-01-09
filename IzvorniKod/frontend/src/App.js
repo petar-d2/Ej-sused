@@ -15,6 +15,7 @@ import Tvrtke from './Tvrtke';
 import DetaljiTvrtka from './DetaljiTvrtka';
 import Dogadaji from './Dogadaji';
 import KreirajDogadaj from './KreirajDogadaj';
+import DetaljiDogadaj from './DetaljiDogadaj';
 
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
@@ -53,7 +54,7 @@ function App() {
             <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
             <Route path="/susjed/:id" element={<DetaljiSusjed />} />
             <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
-            <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
+            <Route path="/dogadaj/:id" element={<DetaljiDogadaj />} />
             <Route path="/kreiraj-dogadaj" element={<KreirajDogadaj />} />  
         </Routes>
       </div>

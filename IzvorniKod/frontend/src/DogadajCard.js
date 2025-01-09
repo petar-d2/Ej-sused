@@ -1,10 +1,18 @@
 // DogadajCard.js
 import React from 'react';
-import './styles/dogadaji.css'; // Assuming a separate CSS file for styling individual cards
+import './styles/dogadaj_card.css';
+import { useNavigate } from 'react-router-dom';
 
 const DogadajCard = ({ event }) => {
+  const navigate = useNavigate();
+  
+  const handleCardClick = () => {
+      const dogadajId = event.id;
+      navigate(`/dogadaj/${dogadajId}`);
+  };
+
   return (
-    <div className="dogadaj-card">
+    <div className="dogadaj-card" onClick={handleCardClick}>
       <h3>{event.nazivDogadaj}</h3>
       <p><strong>Datum:</strong> {event.datumDogadaj}</p>
       <p><strong>Vrijeme:</strong> {event.vrijemeDogadaj}</p>

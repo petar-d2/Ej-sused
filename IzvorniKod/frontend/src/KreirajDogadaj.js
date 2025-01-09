@@ -3,9 +3,12 @@ import axios from 'axios';
 import './styles/kreirajDogadaj.css'; // Stilovi, ako ih koristiš
 //promjeniti ID volontera
 const KreirajDogadaj = () => {
+
+  const userData = JSON.parse(localStorage.getItem('user'));
+
   const [formData, setFormData] = useState({
     kadZadano: Date.now(),
-    sifVolonter: '1', // ID povezanog komentara
+    sifVolonter: userData.id, // ID povezanog komentara
     datumDogadaj: '',
     vrijemeDogadaj: '',
     nazivDogadaj: '',
@@ -41,14 +44,14 @@ const KreirajDogadaj = () => {
 
     try {
       const response = await axios.post(
-        window.location.href.replace(window.location.pathname, '/') + 'novi-dogadaj/',
+        window.location.href.replace(window.location.pathname, '/') + 'kreiraj-dogadaj/',
         formData
       );
       setSuccessMessage('Događaj uspešno kreiran!');
       setErrorMessage('');
       setFormData({
         kadZadano: Date.now(),
-        sifVolonter: '1',
+        sifVolonter: userData.id,
         datumDogadaj: '',
         vrijemeDogadaj: '',
         nazivDogadaj: '',
