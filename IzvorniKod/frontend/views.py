@@ -323,6 +323,7 @@ class createDogadajView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     def get(self, request):
         return render(request, "index.html")
+
 class dogadajiListView(APIView):
     def post(self, request):
         # Fetch all Dogadaj instances from the database
@@ -334,6 +335,19 @@ class dogadajiListView(APIView):
         # Return serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
     def get(self, request):
+        return render(request, "index.html")
+
+class mojiDogadajiListView(APIView):
+    def post(self, request, sifVolonter):
+        # Fetch all Dogadaj instances from the database
+        dogadaji = Dogadaj.objects.filter(sifVolonter=sifVolonter)
+
+        # Serialize the Dogadaj instances
+        serializer = DogadajSerializer(dogadaji, many=True)
+
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, sifVolonter):
         return render(request, "index.html")
 
 class homeView(APIView):
