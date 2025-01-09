@@ -68,6 +68,7 @@ const UrediProfilSusjed = ({ user, setUser2 }) => {
 
         const skillsString = userSkills.join(", ");
         const newUser={
+            id: user.id,
             email: user.email,
             password: user.password,
             //adresa: adresa,

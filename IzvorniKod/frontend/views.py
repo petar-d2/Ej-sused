@@ -412,6 +412,7 @@ class userInfo(APIView):
 
 class userEdit(APIView):
     def post(self, request):
+        id = request.data.get('id')
         email = request.data.get('email')
         password = request.data.get('password')
         adresa = request.data.get('adresa')
@@ -450,7 +451,7 @@ class userEdit(APIView):
 
         # If user is registering as Susjed, update the Susjed instance
         if isSusjed:
-            susjed, created = Susjed.objects.get_or_create(sifSusjed=user)
+            susjed, created = Susjed.objects.get_or_create(sifSusjed=id)
             susjed.bodovi = 5  # Update default points or any other logic
             susjed.isVolonter = isVolonter
             susjed.mjestoSusjed = mjestoSusjed
@@ -464,7 +465,7 @@ class userEdit(APIView):
 
         # If user is registering as Tvrtka, update the Tvrtka instance
         elif isTvrtka:
-            tvrtka, created = Tvrtka.objects.get_or_create(sifTvrtka=user)
+            tvrtka, created = Tvrtka.objects.get_or_create(sifTvrtka=id)
             tvrtka.nazivTvrtka = nazivTvrtka
             tvrtka.adresaTvrtka = adresa
             tvrtka.kvartTvrtka = kvart

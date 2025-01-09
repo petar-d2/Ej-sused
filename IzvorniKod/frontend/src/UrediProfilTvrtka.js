@@ -54,6 +54,7 @@ const UrediProfilTvrtka = ({ user, setUser2 }) => {
         e.preventDefault();
 
         const newUser = {
+            id: user.id,
             email: user.email,
             password: user.password,
             isSusjed: false,
