@@ -109,6 +109,7 @@ const DetaljiTvrtka = () => {
             <button onClick={handleSubmitRating}>Pošalji ocjenu</button>
             
             <textarea 
+                className='opis1'
                 value={komentar} 
                 onChange={(e) => setKomentar(e.target.value)} 
                 placeholder="Dodaj komentar..."
