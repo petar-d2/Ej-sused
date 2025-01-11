@@ -76,3 +76,53 @@ class LoginFormTest(LiveServerTestCase):
 
     def tearDown(self):
         self.driver.quit()
+
+class RegistrationFormTest(LiveServerTestCase):
+    host_url = "http://127.0.0.1:8000/"  # Change this if your test server runs on a different host/port
+
+    def setUp(self):
+        self.driver = webdriver.Chrome()  # Ensure you have the correct driver installed and in PATH
+
+    def test_registration_successful(self):
+        self.driver.get(self.host_url + "registracija/")
+
+        email = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "email")))
+        password = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "password1")))
+        confirm_password = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "password2")))
+        submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, "button_1")))
+        # Enter valid registration credentials
+        email.send_keys("newuser@gmail.com")
+        password.send_keys("admin123")
+        confirm_password.send_keys("admin123")
+        submit.click()
+
+        # Wait for redirection to another page or confirmation
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "h2")))  # Modify tag (e.g., h2) to reflect successful registration UI
+        success_message = self.driver.find_element(By.TAG_NAME, "h2").text  # Adjust based on UI element
+        time.sleep(2)
+        print(self.driver.page_source)
+        self.assertIn("Vrsta registracije", success_message, "Registration was not successful or incorrect redirection occurred.")
+
+    def test_registration_passwords_do_not_match(self):
+        self.driver.get(self.host_url + "registracija/")
+
+        # Wait for elements
+        email = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "email")))
+        password = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "password1")))
+        confirm_password = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "password2")))
+        submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, "button_1")))
+
+        # Enter mismatched passwords
+        email.send_keys("newuser@gmail.com")
+        password.send_keys("password1")
+        confirm_password.send_keys("password2")
+        submit.click()
+
+        # Wait for validation error
+        alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+        alert_text = alert.text
+
+        self.assertIn("Lozinke se ne podudaraju", alert_text, "Validation message for mismatched passwords is incorrect.")
+
+    def tearDown(self):
+        self.driver.quit()

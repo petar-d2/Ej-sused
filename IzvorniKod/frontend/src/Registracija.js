@@ -68,6 +68,7 @@ const Registracija = () => {
                     <div className="form-group">
                         <label>Email:</label>
                         <input 
+                            id="email"
                             type="email" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
@@ -77,6 +78,7 @@ const Registracija = () => {
                     <div className="form-group">
                         <label>Lozinka:</label>
                         <input 
+                            id="password1"
                             type="password" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
@@ -86,13 +88,14 @@ const Registracija = () => {
                     <div className="form-group">
                         <label>Potvrdite lozinku:</label>
                         <input 
+                            id="password2"
                             type="password" 
                             value={confirmPassword} 
                             onChange={(e) => setConfirmPassword(e.target.value)} 
                             required 
                         />
                     </div>
-                    <button className="button_1" type="submit">Registracija</button>
+                    <button id="button_1" className="button_1" type="submit">Registracija</button>
                 </form>
                 <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
                 <div className="horizontalna_crta" style={{ 
