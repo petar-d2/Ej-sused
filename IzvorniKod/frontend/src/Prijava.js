@@ -60,7 +60,7 @@ const Prijava = () => {
             <form onSubmit={handleLogin}>
                 <div className="form-group">
                     <label>Email:</label>
-                    <input 
+                    <input id="email"
                         type="email" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
@@ -69,14 +69,14 @@ const Prijava = () => {
                 </div>
                 <div className="form-group">
                     <label>Lozinka:</label>
-                    <input 
+                    <input id="password"
                         type="password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                     />
                 </div>
-                <button className="button_1" type="submit">Prijava</button>
+                <button className="button_1" type="submit" id="submit" >Prijava</button>
             </form>
             <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
             <div className="horizontalna_crta" style={{ 
