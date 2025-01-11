@@ -17,7 +17,7 @@ import Dogadaji from './Dogadaji';
 import KreirajDogadaj from './KreirajDogadaj';
 import DetaljiDogadaj from './DetaljiDogadaj';
 import MojiDogadaji from './MojiDogadaji';
-
+import NapraviZahtjev from './NapraviZahtjev';
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
    /* if (!(localStorage.getItem("accessToken"))){
@@ -58,6 +58,7 @@ function App() {
             <Route path="/dogadaj/:id" element={<DetaljiDogadaj />} />
             <Route path="/kreiraj-dogadaj" element={<KreirajDogadaj />} />
             <Route path="/moji-dogadaji" element={<MojiDogadaji />} />
+            <Route path="/napravi-zahtjev" element={<NapraviZahtjev />} />
         </Routes>
       </div>
     </Router>

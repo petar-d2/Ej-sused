@@ -19,5 +19,6 @@ urlpatterns = [
     path("search/", searchSortView.as_view(), name='search'),
     path("user-info/", userInfo.as_view(), name='user-info'),
     path("user-edit/", userEdit.as_view(), name='user-edit'),
+    path("napravi-zahtjev/", napraviZahtjevView.as_view(), name="napravi-zahtjev"),
     path("", main),
 ]

@@ -479,3 +479,51 @@ class userEdit(APIView):
 
     def get(self, request):
         return render(request, "index.html")
+
+
+class napraviZahtjevView(APIView):
+    def post(self, request):
+        print("ENTRY POST")
+        print("Request Data:", request.data)
+        
+        # Preuzimanje podataka sa zahteva
+        kadZadan = request.data.get('kadZadan')
+        nazivZahtjev = request.data.get('nazivZahtjev')
+        adresaZahtjev = request.data.get('adresaZahtjev')
+        statusZahtjev = request.data.get('statusZahtjev')
+        opisZahtjev = request.data.get('opisZahtjev', None)
+        cijenaBod = request.data.get('cijenaBod')
+        sifSusjed_id = request.data.get('sifSusjed')
+        sifVrsta_id = request.data.get('sifVrsta')
+        sifIzvrsitelj_id = request.data.get('sifIzvrsitelj')
+
+        # Validacija obaveznih polja
+        if not all([kadZadan, nazivZahtjev, adresaZahtjev, cijenaBod, sifSusjed_id, sifVrsta_id]):
+            return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Preuzimanje odnosa
+        sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
+        sifVrsta = get_object_or_404(VrstaUsluga, pk=sifVrsta_id)
+        sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
+
+        try:
+            # Kreiranje novog Zahtjeva
+            zahtjev = Zahtjev.objects.create(
+                kadZadan=kadZadan,
+                nazivZahtjev=nazivZahtjev,
+                adresaZahtjev=adresaZahtjev,
+                statusZahtjev=statusZahtjev,
+                opisZahtjev=opisZahtjev,
+                cijenaBod=cijenaBod,
+                sifSusjed=sifSusjed,
+                sifVrsta=sifVrsta,
+                sifIzvrsitelj=sifIzvrsitelj,
+            )
+            zahtjev.save()
+            return Response({"message": "Zahtjev uspešno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request):
+        return Response({"message": "GET request not implemented for this view."})
