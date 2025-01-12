@@ -59,9 +59,22 @@ const DetaljiTvrtka = () => {
         console.log('Rating submitted:', rating);
     };
 
-    const handleSubmitComment = () => {
-        console.log('Comment submitted:', komentar);
-        setKomentar('');  // Clear textarea after submission
+    const handleSubmitComment = async() => {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        try {
+            const newComment = {
+                textKom : komentar,
+                sifDaje : userData.id,
+                sifPrima : id
+            }
+            const apiUrl = window.location.href.replace(window.location.pathname, '/') + `unesi-komentar/`;
+            const response = await axios.post(apiUrl, newComment);
+            console.log('Comment submitted:', komentar);
+            setKomentar('');
+        } catch (error) {
+            console.error('Error submitting comment:', error);
+            setKomentar('');
+        }
     };
 
     if (loading) {

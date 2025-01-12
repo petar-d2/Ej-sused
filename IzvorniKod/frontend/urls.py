@@ -20,5 +20,6 @@ urlpatterns = [
     path("user-info/", userInfo.as_view(), name='user-info'),
     path("user-edit/", userEdit.as_view(), name='user-edit'),
     path("napravi-zahtjev/", napraviZahtjevView.as_view(), name="napravi-zahtjev"),
+    path("unesi-komentar/", unesiKomentarView.as_view(), name="unesi-komentar"),
     path("", main),
 ]

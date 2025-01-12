@@ -8,7 +8,7 @@ from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 
 
@@ -527,3 +527,34 @@ class napraviZahtjevView(APIView):
 
     def get(self, request):
         return Response({"message": "GET request not implemented for this view."})
+
+class unesiKomentarView(APIView):
+    def post(self, request):
+        textKom = request.data.get('textKom')
+        sifDaje = request.data.get('sifDaje')  # ID korisnika
+        sifPrima = request.data.get('sifPrima')  # ID tvrtke
+
+        if not textKom:
+            return Response({"error": "Komentar ne smije biti prazan."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Log request data for debugging
+            print(f"Request data: {request.data}")
+
+            # Pretvaranje ID-ova u instance
+            korisnik = get_object_or_404(Korisnik, id=sifDaje)
+            tvrtka = get_object_or_404(Tvrtka, sifTvrtka=sifPrima)
+
+            # Kreiranje komentara
+            komentar = Komentar.objects.create(
+                textKom=textKom,
+                sifDaje=korisnik,
+                sifPrima=tvrtka,
+            )
+            print(f"Komentar created: {komentar}")
+
+            return Response({"message": "Komentar unesen.", "komentar_id": komentar.sifKom}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(f"Error creating Komentar: {e}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
