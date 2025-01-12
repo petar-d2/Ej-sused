@@ -55,7 +55,8 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
             isSusjed: true,
             isTvrtka: false,
             isNadlezna: false,
-            ocjena: 0.0
+            brojOcjena: 0,
+            zbrojOcjena: 0
         };
 
         try {

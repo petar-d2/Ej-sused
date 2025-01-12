@@ -48,7 +48,8 @@ class registracija(APIView):
         isSusjed = request.data.get('isSusjed', False)
         isTvrtka = request.data.get('isTvrtka', False)
         isNadlezna = request.data.get('isNadlezna', False)
-        ocjena = request.data.get('ocjena', 0.0)
+        brojOcjena = request.data.get('brojOcjena', 0)
+        zbrojOcjena = request.data.get('zbrojOcjena', 0)
 
         # New fields for Tvrtka registration
         nazivTvrtka = request.data.get('nazivTvrtka', '')
@@ -90,7 +91,8 @@ class registracija(APIView):
                 ime=ime,
                 prezime=prezime,
                 skills=skills, 
-                ocjena=ocjena,
+                brojOcjena=brojOcjena,
+                zbrojOcjena=zbrojOcjena,
                 sifSusjed=user  # Foreign key to the Korisnik instance (user)
             )
             susjed.save()
@@ -106,7 +108,8 @@ class registracija(APIView):
                 kvartTvrtka=kvart,
                 mjestoTvrtka=mjestoTvrtka,
                 opisTvrtka=opisTvrtka,
-                ocjena=ocjena,
+                brojOcjena=brojOcjena,
+                zbrojOcjena=zbrojOcjena,
                 sifTvrtka=user  # Foreign key to the Korisnik instance (user)
             )
             tvrtka.save()
@@ -230,7 +233,7 @@ class searchSortView(APIView):
         'susjed': {
             'model': Susjed,
             'serializer': SusjedSerializer,
-            'fields': ['ime', 'prezime', 'skills','ocjena']
+            'fields': ['ime', 'prezime', 'skills', 'brojOcjena', 'zbrojOcjena']
         },
         'tvrtka': {
             'model': Tvrtka,
@@ -420,7 +423,8 @@ class userEdit(APIView):
         isSusjed = request.data.get('isSusjed', False)
         isTvrtka = request.data.get('isTvrtka', False)
         isNadlezna = request.data.get('isNadlezna', False)
-        ocjena = request.data.get('ocjena', 0.0)
+        brojOcjena = request.data.get('brojOcjena', 0)
+        zbrojOcjena = request.data.get('zbrojOcjena', 0)
 
         # New fields for Tvrtka registration
         nazivTvrtka = request.data.get('nazivTvrtka', '')
@@ -460,7 +464,8 @@ class userEdit(APIView):
             susjed.ime = ime
             susjed.prezime = prezime
             susjed.skills = skills
-            susjed.ocjena = ocjena
+            susjed.brojOcjena = brojOcjena
+            susjed.zbrojOcjena = zbrojOcjena
             susjed.save()
 
         # If user is registering as Tvrtka, update the Tvrtka instance
@@ -471,7 +476,8 @@ class userEdit(APIView):
             tvrtka.kvartTvrtka = kvart
             tvrtka.mjestoTvrtka = mjestoTvrtka
             tvrtka.opisTvrtka = opisTvrtka
-            tvrtka.ocjena = ocjena
+            tvrtka.brojOcjena = brojOcjena
+            tvrtka.zbrojOcjena = zbrojOcjena
             tvrtka.save()
 
         # Return successful update response
@@ -558,3 +564,33 @@ class unesiKomentarView(APIView):
         except Exception as e:
             print(f"Error creating Komentar: {e}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ocjenaEdit(APIView):
+    def post(self, request):
+        id = request.data.get('korisnik_id')
+        email = request.data.get('email')
+        nazivTvrtka = request.data.get('nazivTvrtka')
+        adresaTvrtka = request.data.get('adresaTvrtka')
+        kvartTvrtka = request.data.get('kvartTvrtka')
+        mjestoTvrtka = request.data.get('mjestoTvrtka')
+        opisTvrtka = request.data.get('opisTvrtka')
+        brojOcjena = request.data.get('brojOcjena')
+        zbrojOcjena = request.data.get('zbrojOcjena')
+
+        try:
+            user = Korisnik.objects.get(email=email)
+        except Korisnik.DoesNotExist:
+            return Response({'error': 'Tvrtka not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        tvrtka, created = Tvrtka.objects.get_or_create(sifTvrtka=id)
+        tvrtka.nazivTvrtka = nazivTvrtka
+        tvrtka.adresaTvrtka = adresaTvrtka
+        tvrtka.kvartTvrtka = kvartTvrtka
+        tvrtka.mjestoTvrtka = mjestoTvrtka
+        tvrtka.opisTvrtka = opisTvrtka
+        tvrtka.brojOcjena = brojOcjena
+        tvrtka.zbrojOcjena = zbrojOcjena
+        tvrtka.save()
+
+        # Return successful update response
+        return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)

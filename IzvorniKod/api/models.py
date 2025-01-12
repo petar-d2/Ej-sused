@@ -17,7 +17,8 @@ class Tvrtka(models.Model):
     kvartTvrtka = models.CharField(max_length=255)
     mjestoTvrtka = models.CharField(max_length=255)
     opisTvrtka = models.CharField(max_length=4095, null=True)
-    ocjena = models.FloatField(default=0.0)
+    brojOcjena = models.IntegerField(default=0)
+    zbrojOcjena = models.IntegerField(default=0)
 
     sifTvrtka = models.OneToOneField(
         Korisnik,
@@ -37,7 +38,8 @@ class Susjed(models.Model):
     opisSusjed = models.CharField(max_length=4095, null=True)
     ime = models.CharField(max_length=255)
     prezime = models.CharField(max_length=255)
-    ocjena = models.FloatField(default=0.0)
+    brojOcjena = models.IntegerField(default=0)
+    zbrojOcjena = models.IntegerField(default=0)
     skills = models.TextField(default="")
     
     sifSusjed = models.OneToOneField(
@@ -92,11 +94,11 @@ class Komentar(models.Model):
     sifKom = models.AutoField(primary_key=True)
     ##sifKom = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     textKom = models.CharField(max_length=2047)
-    sifPrima = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
-    sifDaje = models.ForeignKey(Dogadaj, on_delete=models.CASCADE)
+    sifPrima = models.ForeignKey(Tvrtka, on_delete=models.CASCADE)
+    sifDaje = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.sifKom
+        return f"Komentar {self.sifKom}"
     
 
 class PrijavljenNa(models.Model):

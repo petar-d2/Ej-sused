@@ -53,10 +53,37 @@ const DetaljiTvrtka = () => {
             </div>
         );
     };
+
+    // zvjezdice na temelju ocjene
+    const renderStars2 = (ocjena) => {
+        const totalStars = 5;
+        const fullStars = Math.floor(ocjena); // cijele zvjezdice
+        const halfStar = ocjena % 1 >= 0.5; // pola zvjezdice ako je ima
+        const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
+
+        return (
+            <>
+                {'★'.repeat(fullStars)}
+                {halfStar && '☆'}
+                {'☆'.repeat(emptyStars)}
+            </>
+        );
+    };
     
 
-    const handleSubmitRating = () => {
-        console.log('Rating submitted:', rating);
+    const handleSubmitRating = async() => {
+        try {
+            tvrtka.brojOcjena = tvrtka.brojOcjena + 1;
+            tvrtka.zbrojOcjena = tvrtka.zbrojOcjena + rating;
+            const apiUrl = window.location.href.replace(window.location.pathname, '/') + `ocjena-edit/`;
+            const response = await axios.post(apiUrl, tvrtka);
+            console.log('Rating submitted:', rating);
+            console.log(tvrtka);
+            setRating(0);
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+            setRating(0);
+        }
     };
 
     const handleSubmitComment = async() => {
@@ -108,8 +135,8 @@ const DetaljiTvrtka = () => {
             </button>
             <p className="ocjena">
                 <strong>Ocjena:</strong>
-                <span className="star-rating">{renderStars(tvrtka.ocjena)}</span>
-                ({tvrtka.ocjena})
+                <span className="star-rating">{renderStars2(tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0)}</span>
+                ({tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0})
             </p>
 
             <p className='ocjena'>
@@ -121,7 +148,8 @@ const DetaljiTvrtka = () => {
 
             <button onClick={handleSubmitRating}>Pošalji ocjenu</button>
             
-            <textarea 
+            <textarea
+                className='textarea2'
                 value={komentar} 
                 onChange={(e) => setKomentar(e.target.value)} 
                 placeholder="Dodaj komentar..."

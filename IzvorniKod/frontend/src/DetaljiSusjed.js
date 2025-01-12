@@ -30,8 +30,9 @@ const DetaljiSusjed = () => {
     }
     const renderStars = () => {
         const totalStars = 5;
-        const fullStars = Math.floor(user.ocjena);
-        const halfStar = user.ocjena % 1 >= 0.5;
+        const ocjena = user.brojOcjena!=0 ? user.zbrojOcjena/user.brojOcjena : 0.0;
+        const fullStars = Math.floor(ocjena);
+        const halfStar = ocjena % 1 >= 0.5;
         const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
 
         return (
@@ -77,7 +78,7 @@ const DetaljiSusjed = () => {
             <p><strong>Kvart:</strong> {user.kvartSusjed}</p>
             <p><strong>Broj bodova:</strong> {user.bodovi || 'N/A'}</p>
             <p><strong>Opis:</strong> {user.opis || 'N/A'}</p>
-            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.ocjena})</p>
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.brojOcjena!=0 ? user.zbrojOcjena/user.brojOcjena : 0.0})</p>
             <button onClick={() => navigate(-1)}>Povratak</button> {/* vrati se nazad */}
             
         </div>

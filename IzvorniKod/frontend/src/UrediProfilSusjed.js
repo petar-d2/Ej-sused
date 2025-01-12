@@ -83,7 +83,8 @@ const UrediProfilSusjed = ({ user, setUser2 }) => {
             isSusjed: user.isSusjed,
             isTvrtka: user.isTvrtka,
             isNadlezna: user.isNadlezna,
-            ocjena: user.ocjena
+            brojOcjena: user.brojOcjena,
+            zbrojOcjena: user.zbrojOcjena
         };
 
         try {

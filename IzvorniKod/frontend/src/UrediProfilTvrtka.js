@@ -65,7 +65,8 @@ const UrediProfilTvrtka = ({ user, setUser2 }) => {
             kvart: kvart,
             mjestoTvrtka: user.mjesto,
             opisTvrtka: opis,
-            ocjena: user.ocjena
+            brojOcjena: user.brojOcjena,
+            zbrojOcjena: user.zbrojOcjena
         };
 
         try {

@@ -33,7 +33,8 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
             kvart: kvart,
             mjestoTvrtka: mjesto, //zasad samo Zagreb
             opisTvrtka: opis,
-            ocjena: 0.0
+            brojOcjena: 0,
+            zbrojOcjena: 0
         };
 
         try {

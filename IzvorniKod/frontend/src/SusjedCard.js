@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './styles/susjed_card.css';
 
 const SusjedCard = ({ user }) => {
+    const ocjena = user.brojOcjena!=0 ? user.zbrojOcjena/user.brojOcjena : 0.0;
+
     const navigate = useNavigate();
 
     const handleCardClick = () => {
@@ -23,8 +25,8 @@ const SusjedCard = ({ user }) => {
     // zvjezdice na temelju ocjene
     const renderStars = () => {
         const totalStars = 5;
-        const fullStars = Math.floor(user.ocjena); // cijele zvjezdice
-        const halfStar = user.ocjena % 1 >= 0.5; // pola zvjezdice ako je ima
+        const fullStars = Math.floor(ocjena); // cijele zvjezdice
+        const halfStar = ocjena % 1 >= 0.5; // pola zvjezdice ako je ima
         const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0);
 
         return (
@@ -46,7 +48,7 @@ const SusjedCard = ({ user }) => {
                     <span key={index} className="skill-badge">{skill}</span>
                 ))}
             </div>
-            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.ocjena})</p>
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.brojOcjena!=0 ? user.zbrojOcjena/user.brojOcjena : 0.0})</p>
         </div>
     );
 };

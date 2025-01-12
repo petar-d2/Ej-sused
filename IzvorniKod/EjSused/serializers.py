@@ -9,7 +9,7 @@ class TvrtkaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tvrtka
-        fields = ['korisnik_id', 'nazivTvrtka', 'ocjena', 'email', 'adresaTvrtka', 'kvartTvrtka', 'opisTvrtka', 'mjestoTvrtka']
+        fields = ['korisnik_id', 'nazivTvrtka', 'brojOcjena', 'zbrojOcjena', 'email', 'adresaTvrtka', 'kvartTvrtka', 'opisTvrtka', 'mjestoTvrtka']
         depth = 1  # Optional: This can help with nested related fields (like 'email')
 
 class SusjedSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class SusjedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Susjed
-        fields = ['korisnik_id', 'ime', 'prezime', 'skills', 'ocjena', 'email', 'bodovi', 'isVolonter', 'mjestoSusjed', 'kvartSusjed', 'opisSusjed']
+        fields = ['korisnik_id', 'ime', 'prezime', 'skills', 'brojOcjena', 'zbrojOcjena', 'email', 'bodovi', 'isVolonter', 'mjestoSusjed', 'kvartSusjed', 'opisSusjed']
         depth = 1  # Optional: This can help with nested related fields (like 'email')
 
 class DogadajSerializer(serializers.ModelSerializer):
