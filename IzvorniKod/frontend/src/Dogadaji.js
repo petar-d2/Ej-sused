@@ -1,32 +1,52 @@
-// Dogadaji.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import DogadajCard from './DogadajCard'; // Import DogadajCard component
-import './styles/dogadaji.css'; // Assuming this CSS is already created
+import DogadajCard from './DogadajCard';
+import './styles/dogadaji.css';
 
 const Dogadaji = () => {
   const [events, setEvents] = useState([]); // State for holding fetched events
+  const [filteredEvents, setFilteredEvents] = useState([]); // State for filtered events
   const [loading, setLoading] = useState(true); // Loading state
+  const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const inputRef = useRef(null); // Reference for the input field
 
-  // Fetch data from the views.py/API
-  const fetchData = async () => {
+  const fetchData = async (query = '') => {
+    setLoading(true);
     try {
-      const response = await axios.post(
-        window.location.href.replace(window.location.pathname, '/') + 'dogadaji/'
+      const response = await axios.get(
+        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=dogadaji`
       );
-      setEvents(response.data); // Set fetched data to state
+      setEvents(response.data); // Update users with search results
     } catch (error) {
-      console.error('Error fetching events:', error); // Log errors
+      console.error('Error fetching data:', error);
     } finally {
-      setLoading(false); // Set loading to false when data is fetched
+      setLoading(false);
     }
   };
-
-  // Fetch data when page opens
+  // Debounce fetchData to reduce API calls (optional but recommended)
   useEffect(() => {
-    fetchData();
+    const delayDebounceFn = setTimeout(() => {
+      fetchData(searchQuery);
+    }, 500); // Wait 300ms after user stops typing
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value); // Update search query
+  };
+
+  // Auto-focus the input field when the component loads
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus(); // Focus on the input field
+    }
   }, []);
 
+
+  
+  // Ensure filteredEvents is an array before calling .map
   if (loading) {
     return (
       <div className="loading-container">
@@ -37,16 +57,27 @@ const Dogadaji = () => {
 
   return (
     <div>
-      <h2>Događaji</h2>
-      
+      <div className="header" id="search">
+        <h2>Događaji</h2>
+        <input
+          type="text"
+          ref={inputRef}
+          placeholder="Pretraži po nazivu događaja..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+      </div>
+
       <div className="dogadaj-card-container">
-        {events.map((event) => (
-          <DogadajCard key={event.id} event={event} /> // Show a card for each event
-        ))}
+        {/* Check if filteredEvents is an array before calling map */}
+          {events.map((event) => (
+            <DogadajCard key={event.id} event={event} />
+          ))}
+
       </div>
     </div>
   );
 };
-
 
 export default Dogadaji;
