@@ -37,6 +37,9 @@ const Header = () => {
     const isSusjed2 = () => {
         if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
             const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
             return userData.isSusjed;
         } else {
             return false;
@@ -45,6 +48,9 @@ const Header = () => {
     const isVolonter2 = () => {
         if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
             const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
             return userData.isVolonter;
         } else {
             return false;
@@ -53,6 +59,9 @@ const Header = () => {
     const isTvrtka2 = () => {
         if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
             const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
             return userData.isTvrtka;
         } else {
             return false;
