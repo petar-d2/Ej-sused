@@ -22,5 +22,7 @@ urlpatterns = [
     path("napravi-zahtjev/", napraviZahtjevView.as_view(), name="napravi-zahtjev"),
     path("unesi-komentar/", unesiKomentarView.as_view(), name="unesi-komentar"),
     path("ocjena-edit/", ocjenaEdit.as_view(), name='ocjena-edit'),
+    path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
+    path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
     path("", main),
 ]

@@ -10,7 +10,8 @@ from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-
+from django.http import Http404
+from rest_framework.permissions import IsAdminUser,AllowAny
 
 # Render the main page
 def main(request):
@@ -594,3 +595,30 @@ class ocjenaEdit(APIView):
 
         # Return successful update response
         return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+
+
+class adminDeleteView(APIView):
+    ##permission_classes = [AllowAny]
+
+    def delete(self, request, *args, **kwargs):
+        if 'komentar_id' in kwargs:
+            return self.delete_komentar(kwargs['komentar_id'])
+        elif 'user_id' in kwargs:
+            return self.delete_user(kwargs['user_id'])
+        else:
+            raise Http404("Object not found.")
+        
+    def delete_komentar(self, komentar_id):
+        try:
+            komentar = Komentar.objects.get(pk=komentar_id)
+            komentar.delete()
+            return Response({"message": "Comment deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Komentar.DoesNotExist:
+            return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+    def delete_user(self, user_id):
+        try:
+            korisnik = Korisnik.objects.get(pk=user_id)
+            korisnik.delete()
+            return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except Korisnik.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
