@@ -126,9 +126,9 @@ class Zahtjev(models.Model):
     opisZahtjev = models.CharField(max_length=2047, null=True)  
     ocjenaIzvrsitelj = models.IntegerField(null=True, blank=True) 
     
-    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)  # ForeignKey to Susjed
-    sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.CASCADE, null=True, blank=True)  # ForeignKey to VrstaUsluga
-    sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)  # ForeignKey to Susjed (as Izvrsitelj)
+    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
+    sifVrsta = models.TextField(default="")
+    sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -158,7 +158,6 @@ class JeSposoban(models.Model):
     def __str__(self):
         return f"JeSposoban - Susjed: {self.sifSusjed}, Vrsta: {self.sifVrsta}"
 
-
 class Prihvaca(models.Model):
     ocjenaPonuda = models.IntegerField()
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
@@ -171,7 +170,6 @@ class Prihvaca(models.Model):
 
     def __str__(self):
         return f"Prihvaca - Susjed: {self.sifSusjed}, KadZadano: {self.kadZadano}, Tvrtka: {self.sifTvrtka}"
-    
 class Ponuda(models.Model):
     kadZadano = models.DateTimeField()
     cijenaNovac = models.FloatField(null=True, blank=True)

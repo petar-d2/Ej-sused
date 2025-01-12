@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './styles/kreirajZahtjev.css'; // Stilovi, ako ih koristiš
+import { GlobalContext } from './GlobalContext'; // Ispravi ime fajla ako je drugačije
 
 const NapraviZahtjev = () => {
-
   const userData = JSON.parse(localStorage.getItem('user')); // Uzmi podatke o korisniku
+  const { skills } = useContext(GlobalContext); // Preuzmi skillove iz konteksta
 
   const [formData, setFormData] = useState({
     kadZadan: Date.now(),
-    sifSusjed: userData.id, // ID povezanog korisnika
+    sifSusjed: userData.id,
     nazivZahtjev: '',
     adresaZahtjev: '',
     statusZahtjev: 'ČEKANJE',
     opisZahtjev: '',
     cijenaBod: 0,
-    sifVrsta: '', // ID vrste usluge (ako postoji)
-    sifIzvrsitelj: '', // Izvrsitelj
+    sifVrsta: '', // ID vrste usluge (izabran skill)
+    sifIzvrsitelj: '',
   });
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Funkcija za rukovanje promenom u formi
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -30,17 +30,14 @@ const NapraviZahtjev = () => {
     });
   };
 
-  // Funkcija za slanje podataka na backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Proveravamo da li su obavezna polja popunjena
-    if (!formData.nazivZahtjev || !formData.adresaZahtjev || !formData.cijenaBod) {
+    if (!formData.nazivZahtjev || !formData.adresaZahtjev || !formData.cijenaBod || !formData.sifVrsta) {
       setErrorMessage('Sva polja osim opisa su obavezna.');
       setSuccessMessage('');
       return;
     }
-    //if(!formData.cijenaBod > userData.bodovi)
 
     try {
       const response = await axios.post(
@@ -122,15 +119,19 @@ const NapraviZahtjev = () => {
         </div>
         <div className="form-group">
           <label htmlFor="sifVrsta">Vrsta Usluge:</label>
-          <input
-            type="text"
+          <select
             id="sifVrsta"
             name="sifVrsta"
             value={formData.sifVrsta}
             onChange={handleChange}
             required
             className="form-control"
-          />
+          >
+            <option value="" disabled>Izaberi vrstu usluge</option>
+            {skills.map((skill, index) => (
+              <option key={index} value={skill.id}>{skill.name}</option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="btn btn-primary mt-3">Kreiraj Zahtjev</button>
       </form>

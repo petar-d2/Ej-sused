@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -510,7 +510,6 @@ class napraviZahtjevView(APIView):
 
         # Preuzimanje odnosa
         sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
-        sifVrsta = get_object_or_404(VrstaUsluga, pk=sifVrsta_id)
         sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
 
         try:
@@ -523,7 +522,7 @@ class napraviZahtjevView(APIView):
                 opisZahtjev=opisZahtjev,
                 cijenaBod=cijenaBod,
                 sifSusjed=sifSusjed,
-                sifVrsta=sifVrsta,
+                sifVrsta=sifVrsta_id,
                 sifIzvrsitelj=sifIzvrsitelj,
             )
             zahtjev.save()
