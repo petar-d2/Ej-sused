@@ -35,11 +35,12 @@ const NapraviZahtjev = () => {
     e.preventDefault();
 
     // Proveravamo da li su obavezna polja popunjena
-    if (!formData.nazivZahtjev || !formData.adresaZahtjev || !formData.cijenaBod || !formData.sifVrsta) {
+    if (!formData.nazivZahtjev || !formData.adresaZahtjev || !formData.cijenaBod) {
       setErrorMessage('Sva polja osim opisa su obavezna.');
       setSuccessMessage('');
       return;
     }
+    //if(!formData.cijenaBod > userData.bodovi)
 
     try {
       const response = await axios.post(
@@ -109,18 +110,6 @@ const NapraviZahtjev = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="statusZahtjev">Status:</label>
-          <input
-            type="text"
-            id="statusZahtjev"
-            name="statusZahtjev"
-            value={formData.statusZahtjev}
-            onChange={handleChange}
-            required
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
           <label htmlFor="opisZahtjev">Opis:</label>
           <textarea
             id="opisZahtjev"
@@ -140,17 +129,6 @@ const NapraviZahtjev = () => {
             value={formData.sifVrsta}
             onChange={handleChange}
             required
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="sifIzvrsitelj">Izvrsitelj:</label>
-          <input
-            type="text"
-            id="sifIzvrsitelj"
-            name="sifIzvrsitelj"
-            value={formData.sifIzvrsitelj}
-            onChange={handleChange}
             className="form-control"
           />
         </div>
