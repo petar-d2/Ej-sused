@@ -1,9 +1,9 @@
-from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer
+from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer, KomentarSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -510,7 +510,6 @@ class napraviZahtjevView(APIView):
 
         # Preuzimanje odnosa
         sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
-        sifVrsta = get_object_or_404(VrstaUsluga, pk=sifVrsta_id)
         sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
 
         try:
@@ -523,7 +522,7 @@ class napraviZahtjevView(APIView):
                 opisZahtjev=opisZahtjev,
                 cijenaBod=cijenaBod,
                 sifSusjed=sifSusjed,
-                sifVrsta=sifVrsta,
+                sifVrsta=sifVrsta_id,
                 sifIzvrsitelj=sifIzvrsitelj,
             )
             zahtjev.save()
@@ -622,3 +621,13 @@ class adminDeleteView(APIView):
             return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Korisnik.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class pokaziKomentareView(APIView):
+    def get(self, request, sifTvrtka):
+        komentari = Komentar.objects.filter(sifPrima=sifTvrtka)
+
+        # Serialize the Dogadaj instances
+        serializer = KomentarSerializer(komentari, many=True)
+
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
