@@ -1,4 +1,4 @@
-from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer
+from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer, KomentarSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -621,3 +621,13 @@ class adminDeleteView(APIView):
             return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Korisnik.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class pokaziKomentareView(APIView):
+    def get(self, request, sifTvrtka):
+        komentari = Komentar.objects.filter(sifPrima=sifTvrtka)
+
+        # Serialize the Dogadaj instances
+        serializer = KomentarSerializer(komentari, many=True)
+
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -10,6 +10,7 @@ const DetaljiTvrtka = () => {
     const [loading, setLoading] = useState(true);
     const [rating, setRating] = useState(0);
     const [komentar, setKomentar] = useState('');
+    const [komentari, setKomentari] = useState([]);
 
     useEffect(() => {
         const fetchTvrtkaDetails = async () => {
@@ -24,7 +25,19 @@ const DetaljiTvrtka = () => {
             }
         };
 
+        const fetchKomentari = async () => {
+            try {
+                const apiUrl = window.location.href.replace(window.location.pathname, '/') + `pokazi-komentare/${id}/`;
+                const response = await axios.get(apiUrl);
+                setKomentari(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
         fetchTvrtkaDetails();
+        fetchKomentari();
     }, [id]);
 
     const handleViewOnMapsClick = () => {
@@ -136,7 +149,7 @@ const DetaljiTvrtka = () => {
             <p className="ocjena">
                 <strong>Ocjena:</strong>
                 <span className="star-rating">{renderStars2(tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0)}</span>
-                ({tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0})
+                ({tvrtka.brojOcjena!=0 ? Math.round(tvrtka.zbrojOcjena/tvrtka.brojOcjena,2) : 0.0})
             </p>
 
             <p className='ocjena'>
@@ -158,6 +171,20 @@ const DetaljiTvrtka = () => {
             />
             
             <button onClick={handleSubmitComment}>Pošaljite komentar</button>
+            
+            <h3>Komentari:</h3>
+            <div className="komentari-container">
+                {komentari.length > 0 ? (
+                    komentari.map((komentar) => (
+                        <div key={komentar.sifKom} className="komentar">
+                            <p>&emsp;{komentar.textKom}</p>
+
+                        </div>
+                    ))
+                ) : (
+                    <p>&emsp;Nema dostupnih komentara.</p>
+                )}
+            </div>
 
             <button onClick={() => navigate(-1)}>Povratak</button>
         </div>

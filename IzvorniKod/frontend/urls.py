@@ -24,5 +24,6 @@ urlpatterns = [
     path("ocjena-edit/", ocjenaEdit.as_view(), name='ocjena-edit'),
     path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
     path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
+    path('pokazi-komentare/<int:sifTvrtka>/', pokaziKomentareView.as_view(), name='pokazi-komentare'),
     path("", main),
 ]

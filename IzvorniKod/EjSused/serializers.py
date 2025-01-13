@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Dogadaj, Susjed, Tvrtka
+from api.models import Dogadaj, Susjed, Tvrtka, Komentar
 
 class TvrtkaSerializer(serializers.ModelSerializer):
     
@@ -34,3 +34,9 @@ class DogadajSerializer(serializers.ModelSerializer):
                   'datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'adresaDogadaj', 
                   'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
         depth = 1  # This can be useful for nested relationships if you want to include related model fields
+
+class KomentarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Komentar
+        fields = ['sifKom','textKom','sifPrima','sifDaje']
+        depth = 1
