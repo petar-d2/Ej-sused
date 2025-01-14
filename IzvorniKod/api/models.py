@@ -118,13 +118,11 @@ class PrijavljenNa(models.Model):
         return f"PrijavljenNa {self.sifSusjed} - {self.kadZadano} - {self.sifVolonter}"
 
 class Zahtjev(models.Model):
-    cijenaBod = models.IntegerField() 
-    kadZadan = models.DateTimeField()  
+    cijenaBod = models.IntegerField()
     nazivZahtjev = models.CharField(max_length=255)  
     adresaZahtjev = models.CharField(max_length=255) 
     statusZahtjev = models.CharField(max_length=255)  
     opisZahtjev = models.CharField(max_length=2047, null=True)  
-    ocjenaIzvrsitelj = models.IntegerField(null=True, blank=True) 
     
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
     sifVrsta = models.TextField(default="")
@@ -132,11 +130,11 @@ class Zahtjev(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['kadZadan', 'sifSusjed'], name='unique_kadZadan_sifSusjed')
+            models.UniqueConstraint(fields=['sifSusjed'], name='unique_kadZadan_sifSusjed')
         ]
 
     def __str__(self):
-        return f"Zahtjev {self.nazivZahtjev} - {self.kadZadan} ({self.sifSusjed})"
+        return f"Zahtjev {self.nazivZahtjev} - ({self.sifSusjed})"
     
 
 class VrstaUsluga(models.Model):

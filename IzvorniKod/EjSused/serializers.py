@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Dogadaj, Susjed, Tvrtka, Komentar
+from api.models import Dogadaj, Susjed, Tvrtka, Komentar, Zahtjev
 
 class TvrtkaSerializer(serializers.ModelSerializer):
     
@@ -39,4 +39,9 @@ class KomentarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Komentar
         fields = ['sifKom','textKom','sifPrima','sifDaje']
+        depth = 1
+class ZahtjevSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Zahtjev
+        fields= ['id', 'sifSusjed', 'sifIzvrsitelj','sifVrsta', 'statusZahtjev', 'opisZahtjev', 'cijenaBod', 'adresaZahtjev', 'nazivZahtjev']
         depth = 1
