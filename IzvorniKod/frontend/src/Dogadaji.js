@@ -14,7 +14,7 @@ const Dogadaji = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=dogadaji`
+        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=dogadaj`
       );
       setEvents(response.data); // Update users with search results
     } catch (error) {

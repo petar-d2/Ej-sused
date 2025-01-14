@@ -92,7 +92,8 @@
 
 
 /* ako je manje od 875px prikazi dropdown menu, a inace obicne gumbe */
-@media (max-width: 875px) {
+/* ipak uvijek dropdown */
+@media (max-width: 10000px) {
     .header_grid {
         display: none; 
     }

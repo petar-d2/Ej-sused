@@ -241,6 +241,11 @@ class searchSortView(APIView):
             'serializer': TvrtkaSerializer,
             'fields': ['nazivTvrtka', 'opisTvrtka']
         },
+        'dogadaj': {
+            'model': Dogadaj,
+            'serializer': DogadajSerializer,
+            'fields':  [ 'datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
+        }
     }
     def get(self, request):
         #string koji se pretrazuje

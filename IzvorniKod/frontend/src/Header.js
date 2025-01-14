@@ -8,7 +8,6 @@ import axios from 'axios';
 const Header = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [loggedUser, setLoggedUser] = useState(null);
 
     const handleLogout = async () => {
         var access = localStorage.getItem("accessToken");
@@ -89,7 +88,7 @@ const Header = () => {
         }
     }, []);*/
 
-    const isMobile = useMediaQuery({ query: '(max-width: 875px)' });
+    const isMobile = true; //useMediaQuery({ query: '(max-width: 875px)' });
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen); 

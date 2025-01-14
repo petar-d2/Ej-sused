@@ -30,7 +30,6 @@ const DetaljiTvrtka = () => {
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `pokazi-komentare/${id}/`;
                 const response = await axios.get(apiUrl);
                 setKomentari(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
