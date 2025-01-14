@@ -5,7 +5,6 @@ import Prijava from './Prijava';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/app.css';
 import Registracija from './Registracija';
-import NapraviPonudu from './NapraviPonudu';
 import UrediProfil from './UrediProfil';
 import DetaljiSusjed from './DetaljiSusjed';
 import { GlobalProvider } from './GlobalContext';
@@ -45,7 +44,6 @@ function App() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/napravi-ponudu" element={<NapraviPonudu />} />
             <Route path="/tvrtke" element={<Tvrtke />} />
             <Route path="/dogadaji" element={<Dogadaji />} />
             <Route path="/prijava" element={<Prijava/>} />

@@ -537,7 +537,7 @@ class napraviZahtjevView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
-        return Response({"message": "GET request not implemented for this view."})
+        return render(request, "index.html")
 
 class unesiKomentarView(APIView):
     def post(self, request):
