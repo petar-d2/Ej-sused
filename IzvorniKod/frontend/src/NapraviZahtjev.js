@@ -28,6 +28,7 @@ const NapraviZahtjev = () => {
       ...formData,
       [name]: value,
     });
+    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -129,7 +130,7 @@ const NapraviZahtjev = () => {
           >
             <option value="" disabled>Izaberi vrstu usluge</option>
             {skills.map((skill, index) => (
-              <option key={index} value={skill.id}>{skill.name}</option>
+              <option key={index} value={skill}>{skill}</option>
             ))}
           </select>
         </div>
