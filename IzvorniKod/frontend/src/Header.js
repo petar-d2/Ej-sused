@@ -113,6 +113,7 @@ const Header = () => {
                             {isLoggedIn() ? (
                                 <>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
+                                    <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     {isSusjed2() && (
                                         <>
