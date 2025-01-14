@@ -1,0 +1,106 @@
+/* General container for the page */
+body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      
+      .headera {
+        text-align: center;
+        margin: 20px 0;
+      }
+      
+      .search-input {
+        width: 80%;
+        max-width: 400px;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        font-size: 16px;
+        outline: none;
+        transition: box-shadow 0.3s ease;
+      }
+      
+      .search-input:focus {
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.6);
+      }
+      
+      /* Spinner for loading */
+      .loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+      
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 6px solid #ccc;
+        border-top-color: #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+      /* Container for cards */
+      .zahtjevi-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+      }
+      
+      .zahtjev-card {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      
+      .zahtjev-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      .zahtjev-card h3 {
+        margin: 0 0 10px;
+        color: #333;
+      }
+      
+      .zahtjev-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .zahtjev-card strong {
+        color: #333;
+      }
+      
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .zahtjevi-container {
+          flex-direction: column;
+          align-items: center;
+        }
+      
+        .search-input {
+          width: 90%;
+        }
+      }
+      
