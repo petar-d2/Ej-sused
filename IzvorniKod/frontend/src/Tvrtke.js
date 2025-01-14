@@ -55,8 +55,7 @@ const Tvrtke = () => {
 
   return (
     <div>
-      <div className="header" id="search">
-        <h2>Tvrtke</h2>
+      <div className="headera" id="search">
         <input
           type="text"
           ref={inputRef} // Reference the input field
