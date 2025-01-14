@@ -112,7 +112,6 @@ const Header = () => {
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                             {isLoggedIn() ? (
                                 <>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     {isSusjed2() && (
