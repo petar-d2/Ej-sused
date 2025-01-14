@@ -8,7 +8,6 @@ urlpatterns = [
     path("moji-dogadaji/<int:sifVolonter>/", mojiDogadajiListView.as_view(), name='moji-dogadaji'),
     path("kreiraj-dogadaj/", createDogadajView.as_view(), name='kreiraj-dogadaj'),
     path("tvrtke/", tvrtkeListView.as_view(), name='tvrtke_list'),
-    path("napravi-ponudu/", main),
     path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
     path('susjed/<int:sifSusjed>/', detaljiSusjedView.as_view(), name='susjed-detail'),
     path('tvrtka/<int:sifTvrtka>/', detaljiTvrtkaView.as_view(), name='tvrtka-detail'),
