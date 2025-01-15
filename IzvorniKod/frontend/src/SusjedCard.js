@@ -48,7 +48,7 @@ const SusjedCard = ({ user }) => {
                     <span key={index} className="skill-badge">{skill}</span>
                 ))}
             </div>
-            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.brojOcjena!=0 ? user.zbrojOcjena/user.brojOcjena : 0.0})</p>
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.brojOcjena!=0 ? Math.round((user.zbrojOcjena / user.brojOcjena) * 100) / 100 : 0.0})</p>
         </div>
     );
 };

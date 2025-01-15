@@ -26,5 +26,6 @@ urlpatterns = [
     path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
     path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
     path('pokazi-komentare/<int:sifTvrtka>/', pokaziKomentareView.as_view(), name='pokazi-komentare'),
+    path('uredi-profil', main),
     path("", main),
 ]
