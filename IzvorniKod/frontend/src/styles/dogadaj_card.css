@@ -1,0 +1,29 @@
+.dogadaj-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: 40vw;
+    min-width: 250px;
+    margin: 15px;
+}
+
+.dogadaj-card:hover {
+    transform: scale(1.03);
+}
+
+.view-map-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-map-button:hover {
+    background-color: #555;
+}

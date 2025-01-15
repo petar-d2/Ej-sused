@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/header.css';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
@@ -24,6 +24,7 @@ const Header = () => {
         Cookies.remove("access");
         Cookies.remove("refresh");
         Cookies.remove("google");
+        localStorage.removeItem('user');
         navigate('/');
         alert("Uspješno ste odjavljeni!");
     };
@@ -31,6 +32,40 @@ const Header = () => {
     const isLoggedIn = () => {
         return typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null;
     };
+    
+    const isSusjed2 = () => {
+        if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
+            return userData.isSusjed;
+        } else {
+            return false;
+        }
+    }
+    const isVolonter2 = () => {
+        if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
+            return userData.isVolonter;
+        } else {
+            return false;
+        }
+    }
+    const isTvrtka2 = () => {
+        if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
+            return userData.isTvrtka;
+        } else {
+            return false;
+        }
+    }
 
     { // login cookie provjera
         var refresh = Cookies.get("refresh");
@@ -43,7 +78,17 @@ const Header = () => {
         }
     }
 
-    const isMobile = useMediaQuery({ query: '(max-width: 875px)' });
+    /*useEffect(() => {
+        if (isLoggedIn()) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            setLoggedUser(userData); // Update state with user data
+            console.log(userData);
+        } else {
+            setLoggedUser(null); // Reset state if logged out
+        }
+    }, []);*/
+
+    const isMobile = true; //useMediaQuery({ query: '(max-width: 875px)' });
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen); 
@@ -67,12 +112,29 @@ const Header = () => {
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                             {isLoggedIn() ? (
                                 <>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Napravi ponudu</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> {/* Added link */}
+                                    <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
+                                    {isSusjed2() && (
+                                        <>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                            {isVolonter2() && (
+                                                <>
+                                                    <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
+                                                    <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                    {isTvrtka2() && (
+                                        <>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                        </>
+                                    )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
-                                    {/*<button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>*/}
+                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button> 
                                 </>
                             ) : (
                                 <>
@@ -90,11 +152,30 @@ const Header = () => {
                         <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
                         {isLoggedIn() ? (
                             <>
-                                <button className="header_gumb" onClick={() => navigate('/napravi-ponudu')}>Napravi ponudu</button>
+                                
                                 <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
                                 <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button> 
-                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button><button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                {/*<button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>*/}
+                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
+                                {isSusjed2() && (
+                                    <>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                        {isVolonter2() && (
+                                            <>
+                                                <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
+                                                <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                                {isTvrtka2() && (
+                                    <>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                    </>
+                                )}
+                                <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
+                                <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button> 
                             </>
                         ) : (
                             <>

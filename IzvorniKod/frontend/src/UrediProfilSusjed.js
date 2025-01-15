@@ -5,18 +5,17 @@ import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
 
-const UrediProfilSusjed = () => {
+const UrediProfilSusjed = ({ user, setUser2 }) => {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
 
-    const { kvartovi, skills, refreshAccessToken } = useContext(GlobalContext);
+    const { kvartovi, skills, refreshAccessToken, setUser } = useContext(GlobalContext);
 
     const tekst = "Uredi Profil";
     const tekst2 = "Spremi";
     
     //uzmi podatke o korisniku preko tokena
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
@@ -44,12 +43,12 @@ const UrediProfilSusjed = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, []);*/
 
     const [adresa, setAdresa] = useState(user.adresa);
     const [ime, setIme] = useState(user.ime);
     const [prezime, setPrezime] = useState(user.prezime);
-    const [kvart, setKvart] = useState(user.kvart);
+    const [kvart, setKvart] = useState(user.kvartSusjed);
     const [isVolonter, setIsVolonter] = useState(user.isVolonter);
     const [userSkills, setUserSkills] = useState(user.skills.split(",").map(skill => skill.trim()));
     const [opisSusjed, setOpisSusjed] = useState(user.opisSusjed);
@@ -69,9 +68,10 @@ const UrediProfilSusjed = () => {
 
         const skillsString = userSkills.join(", ");
         const newUser={
+            id: user.id,
             email: user.email,
             password: user.password,
-            adresa: adresa,
+            //adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
@@ -83,11 +83,14 @@ const UrediProfilSusjed = () => {
             isSusjed: user.isSusjed,
             isTvrtka: user.isTvrtka,
             isNadlezna: user.isNadlezna,
-            ocjena: user.ocjena
+            brojOcjena: user.brojOcjena,
+            zbrojOcjena: user.zbrojOcjena
         };
 
         try {
             const response = await axios.post(window.location.href.replace(window.location.pathname,'/') + 'user-edit/', newUser);
+            localStorage.setItem('user', JSON.stringify(newUser));
+            navigate('/');
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješno uređivanje profila. Pokušajte ponovo.");
@@ -116,7 +119,7 @@ const UrediProfilSusjed = () => {
                         required 
                     />
                 </div>
-                <div className="form-group">
+                {/*<div className="form-group">
                     <label>Adresa:</label>
                     <input 
                         type="text" 
@@ -124,7 +127,7 @@ const UrediProfilSusjed = () => {
                         onChange={(e) => setAdresa(e.target.value)} 
                         required
                     />
-                </div>
+                </div>*/}
                 <div className="form-group">
                     <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 

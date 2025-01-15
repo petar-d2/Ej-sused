@@ -25,7 +25,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
     if (!(user2 && user2.vrsta)){
         return (
             <div className="login_signup-container">
-                <h2>Registracija</h2>
+                <h2>Vrsta registracije:</h2>
                 <form onSubmit={handleSignup}>
                     <h3>Odaberite vrstu korisnika:</h3>
                     <div className='reg_vrsta'>

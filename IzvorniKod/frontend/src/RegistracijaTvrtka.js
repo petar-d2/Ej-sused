@@ -29,11 +29,12 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
             isTvrtka: true, 
             isNadlezna: false,
             adresa: adresa,
-            naziv: naziv,
+            nazivTvrtka: naziv,
             kvart: kvart,
             mjestoTvrtka: mjesto, //zasad samo Zagreb
             opisTvrtka: opis,
-            ocjena: 0.0
+            brojOcjena: 0,
+            zbrojOcjena: 0
         };
 
         try {
@@ -66,8 +67,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
-                        placeholder="Unesite adresu"
+                        required
                     />
                 </div>
                 <div className="form-group">
@@ -76,8 +76,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         type="text" 
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
-                        required 
-                        placeholder="Unesite naziv tvrtke"
+                        required
                     />
                 </div>
                 <div className="form-group">

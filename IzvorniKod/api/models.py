@@ -17,7 +17,8 @@ class Tvrtka(models.Model):
     kvartTvrtka = models.CharField(max_length=255)
     mjestoTvrtka = models.CharField(max_length=255)
     opisTvrtka = models.CharField(max_length=4095, null=True)
-    ocjena = models.FloatField(default=0.0)
+    brojOcjena = models.IntegerField(default=0)
+    zbrojOcjena = models.IntegerField(default=0)
 
     sifTvrtka = models.OneToOneField(
         Korisnik,
@@ -37,7 +38,8 @@ class Susjed(models.Model):
     opisSusjed = models.CharField(max_length=4095, null=True)
     ime = models.CharField(max_length=255)
     prezime = models.CharField(max_length=255)
-    ocjena = models.FloatField(default=0.0)
+    brojOcjena = models.IntegerField(default=0)
+    zbrojOcjena = models.IntegerField(default=0)
     skills = models.TextField(default="")
     
     sifSusjed = models.OneToOneField(
@@ -65,9 +67,8 @@ class Nadlezna(models.Model):
         return self.sifNadlezna
     
 class Dogadaj(models.Model):
-    kadZadano = models.IntegerField()
-    sifVolonter = models.ForeignKey('Komentar', on_delete=models.CASCADE)
-
+    kadZadano = models.CharField(max_length=255)
+    sifVolonter = models.IntegerField()
     datumDogadaj = models.DateField()
     vrijemeDogadaj = models.TimeField()
     nazivDogadaj = models.CharField(max_length=255)
@@ -93,11 +94,11 @@ class Komentar(models.Model):
     sifKom = models.AutoField(primary_key=True)
     ##sifKom = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     textKom = models.CharField(max_length=2047)
-    sifPrima = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
-    sifDaje = models.ForeignKey(Dogadaj, on_delete=models.CASCADE)
+    sifPrima = models.ForeignKey(Tvrtka, on_delete=models.CASCADE)
+    sifDaje = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.sifKom
+        return f"Komentar {self.sifKom}"
     
 
 class PrijavljenNa(models.Model):
@@ -117,25 +118,23 @@ class PrijavljenNa(models.Model):
         return f"PrijavljenNa {self.sifSusjed} - {self.kadZadano} - {self.sifVolonter}"
 
 class Zahtjev(models.Model):
-    cijenaBod = models.IntegerField() 
-    kadZadan = models.DateTimeField()  
+    cijenaBod = models.IntegerField()
     nazivZahtjev = models.CharField(max_length=255)  
     adresaZahtjev = models.CharField(max_length=255) 
     statusZahtjev = models.CharField(max_length=255)  
     opisZahtjev = models.CharField(max_length=2047, null=True)  
-    ocjenaIzvrsitelj = models.IntegerField(null=True, blank=True) 
     
-    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)  # ForeignKey to Susjed
-    sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.CASCADE, null=True, blank=True)  # ForeignKey to VrstaUsluga
-    sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)  # ForeignKey to Susjed (as Izvrsitelj)
+    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
+    sifVrsta = models.TextField(default="")
+    sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['kadZadan', 'sifSusjed'], name='unique_kadZadan_sifSusjed')
+            models.UniqueConstraint(fields=['sifSusjed'], name='unique_kadZadan_sifSusjed')
         ]
 
     def __str__(self):
-        return f"Zahtjev {self.nazivZahtjev} - {self.kadZadan} ({self.sifSusjed})"
+        return f"Zahtjev {self.nazivZahtjev} - ({self.sifSusjed})"
     
 
 class VrstaUsluga(models.Model):
@@ -157,7 +156,6 @@ class JeSposoban(models.Model):
     def __str__(self):
         return f"JeSposoban - Susjed: {self.sifSusjed}, Vrsta: {self.sifVrsta}"
 
-
 class Prihvaca(models.Model):
     ocjenaPonuda = models.IntegerField()
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
@@ -170,7 +168,6 @@ class Prihvaca(models.Model):
 
     def __str__(self):
         return f"Prihvaca - Susjed: {self.sifSusjed}, KadZadano: {self.kadZadano}, Tvrtka: {self.sifTvrtka}"
-    
 class Ponuda(models.Model):
     kadZadano = models.DateTimeField()
     cijenaNovac = models.FloatField(null=True, blank=True)

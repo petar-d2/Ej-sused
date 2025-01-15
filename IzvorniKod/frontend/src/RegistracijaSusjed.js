@@ -34,7 +34,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         e.preventDefault();
 
         // provjera polja
-        if (!ime || !prezime || !adresa || userSkills.length === 0) {
+        if (!ime || !prezime || userSkills.length === 0) {
             alert('Molimo popunite sva polja i odaberite barem jednu vještinu.');
             return;
         }
@@ -43,7 +43,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
         const newUser = {
             email: user2.email,
             password: user2.password,
-            adresa: adresa,
+            //adresa: adresa,
             kvart: kvart,
             ime: ime,
             prezime: prezime,
@@ -55,7 +55,8 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
             isSusjed: true,
             isTvrtka: false,
             isNadlezna: false,
-            ocjena: 0.0
+            brojOcjena: 0,
+            zbrojOcjena: 0
         };
 
         try {
@@ -103,15 +104,15 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         required 
                     />
                 </div>
-                <div className="form-group">
+                {/*<div className="form-group">
                     <label>Adresa:</label>
                     <input 
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
-                        required 
+                        required
                     />
-                </div>
+                </div>*/}
                 <div className="form-group">
                     <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
@@ -136,7 +137,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                     />
                 </div> */}
                 <div className="form-group">
-                    <label>Opis Susjeda:</label>
+                    <label>Opis susjeda:</label>
                     <textarea 
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 

@@ -4,18 +4,17 @@ import './styles/login_signup.css';
 import { GlobalContext } from './GlobalContext';
 import axios from 'axios';
 
-const UrediProfilTvrtka = () => {
+const UrediProfilTvrtka = ({ user, setUser2 }) => {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
 
-    const { kvartovi, refreshAccessToken } = useContext(GlobalContext);
+    const { kvartovi, refreshAccessToken, setUser } = useContext(GlobalContext);
 
     const tekst = "Uredi Profil";
     const tekst2 = "Spremi";
     
     //uzmi podatke o korisniku preko tokena
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const accessToken = localStorage.getItem('accessToken');
@@ -43,18 +42,19 @@ const UrediProfilTvrtka = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, []);*/
 
-    const [adresa, setAdresa] = useState(user.adresa);
-    const [naziv, setNaziv] = useState(user.naziv);
-    const [kvart, setKvart] = useState(user.kvart);
-    const [opis, setOpis] = useState(user.opis);
+    const [adresa, setAdresa] = useState(user.adresaTvrtka);
+    const [naziv, setNaziv] = useState(user.nazivTvrtka);
+    const [kvart, setKvart] = useState(user.kvartTvrtka);
+    const [opis, setOpis] = useState(user.opisTvrtka);
 
     //spremi promjene
     const handleSignup = async (e) => {
         e.preventDefault();
 
         const newUser = {
+            id: user.id,
             email: user.email,
             password: user.password,
             isSusjed: false,
@@ -65,11 +65,14 @@ const UrediProfilTvrtka = () => {
             kvart: kvart,
             mjestoTvrtka: user.mjesto,
             opisTvrtka: opis,
-            ocjena: user.ocjena
+            brojOcjena: user.brojOcjena,
+            zbrojOcjena: user.zbrojOcjena
         };
 
         try {
             const response = await axios.post( window.location.href.replace(window.location.pathname,'/') + 'user-edit/', newUser);
+            localStorage.setItem('user', JSON.stringify(newUser));
+            navigate('/');
         } catch (error) {
             console.error('Error during registration:', error);
             alert("Neuspješno uređivanje profila. Pokušajte ponovo.");
