@@ -13,7 +13,7 @@ Ljudi imaju zauzete živote. Zadnje što nam treba je da se pokvari perilica ili
 Da bismo postigli da korisnici mogu lako i primati i pružati pomoć, odlučili smo da aplikacija bude orijentirana na kvartove. Umjesto putovanja preko cijelog grada, pomažeš upravo onima najbližima sebi, ali i ostali tebi dolaze pomoći u roku nekoliko minuta. U tu je svrhu dizajniran i prikaz aktualnih zahtjeva na karti, kako bi već na prvi pogled znao gdje je potrebna pomoć, ali i da ostali vide gdje ti mogu pomoći.
 
 Naša web-aplikacija potiče susjede da međusobno traže i pružaju usluge za bodove, ali zapravo, besplatno. Međutim, postoje situacije u kojima je potrebna profesionalna pomoć za neke zahtjevnije zadatke. Zato omogućujemo i raznim tvrtkama, obrtima i majstorima da koriste aplikaciju u slučaju nekih specijaliziranih plaćenih usluga prikazanih korisnicima tog kvarta te s komentarima i ocjenom zadovoljstva usluge.
----
+
 Radeći ovaj projekt naučili smo na koji način funkcionira proces razvoja programske potpore. Krenuli smo od problema koji smo htjeli rješiti, specificirali smo zahtjeve našeg budućeg rješenja i zatim smo počeli s oblikovanjem rješenja. Kroz rad na frontendu naučili smo koristiti alate kao što su Figma i framework React. Za rad na backendu bilo je potrebno upoznati se s Djangom i dobro oblikovati bazu podataka. Ovaj projekt rezultat je timskog rada i morali smo naučiti koristiti alate za verzioniranje koda kao što su Git i GitHub te smo naučili kako pisati kvalitetnu dokumentaciju kako bi olakšali drugim članovima tima, ali i ljudima koji će na bilo koji način sudjelovati u projektu.
 
 
