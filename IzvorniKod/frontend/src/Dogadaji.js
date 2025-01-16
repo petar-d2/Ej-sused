@@ -60,6 +60,7 @@ const Dogadaji = () => {
       <div className="headera" id="search">
         <input
           type="text"
+          id="search1"
           ref={inputRef}
           placeholder="Pretraži po nazivu događaja..."
           value={searchQuery}

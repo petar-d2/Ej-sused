@@ -89,6 +89,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Ime:</label>
                     <input 
+                        id="ime"
                         type="text" 
                         value={ime} 
                         onChange={(e) => setIme(e.target.value)} 
@@ -98,6 +99,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Prezime:</label>
                     <input 
+                        id="prezime"
                         type="text" 
                         value={prezime} 
                         onChange={(e) => setPrezime(e.target.value)} 
@@ -107,6 +109,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 {/*<div className="form-group">
                     <label>Adresa:</label>
                     <input 
+                        id="adresa"
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
@@ -130,6 +133,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 {/* <div className="form-group">
                     <label>Mjesto:</label>
                     <input 
+                        id="mjestoSusjed"
                         type="text" 
                         value={mjestoSusjed} 
                         onChange={(e) => setMjestoSusjed(e.target.value)} 
@@ -139,6 +143,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Opis susjeda:</label>
                     <textarea 
+                        id="opisSusjed"
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
                         placeholder="Unesite opis (opcionalno)"
@@ -149,6 +154,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Volonter:</label>
                     <input 
+                        id="volonter"
                         type="checkbox" 
                         checked={isVolonter} 
                         onChange={(e) => setIsVolonter(e.target.checked)} 
