@@ -74,7 +74,7 @@ const Dogadaji = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select
+        <select id="sort_dogadaji"
           className="filter-dropdown"
           value={sortBy}
           onChange={handleSortChange}

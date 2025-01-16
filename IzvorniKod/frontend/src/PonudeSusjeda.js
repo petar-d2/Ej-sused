@@ -89,7 +89,7 @@ const PonudeSusjeda = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select
+        <select id="filter_susjedi"
           value={skills}
           onChange={handleSkillsChange}
         >
@@ -100,7 +100,7 @@ const PonudeSusjeda = () => {
             </option>
           ))}
         </select>
-        <select
+        <select id="sort_susjedi"
           value={sortBy}
           onChange={handleSortChange}
         >

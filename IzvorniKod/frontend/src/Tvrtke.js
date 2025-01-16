@@ -74,7 +74,7 @@ const Tvrtke = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select
+        <select id="sort_tvrtke"
           className="filter-dropdown"
           value={sortBy}
           onChange={handleSortChange}
