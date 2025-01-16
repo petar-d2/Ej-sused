@@ -12,6 +12,7 @@ const PonudeSusjeda = () => {
   const [sortBy, setSortBy] = useState('');
   const inputRef = useRef(null);
 
+  // Fetch the data based on search, skills, and sort parameters
   const fetchData = async (query = '', skill = '', sort = '') => {
     setLoading(true);
     try {
@@ -26,10 +27,11 @@ const PonudeSusjeda = () => {
     }
   };
 
+  // Fetch the list of skills
   const fetchSkills = async () => {
     try {
       const response = await axios.get(
-        `${window.location.href.replace(window.location.pathname, '/') + 'skills/'}`
+        `${window.location.href.replace(window.location.pathname, '/') + 'skills/'}` 
       );
       setSkillsList(response.data);
     } catch (error) {
@@ -43,26 +45,27 @@ const PonudeSusjeda = () => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchData(searchQuery, skills, sortBy);
-    }, 500);
-    return () => clearTimeout(delayDebounceFn);
+      fetchData(searchQuery, skills, sortBy);  // Refetch data when search, skills, or sort change
+    }, 500);  // Delay to reduce API calls while typing
+    return () => clearTimeout(delayDebounceFn);  // Cleanup on unmount or change
   }, [searchQuery, skills, sortBy]);
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    setSearchQuery(event.target.value); // Update search query
   };
 
   const handleSkillsChange = (event) => {
-    setSkills(event.target.value);
+    setSkills(event.target.value); // Update skills filter
   };
 
   const handleSortChange = (event) => {
-    setSortBy(event.target.value);
+    setSortBy(event.target.value); // Update sort by value
   };
 
+  // Auto-focus the input field when the component loads
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus(); // Focus on the input field
     }
   }, []);
 
@@ -75,7 +78,7 @@ const PonudeSusjeda = () => {
   }
 
   return (
-    <div className ="body">
+    <div className="body">
       <div className="headera" id="search">
         <input
           id="search1"
@@ -98,13 +101,12 @@ const PonudeSusjeda = () => {
           ))}
         </select>
         <select
-
           value={sortBy}
           onChange={handleSortChange}
         >
           <option value="">Sortiraj</option>
-          <option value="brojOcjena">Po broju ocjena</option>
-          <option value="zbrojOcjena">Po zbroju ocjena</option>
+          <option value="ocjena">Ocjena - Uzlazno</option>
+          <option value="-ocjena">Ocjena - Silazno</option>
         </select>
       </div>
 
