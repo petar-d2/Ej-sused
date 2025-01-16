@@ -1,4 +1,4 @@
-from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer, KomentarSerializer
+from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer, KomentarSerializer, ZahtjevSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -499,7 +499,6 @@ class napraviZahtjevView(APIView):
         print("Request Data:", request.data)
         
         # Preuzimanje podataka sa zahteva
-        kadZadan = request.data.get('kadZadan')
         nazivZahtjev = request.data.get('nazivZahtjev')
         adresaZahtjev = request.data.get('adresaZahtjev')
         statusZahtjev = request.data.get('statusZahtjev')
@@ -508,19 +507,18 @@ class napraviZahtjevView(APIView):
         sifSusjed_id = request.data.get('sifSusjed')
         sifVrsta_id = request.data.get('sifVrsta')
         sifIzvrsitelj_id = request.data.get('sifIzvrsitelj')
-
+        print("test")
         # Validacija obaveznih polja
-        if not all([kadZadan, nazivZahtjev, adresaZahtjev, cijenaBod, sifSusjed_id, sifVrsta_id]):
+        if not all([nazivZahtjev, adresaZahtjev, cijenaBod, sifSusjed_id, sifVrsta_id]):
             return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Preuzimanje odnosa
         sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
         sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
-
+        print("test2")
         try:
             # Kreiranje novog Zahtjeva
             zahtjev = Zahtjev.objects.create(
-                kadZadan=kadZadan,
                 nazivZahtjev=nazivZahtjev,
                 adresaZahtjev=adresaZahtjev,
                 statusZahtjev=statusZahtjev,
@@ -635,4 +633,23 @@ class pokaziKomentareView(APIView):
         serializer = KomentarSerializer(komentari, many=True)
 
         # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class listZahtjeviView(APIView):
+    def get(self, request):
+        # Fetch all Zahtjevi or filter based on query params
+        naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
+        if naziv_filter:
+            zahtjevi = Zahtjev.objects.filter(nazivZahtjev=naziv_filter)
+        else:
+            zahtjevi = Zahtjev.objects.all()
+        
+        serializer = ZahtjevSerializer(zahtjevi, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class mojiZahtjeviView(APIView):
+    def post(self, request, user_id):
+        zahtjevi = Zahtjev.objects.filter(sifSusjed=user_id)  
+        serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

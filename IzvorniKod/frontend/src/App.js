@@ -17,6 +17,8 @@ import KreirajDogadaj from './KreirajDogadaj';
 import DetaljiDogadaj from './DetaljiDogadaj';
 import MojiDogadaji from './MojiDogadaji';
 import NapraviZahtjev from './NapraviZahtjev';
+import Zahtjevi from './Zahtjevi';
+import MojiZahtjevi from './MojiZahtjevi';
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
    /* if (!(localStorage.getItem("accessToken"))){
@@ -57,6 +59,9 @@ function App() {
             <Route path="/kreiraj-dogadaj" element={<KreirajDogadaj />} />
             <Route path="/moji-dogadaji" element={<MojiDogadaji />} />
             <Route path="/napravi-zahtjev" element={<NapraviZahtjev />} />
+            <Route path="/moji-zahtjevi" element={<MojiZahtjevi />} />
+            <Route path="/zahtjevi" element={<Zahtjevi />} />
+
         </Routes>
       </div>
     </Router>

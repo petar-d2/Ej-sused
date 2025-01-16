@@ -13,6 +13,7 @@
     height: auto;
     /*min-height: 100vh;*/
     position: relative;
+    background-color: white;
 }
 
 form {
@@ -26,7 +27,6 @@ form {
 }
 
 select {
-    margin-left: calc(50%-48px);
     margin-bottom: 15px;
 }
 
@@ -96,6 +96,7 @@ input, textarea {
     align-items: flex-start;
     max-width: 400px;
     min-width: 200px;
+    background-color: white;
 }
 
 .skill-item {

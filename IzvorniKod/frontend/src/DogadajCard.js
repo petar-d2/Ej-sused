@@ -12,7 +12,7 @@ const DogadajCard = ({ event }) => {
   };
 
   return (
-    <div className="dogadaj-card" onClick={handleCardClick}>
+    <div id="dogadaj-card" className="dogadaj-card" onClick={handleCardClick}>
       <h3>{event.nazivDogadaj}</h3>
       <p><strong>Datum:</strong> {event.datumDogadaj}</p>
       <p><strong>Vrijeme:</strong> {event.vrijemeDogadaj}</p>

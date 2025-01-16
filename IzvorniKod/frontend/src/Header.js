@@ -149,12 +149,13 @@ const Header = () => {
                         {currentPage && <div className="header-subtitle">{currentPage}</div>}
                     </h1>
                     <div className="header_grid">
-                        <button className="header_gumb" onClick={() => navigate('/')}>Početna</button>
+                        <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                         {isLoggedIn() ? (
                             <>
-                                <button className="header_gumb" onClick={() => navigate('/tvrtke')}>Tvrtke</button>
-                                <button className="header_gumb" onClick={() => navigate('/ponude-susjeda')}>Ponude susjeda</button>
-                                <button className="header_gumb" onClick={() => navigate('/dogadaji')}>Događaji</button>
+                                
+                                <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
+                                <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> 
+                                <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                 {isSusjed2() && (
                                     <>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
@@ -174,12 +175,12 @@ const Header = () => {
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                <button className="header_gumb" onClick={() => navigate('/uredi-profil')}>Uredi profil</button>
+                                <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button> 
                             </>
                         ) : (
                             <>
-                                <button className="header_gumb" onClick={() => navigate('/prijava')}>Prijava</button>
-                                <button className="header_gumb" onClick={() => { navigate('/registracija'); window.location.reload(); }}>Registracija</button>
+                                <button className="header_gumb" onClick={() => handleNavigate('/prijava')}>Prijava</button>
+                                <button className="header_gumb" onClick={() => { handleNavigate('/registracija'); window.location.reload(); }}>Registracija</button>
                             </>
                         )}
                     </div>

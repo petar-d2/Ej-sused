@@ -247,3 +247,84 @@ class PonudeSusjedaTest(LiveServerTestCase):
         expected_url = f"{self.host_url}susjed/{user_id}"
         WebDriverWait(self.driver, 10).until(EC.url_contains(expected_url))
         self.assertEqual(self.driver.current_url, expected_url)
+
+
+class DogadajiSearchAndNavigationTest(LiveServerTestCase):
+    host_url = "http://127.0.0.1:8000/"  # Update with your Django server's URL
+
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+
+    def tearDown(self):
+        self.driver.quit()
+
+    def test_create_search_and_click_event_with_signin(self):
+        # Step 1: Log in the user
+        self.driver.get(self.host_url + "prijava/")  # Assuming this is the login URL
+        email = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "email"))
+        )
+        password = self.driver.find_element(By.ID, "password")
+        submit = self.driver.find_element(By.ID, "submit")
+
+        # Use test credentials for a valid user
+        email.send_keys("cigo@gmail.com")  # Ensure this user exists in your test database
+        password.send_keys("admin123")
+        submit.send_keys(Keys.RETURN)
+        time.sleep(4)  # Wait for login to complete
+        self.assertEqual(self.host_url, self.driver.current_url)  # Verify successful login
+
+        # Step 2: Navigate to the event creation page
+        self.driver.get(self.host_url + "kreiraj-dogadaj/")
+        time.sleep(4)
+        
+        # Locate the form fields for creating an event
+        naziv_dogadaj = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "nazivDogadaj"))
+        )
+        datum_dogadaj = self.driver.find_element(By.ID, "datumDogadaj")
+        vrijeme_dogadaj = self.driver.find_element(By.ID, "vrijemeDogadaj")
+        adresa_dogadaj = self.driver.find_element(By.ID, "adresaDogadaj")
+        vrsta_dogadaj = self.driver.find_element(By.ID, "vrstaDogadaj")
+        opis_dogadaj = self.driver.find_element(By.ID, "opisDogadaj")
+        nagrada_bod = self.driver.find_element(By.ID, "nagradaBod")
+        submit_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
+
+        # Fill in the form fields
+        naziv_dogadaj.send_keys("test.py Event")
+        datum_dogadaj.send_keys("1.2.2025")  # Example date
+        vrijeme_dogadaj.send_keys("15:30")     # Example time
+        adresa_dogadaj.send_keys("Testna Adresa 123")
+        vrsta_dogadaj.send_keys("Volonterski")
+        opis_dogadaj.send_keys("Ovo je opis testnog događaja.")
+        nagrada_bod.send_keys("50")
+
+        # Submit the form to create the event
+        submit_button.send_keys(Keys.RETURN)
+        
+        # Step 3: Navigate to the events page and check if the event is displayed
+        self.driver.get(self.host_url + "dogadaji/")  # Navigate to the events page
+        time.sleep(5)  # Wait for the page to load
+        
+        # Use class_name to find all dogadaj cards
+        event_cards = self.driver.find_elements(By.CLASS_NAME, "dogadaj-card")
+        print(f"Found {len(event_cards)} event cards before searching.")
+        
+        # Step 4: Enter the event name in the search box
+        search_input = self.driver.find_element(By.CLASS_NAME, "search-input")
+        search_input.send_keys("test.py Event")  # Enter the name of the event to search for
+        search_input.send_keys(Keys.RETURN)
+        
+        # Allow debounce and loading to complete
+        time.sleep(5)
+        
+        # Check event cards again
+        event_cards = self.driver.find_elements(By.CLASS_NAME, "dogadaj-card")
+        print(f"Found {len(event_cards)} event cards after search.")
+        
+        # Step 5: Assert if the event appears in the event list
+        self.assertGreater(len(event_cards), 0, "No event cards found.")  # Ensure there are event cards
+
+        # Check if the event name exists in one of the cards
+        found_event = any("test.py Event" in card.text for card in event_cards)
+        self.assertTrue(found_event, f"Event 'test.py Event' was not found in the list.")  # Check if the event name is in one of the cards

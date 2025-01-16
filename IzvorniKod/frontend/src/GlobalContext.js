@@ -56,7 +56,7 @@ export const GlobalProvider = ({ children }) => {
         "Čišćenje i održavanje automobila",
         "Fotografija i video snimanje",
         "Pomoć pri kretanju ili selidbi (fizička pomoć)",
-        "Zdravstvena podrška (npr. prva pomoć, medicinski savjeti)"
+        "Zdravstvena podrška (npr. prva pomoć ili medicinski savjeti)"
     ]);
 
     return (
