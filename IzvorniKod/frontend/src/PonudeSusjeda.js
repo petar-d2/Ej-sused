@@ -4,19 +4,21 @@ import SusjedCard from './SusjedCard';
 import './styles/ponude_susjeda.css';
 
 const PonudeSusjeda = () => {
-  const [users, setSusjedi] = useState([]); // State for holding fetched users
-  const [loading, setLoading] = useState(true); // Loading state
-  const [searchQuery, setSearchQuery] = useState(''); // State for search input
-  const inputRef = useRef(null); // Reference for the input field
+  const [users, setSusjedi] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [skills, setSkills] = useState('');
+  const [skillsList, setSkillsList] = useState([]);
+  const [sortBy, setSortBy] = useState('');
+  const inputRef = useRef(null);
 
-  // Fetch data from the API
-  const fetchData = async (query = '') => {
+  const fetchData = async (query = '', skill = '', sort = '') => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=susjed`
+        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=susjed&skills=${skill}&sort_by=${sort}`
       );
-      setSusjedi(response.data); // Update users with search results
+      setSusjedi(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -24,24 +26,43 @@ const PonudeSusjeda = () => {
     }
   };
 
-  // Debounce fetchData to reduce API calls (optional but recommended)
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      fetchData(searchQuery);
-    }, 500); // Wait 300ms after user stops typing
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
-
-  // Handle search input change
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // Update search query
+  const fetchSkills = async () => {
+    try {
+      const response = await axios.get(
+        `${window.location.href.replace(window.location.pathname, '/') + 'skills/'}`
+      );
+      setSkillsList(response.data);
+    } catch (error) {
+      console.error('Error fetching skills:', error);
+    }
   };
 
-  // Auto-focus the input field when the component loads
+  useEffect(() => {
+    fetchSkills(); // Fetch skills list on component mount
+  }, []);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchData(searchQuery, skills, sortBy);
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, skills, sortBy]);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSkillsChange = (event) => {
+    setSkills(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus(); // Focus on the input field
+      inputRef.current.focus();
     }
   }, []);
 
@@ -54,21 +75,41 @@ const PonudeSusjeda = () => {
   }
 
   return (
-    <div>
+    <div className ="body">
       <div className="headera" id="search">
         <input
           type="text"
-          ref={inputRef} // Reference the input field
+          ref={inputRef}
           placeholder="Pretraži po imenu..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="search-input"
         />
+        <select
+          value={skills}
+          onChange={handleSkillsChange}
+        >
+          <option value="">Svi skillovi</option>
+          {skillsList.map((skill, index) => (
+            <option key={index} value={skill}>
+              {skill}
+            </option>
+          ))}
+        </select>
+        <select
+
+          value={sortBy}
+          onChange={handleSortChange}
+        >
+          <option value="">Sortiraj</option>
+          <option value="brojOcjena">Po broju ocjena</option>
+          <option value="zbrojOcjena">Po zbroju ocjena</option>
+        </select>
       </div>
 
       <div className="susjed-card-container">
         {users.map((user) => (
-          <SusjedCard key={user.korisnik_id} user={user} /> // Render card for each user
+          <SusjedCard key={user.korisnik_id} user={user} />
         ))}
       </div>
     </div>

@@ -7,14 +7,18 @@ const Tvrtke = () => {
   const [users, setTvrtke] = useState([]); // State for holding fetched companies
   const [loading, setLoading] = useState(true); // Loading state
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const [sortBy, setSortBy] = useState(''); // State for sorting
   const inputRef = useRef(null); // Reference for the input field
 
   // Fetch data from the API
-  const fetchData = async (query = '') => {
+  const fetchData = async (query = '', sort = '') => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=tvrtka`
+        `${window.location.href.replace(
+          window.location.pathname,
+          '/'
+        ) + 'search/'}?search=${query}&model=tvrtka&sort_by=${sort}`
       );
       setTvrtke(response.data); // Update tvrtke with search results
     } catch (error) {
@@ -27,15 +31,20 @@ const Tvrtke = () => {
   // Debounce fetchData to reduce API calls (optional but recommended)
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchData(searchQuery);
+      fetchData(searchQuery, sortBy);
     }, 500); // Wait 500ms after user stops typing
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+  }, [searchQuery, sortBy]);
 
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value); // Update search query
+  };
+
+  // Handle sorting dropdown change
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value); // Update sortBy state
   };
 
   // Auto-focus the input field when the component loads
@@ -54,7 +63,7 @@ const Tvrtke = () => {
   }
 
   return (
-    <div>
+    <div className="body">
       <div className="headera" id="search">
         <input
           type="text"
@@ -64,6 +73,15 @@ const Tvrtke = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
+        <select
+          className="filter-dropdown"
+          value={sortBy}
+          onChange={handleSortChange}
+        >
+          <option value="">Sortiraj</option>
+          <option value="ocjena">Ocjena - Uzlazno</option>
+          <option value="-ocjena">Ocjena - Silazno</option>
+        </select>
       </div>
 
       <div className="susjed-card-container">

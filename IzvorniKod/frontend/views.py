@@ -228,6 +228,12 @@ class detaljiDogadajView(APIView):
         return render(request, "index.html")
 
 
+class SkillsView(APIView):
+    def get(self, request):
+        skills = Susjed.objects.values_list('skills', flat=True).distinct()
+        # Flatten the list of skills and remove duplicates
+        all_skills = set(skill.strip() for sublist in skills for skill in sublist.split(','))
+        return Response(sorted(all_skills), status=status.HTTP_200_OK)
 
 class searchSortView(APIView):
     modelMapping = {
@@ -244,17 +250,15 @@ class searchSortView(APIView):
         'dogadaj': {
             'model': Dogadaj,
             'serializer': DogadajSerializer,
-            'fields':  [ 'datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
+            'fields': ['datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
         }
     }
+
     def get(self, request):
-        #string koji se pretrazuje
         searchQuery = request.GET.get('search', None)
-        #iz koje tablice se pretrazuje
         modelName = request.GET.get('model', 'susjed')
-        # po cemu se sortira
         sortBy = request.GET.get('sort_by', None)
-         #primjer url-a: http://localhost:8000/search/?search=horvat&model=susjed&sort_by=ocjena
+        skillsFilter = request.GET.get('skills', None)
 
         if modelName not in self.modelMapping:
             return Response(
@@ -270,19 +274,21 @@ class searchSortView(APIView):
         queryset = model.objects.all()
         if searchQuery:
             query = Q()
-            words = searchQuery.split()  
-
-            
+            words = searchQuery.split()
             for word in words:
                 word_query = Q()
                 for field in fields:
                     word_query |= Q(**{f"{field}__icontains": word})
-                query &= word_query 
-
+                query &= word_query
             queryset = queryset.filter(query)
 
-        if sortBy and sortBy in fields:
-                queryset = queryset.order_by(f'-{sortBy}')
+        if skillsFilter:  # Filter by skills if provided
+            queryset = queryset.filter(skills__icontains=skillsFilter)
+
+        # Sorting logic
+        if sortBy:
+            if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod']:
+                queryset = queryset.order_by(sortBy)
 
         serializer = serializerClass(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
