@@ -32,6 +32,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                         <div>
                             <label>
                                 <input
+                                    id="vrstaTvrtka"
                                     type="radio"
                                     value="tvrtka"
                                     checked={vrstaKorisnika === 'tvrtka'}
@@ -44,6 +45,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                         <div>
                             <label>
                                 <input
+                                    id="vrstaSusjed"
                                     type="radio"
                                     value="susjed"
                                     checked={vrstaKorisnika === 'susjed'}
@@ -56,6 +58,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                         {/*<div>
                             <label>
                                 <input
+                                    id="vrstaVolonter"
                                     type="radio"
                                     value="volonter"
                                     checked={vrstaKorisnika === 'volonter'}

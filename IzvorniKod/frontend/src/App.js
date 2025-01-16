@@ -19,6 +19,7 @@ import MojiDogadaji from './MojiDogadaji';
 import NapraviZahtjev from './NapraviZahtjev';
 import Zahtjevi from './Zahtjevi';
 import MojiZahtjevi from './MojiZahtjevi';
+import AdminPrikaz from './AdminPrikaz';
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
    /* if (!(localStorage.getItem("accessToken"))){
@@ -61,7 +62,7 @@ function App() {
             <Route path="/napravi-zahtjev" element={<NapraviZahtjev />} />
             <Route path="/moji-zahtjevi" element={<MojiZahtjevi />} />
             <Route path="/zahtjevi" element={<Zahtjevi />} />
-
+            <Route path="/admin-prikaz" element={<AdminPrikaz />} />
         </Routes>
       </div>
     </Router>

@@ -66,6 +66,7 @@ const Tvrtke = () => {
     <div className="body">
       <div className="headera" id="search">
         <input
+          id="search1"
           type="text"
           ref={inputRef} // Reference the input field
           placeholder="Pretraži po nazivu..."

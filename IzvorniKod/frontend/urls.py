@@ -30,6 +30,8 @@ urlpatterns = [
     path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
     path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
     path('pokazi-komentare/<int:sifTvrtka>/', pokaziKomentareView.as_view(), name='pokazi-komentare'),
+    path('admin-prikaz/',adminPrikazView.as_view(),name='admin-prikaz'),
     path('uredi-profil', main),
+    path('komentari/', listKomentariView.as_view(), name='komentari'),
     path("", main),
 ]
