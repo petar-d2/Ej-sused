@@ -77,6 +77,41 @@ const Header = () => {
         }
         return userData.isTvrtka;
     };
+    
+    const isAdmin = () => {
+        if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData==null){
+                handleLogout();
+            }
+            return userData.isNadlezna;
+        } else {
+            return false;
+        }
+    }
+
+
+    { // login cookie provjera
+        var refresh = Cookies.get("refresh");
+        var access = Cookies.get("access");
+        var google = Cookies.get("google");
+        if (typeof(refresh) != undefined && typeof(access) != undefined && refresh != null && access != null){
+            localStorage.setItem('accessToken', refresh);
+            localStorage.setItem('refreshToken', access);
+            if (typeof(google) != undefined && google != null) localStorage.setItem('googleToken', google);
+        }
+    }
+
+    /*useEffect(() => {
+        if (isLoggedIn()) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            setLoggedUser(userData); // Update state with user data
+            console.log(userData);
+        } else {
+            setLoggedUser(null); // Reset state if logged out
+        }
+    }, []);*/
+
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -122,6 +157,9 @@ const Header = () => {
                                                     <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
                                                 </>
                                             )}
+                                            {isAdmin() && (
+                                                 <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
+                                            )}
                                         </>
                                     )}
                                     {isTvrtka2() && (
@@ -166,6 +204,9 @@ const Header = () => {
                                                 <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
                                             </>
                                         )}
+                                         {isAdmin() && (
+                                                 <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
+                                            )}
                                     </>
                                 )}
                                 {isTvrtka2() && (
@@ -188,6 +229,6 @@ const Header = () => {
             )}
         </div>
     );
-};
+}
 
 export default Header;

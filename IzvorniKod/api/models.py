@@ -7,6 +7,7 @@ class Korisnik(AbstractUser):
     isTvrtka = models.BooleanField(default=False)
     isSusjed = models.BooleanField(default=True)
     isNadlezna = models.BooleanField(default=False)
+    isModerator = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
