@@ -1,3 +1,37 @@
+/* Styling for individual comment boxes */
+.komentar {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+    font-size: 1.1em;
+    color: #333;
+}
+
+
+/* Styling for the container holding comments */
+.komentari-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Username styling in the comment */
+.komentar strong {
+    font-size: 1.1em;
+    color: #007bff; /* Modern blue color for usernames */
+    margin-right: 8px;
+}
+
+/* Styling for the comment text */
+.komentar p {
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* Minor adjustments for the container holding the whole tvrtka details */
 .tvrtka-details-container {
     width: 40vw;
     min-width: 300px;
@@ -10,37 +44,212 @@
     color: #000000;
 }
 
-
-.textarea2{
-    border: #000000 10px;
-    display: block;
-    width: 50%;
-    padding: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-left: 25%;
-    margin-right: 25%;
-    max-width: max-content;
-    min-width:20px ;
+/* textarea for adding comment */
+.textarea2 {/* Overall container for the details of tvrtka */
+.tvrtka-details-container {
+    width: 45vw;
+    min-width: 320px;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    transition: box-shadow 0.3s ease;
 }
 
+/* Heading */
 .tvrtka-details-container h2 {
     text-align: center;
     color: #007bff;
-    font-size: 1.8em;
+    font-size: 2em;
     margin-bottom: 20px;
 }
 
+/* Paragraphs inside tvrtka details */
 .tvrtka-details-container p {
     font-size: 1.1em;
     line-height: 1.6;
-    margin: 10px 0;
+    margin: 12px 0;
 }
 
 .tvrtka-details-container p strong {
     color: #555;
 }
 
+/* Button styling */
+.tvrtka-details-container button {
+    display: block;
+    width: 60%;
+    padding: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20%;
+    font-size: 1.1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.tvrtka-details-container button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.tvrtka-details-container button:active {
+    background-color: #00408b;
+}
+
+.tvrtka-details-container button:last-child {
+    background-color: #6c757d;
+}
+
+.tvrtka-details-container button:last-child:hover {
+    background-color: #5a6268;
+}
+
+/* Star rating styles */
+.star-rating {
+    color: #FFD700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.star-rating span,
+.star-rate {
+    transition: color 0.2s ease;
+    margin-right: 8px;
+}
+
+.star-rate {
+    cursor: pointer;
+}
+
+.star-rate.interactive span:hover,
+.star-rate span.filled {
+    color: #FFCC00;
+}
+
+.star-rate span:hover,
+.star-rate span.filled:hover {
+    font-weight: bold;
+}
+
+/* View map button */
+.view-map-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-map-button:hover {
+    background-color: #555;
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Centered loading container */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Error message styling */
+.error-message {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #f8d7da;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    color: #721c24;
+    text-align: center;
+}
+
+.error-message h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.error-message p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* textarea for adding comment */
+.textarea2 {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    display: block;
+    width: 80%;
+    padding: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: max-content;
+    min-width: 20px;
+    font-size: 1.1em;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+.textarea2:focus {
+    border-color: #0056b3;
+}
+
+/* Adjustments for button */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007bff;
+}
+
+    border: 2px solid #007bff; /* Add a border color to match the theme */
+    border-radius: 8px;
+    display: block;
+    width: 80%;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: max-content;
+    min-width: 20px;
+}
+
+/* Button styling */
 .tvrtka-details-container button {
     display: block;
     width: 50%;
@@ -72,77 +281,17 @@
 .tvrtka-details-container button:last-child:hover {
     background-color: #5a6268;
 }
-.view-map-button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
-.view-map-button:hover {
-    background-color: #555;
-}
-
-/* spinner za ucitavanje */
-.spinner {
-border: 4px solid #f3f3f3;
-border-top: 4px solid #007bff;
-border-radius: 50%;
-width: 50px;
-height: 50px;
-animation: spin 2s linear infinite;
-margin: 0 auto;
-}
-
-@keyframes spin {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
-}
-
-/* centriranje kontejnera s loadingom */
-.loading-container {
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-background-color: rgba(255, 255, 255, 0.7);
-}
-
-.error-message {
-max-width: 600px;
-margin: 20px auto;
-padding: 20px;
-background-color: #f8d7da;
-border-radius: 8px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-font-family: Arial, sans-serif;
-color: #721c24;
-text-align: center;
-}
-
-.error-message h3 {
-font-size: 1.8em;
-margin-bottom: 15px;
-}
-
-.error-message p {
-font-size: 1.1em;
-line-height: 1.6;
-}
-
-/* zvjezdice za rating */
+/* Star rating styles */
 .star-rating {
     color: #FFD700;
     font-size: 1.5rem;
     display: flex;
     align-items: center; /* Align stars vertically with text */
-
 }
 
-.star-rating span , .star-rate {
+.star-rating span,
+.star-rate {
     transition: color 0.2s ease;
     margin-right: 5px; /* Space between stars */
 }
@@ -162,9 +311,86 @@ line-height: 1.6;
     font-weight: bold;
 }
 
+/* Overall container for the details of tvrtka */
+.tvrtka-details-container h2 {
+    text-align: center;
+    color: #007bff;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
 
-.ocjena{
+.tvrtka-details-container p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.tvrtka-details-container p strong {
+    color: #555;
+}
+
+.view-map-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-map-button:hover {
+    background-color: #555;
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Centered loading container */
+.loading-container {
     display: flex;
-    flex-wrap: nowrap;
+    justify-content: center;
     align-items: center;
-} 
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Error message styling */
+.error-message {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8d7da;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #721c24;
+    text-align: center;
+}
+
+.error-message h3 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.error-message p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
