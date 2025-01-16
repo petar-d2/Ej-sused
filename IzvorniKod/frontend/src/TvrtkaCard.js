@@ -33,7 +33,7 @@ const TvrtkaCard = ({ tvrtka }) => {
             <h3>{tvrtka.nazivTvrtka}</h3>
             <p><strong>Adresa:</strong> {tvrtka.adresaTvrtka}</p>
             <p><strong>Opis:</strong> {tvrtka.opisTvrtka}</p>
-            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0})</p>
+            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({tvrtka.brojOcjena!=0 ? Math.round((tvrtka.zbrojOcjena / tvrtka.brojOcjena) * 100) / 100 : 0.0})</p>
         </div>
     );
 };

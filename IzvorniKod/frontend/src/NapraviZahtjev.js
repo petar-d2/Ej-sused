@@ -134,7 +134,7 @@ const NapraviZahtjev = () => {
             ))}
           </select>
         </div>
-        <button type="submit" className="btn btn-primary mt-3">Kreiraj Zahtjev</button>
+        <button type="submit" className="btn-primary2">Kreiraj Zahtjev</button>
       </form>
     </div>
   );

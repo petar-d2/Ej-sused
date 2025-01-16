@@ -1,9 +1,9 @@
-from EjSused.serializers import SusjedSerializer, TvrtkaSerializer, DogadajSerializer, KomentarSerializer, ZahtjevSerializer
+from EjSused.serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -11,7 +11,7 @@ import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.http import Http404
-from rest_framework.permissions import IsAdminUser,AllowAny
+from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
 
 # Render the main page
 def main(request):
@@ -388,7 +388,6 @@ class userInfo(APIView):
                 "isTvrtka": user.isTvrtka,
                 "isNadlezna": user.isNadlezna,
             }
-
             # Dodatni podaci za Susjeda ili Tvrtku
             if user.isSusjed:
                 susjed = Susjed.objects.get(sifSusjed=user)
@@ -653,3 +652,19 @@ class mojiZahtjeviView(APIView):
         zahtjevi = Zahtjev.objects.filter(sifSusjed=user_id)  
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class adminPrikazView(APIView):
+    def get(self, request):
+        return render(request, "index.html")
+    
+class listKomentariView(APIView):
+     def get(self, request):
+        # Fetch all Komentar instances from the database
+        komentari = Komentar.objects.all()
+        
+        # Serialize the Komentar instances
+        serializer = KomentarSerializer(komentari, many=True)
+        
+        # Return serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
+     
