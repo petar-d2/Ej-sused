@@ -78,7 +78,10 @@ const DetaljiSusjed = () => {
             <p><strong>Kvart:</strong> {user.kvartSusjed}</p>
             <p><strong>Broj bodova:</strong> {user.bodovi || 'N/A'}</p>
             <p><strong>Opis:</strong> {user.opis || 'N/A'}</p>
-            <p><strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> ({user.brojOcjena!=0 ? Math.round((user.zbrojOcjena / user.brojOcjena) * 100) / 100 : 0.0})</p>
+            <p>
+                <strong>Ocjena:</strong> <span className="star-rating">{renderStars()}</span> 
+                <p style={{textAlign:"center"}}>({user.brojOcjena!=0 ? Math.round((user.zbrojOcjena / user.brojOcjena) * 100) / 100 : 0.0})</p>
+            </p>
             <button onClick={() => navigate(-1)}>Povratak</button> {/* vrati se nazad */}
             
         </div>

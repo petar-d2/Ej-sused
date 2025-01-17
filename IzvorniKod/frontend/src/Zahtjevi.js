@@ -12,7 +12,7 @@ const Zahtjevi = () => {
   const fetchZahtjevi = async (query = '') => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/zahtjevi/list?naziv=${query}`);
+      const response = await axios.get(window.location.href.replace(window.location.pathname, '/')+`list?naziv=${query}/`);
       setZahtjevi(response.data);
     } catch (error) {
       console.error('Error fetching zahtjevi:', error);
@@ -51,8 +51,8 @@ const Zahtjevi = () => {
   }
 
   return (
-    <div>
-      <div className="headera" id="search">
+    <div className="body_zahtjevi">
+      <div className="header-zahtjevi" id="search">
         <input
           id="search1"
           type="text"

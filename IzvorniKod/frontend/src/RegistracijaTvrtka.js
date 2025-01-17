@@ -60,11 +60,12 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
     return (
         <div className="login_signup-container">
             <h2>{tekst}</h2>
-            <form onSubmit={handleSignup}>
+            <form onSubmit={handleSignup} className='login_form'>
                 <div className="form-group">
                     <label>Adresa:</label>
                     <input 
                         id="adresa"
+                        className='login_input'
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
@@ -75,6 +76,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                     <label>Naziv:</label>
                     <input 
                         id="naziv"
+                        className='login_input'
                         type="text" 
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
@@ -85,6 +87,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                     <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
+                        className='login_select'
                         name="options" 
                         value={kvart}
                         onChange={(e) => setKvart(e.target.value)}
@@ -94,21 +97,11 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                         ))}
                     </select>
                 </div>
-                {/*<div className="form-group">
-                    <label>Mjesto:</label>
-                    <input 
-                        id="mjesto"
-                        type="text" 
-                        value={mjesto} 
-                        onChange={(e) => setMjesto(e.target.value)} 
-                        required 
-                        placeholder="Unesite mjesto tvrtke"
-                    />
-                </div>*/}
                 <div className="form-group">
                     <label>Opis Tvrtke:</label>
                     <textarea 
                         id="opis"
+                        className='login_textarea'
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 
                         placeholder="Unesite opis tvrtke (opcionalno)"

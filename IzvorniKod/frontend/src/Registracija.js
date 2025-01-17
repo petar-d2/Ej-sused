@@ -64,11 +64,12 @@ const Registracija = () => {
         return (
             <div className="login_signup-container">
                 <h2>Registracija</h2>
-                <form onSubmit={handleSignup}>
+                <form onSubmit={handleSignup} className='login_form'>
                     <div className="form-group">
                         <label>Email:</label>
                         <input 
                             id="email"
+                            className='login_input'
                             type="email" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
@@ -79,6 +80,7 @@ const Registracija = () => {
                         <label>Lozinka:</label>
                         <input 
                             id="password1"
+                            className='login_input'
                             type="password" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
@@ -89,6 +91,7 @@ const Registracija = () => {
                         <label>Potvrdite lozinku:</label>
                         <input 
                             id="password2"
+                            className='login_input'
                             type="password" 
                             value={confirmPassword} 
                             onChange={(e) => setConfirmPassword(e.target.value)} 

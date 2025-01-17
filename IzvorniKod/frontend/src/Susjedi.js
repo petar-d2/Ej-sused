@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import SusjedCard from './SusjedCard';
-import './styles/ponude_susjeda.css';
+import './styles/susjedi.css';
 
-const PonudeSusjeda = () => {
+const Susjedi = () => {
   const [users, setSusjedi] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,8 +78,8 @@ const PonudeSusjeda = () => {
   }
 
   return (
-    <div className="body">
-      <div className="headera" id="search">
+    <div className="susjedi_body">
+      <div className="header-susjedi" id="search">
         <input
           id="search1"
           type="text"
@@ -90,6 +90,7 @@ const PonudeSusjeda = () => {
           className="search-input"
         />
         <select id="filter_susjedi"
+          className='filter-dropdown'
           value={skills}
           onChange={handleSkillsChange}
         >
@@ -101,6 +102,7 @@ const PonudeSusjeda = () => {
           ))}
         </select>
         <select id="sort_susjedi"
+          className='filter-dropdown'
           value={sortBy}
           onChange={handleSortChange}
         >
@@ -119,4 +121,4 @@ const PonudeSusjeda = () => {
   );
 };
 
-export default PonudeSusjeda;
+export default Susjedi;

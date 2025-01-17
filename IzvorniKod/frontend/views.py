@@ -164,7 +164,7 @@ class googleLogin(APIView):
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
-class ponudeSusjedaListView(APIView):
+class susjediListView(APIView):
     def post(self, request):
         #Fetch from database
         susjedi = Susjed.objects.all()
@@ -677,6 +677,8 @@ class mojiZahtjeviView(APIView):
         zahtjevi = Zahtjev.objects.filter(sifSusjed=user_id)  
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id):
+        return render(request, "index.html")
     
 class adminPrikazView(APIView):
     def get(self, request):

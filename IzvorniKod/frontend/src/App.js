@@ -8,7 +8,7 @@ import Registracija from './Registracija';
 import UrediProfil from './UrediProfil';
 import DetaljiSusjed from './DetaljiSusjed';
 import { GlobalProvider } from './GlobalContext';
-import PonudeSusjeda from './PonudeSusjeda';
+import Susjedi from './Susjedi';
 import RegistracijaVrsta from './RegistracijaVrsta';
 import Tvrtke from './Tvrtke';
 import DetaljiTvrtka from './DetaljiTvrtka';
@@ -53,7 +53,7 @@ function App() {
             <Route path="/registracija" element={<Registracija />} />
             <Route path="/registracija-vrsta" element={<RegistracijaVrsta />} />
             <Route path="/uredi-profil" element={<UrediProfil />} />
-            <Route path="/ponude-susjeda" element={<PonudeSusjeda />} />
+            <Route path="/susjedi" element={<Susjedi />} />
             <Route path="/susjed/:id" element={<DetaljiSusjed />} />
             <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
             <Route path="/dogadaj/:id" element={<DetaljiDogadaj />} />

@@ -11,7 +11,7 @@ const MojiZahtjevi = () => {
     try {
       const userData = JSON.parse(localStorage.getItem('user')); // Retrieve user data
       const response = await axios.post(
-        `/api/zahtjevi/moji-zahtjevi/${userData.id}/` // Backend endpoint for user's zahtjevi
+        window.location.href.replace(window.location.pathname, '/')+`moji-zahtjevi/${userData.id}/` // Backend endpoint for user's zahtjevi
       );
       setZahtjevi(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ const MojiZahtjevi = () => {
   }
 
   return (
-    <div>
+    <div className='body_zahtjevi'>
       <h2>Moji Zahtjevi</h2>
       <div className="zahtjevi-container">
         {zahtjevi.length > 0 ? (
