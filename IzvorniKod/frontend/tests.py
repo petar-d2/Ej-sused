@@ -7,6 +7,8 @@ from selenium import webdriver
 import os
 import time
 
+#time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
+
 class LoginFormTest(LiveServerTestCase):
     host_url = "http://127.0.0.1:8000/"  # Use environment variable or Django settings if possible
 
@@ -328,3 +330,92 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         # Check if the event name exists in one of the cards
         found_event = any("test.py Event" in card.text for card in event_cards)
         self.assertTrue(found_event, f"Event 'test.py Event' was not found in the list.")  # Check if the event name is in one of the cards
+
+
+
+class TvrtkaSortSearchTest(LiveServerTestCase):
+    host_url = "http://127.0.0.1:8000/"  # Update with your Django server's URL
+
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+
+    def tearDown(self):
+        self.driver.quit()
+
+    @patch("requests.post")
+    def test_tvrtke_create_search_sort_and_navigation(self, mock_post):
+        # Step 1: Mock the POST request to the registration endpoint
+        # Simulate a successful response from the backend as if the Tvrtka was created
+        mock_post.return_value.status_code = 201  # Mocking the 201 Created response
+        mock_response = {
+            "data":
+                {
+                    'email': 'newcompany@example.com',
+                    'password': 'password123',
+                    'adresa': 'Company Address 123',
+                    'kvart': 'Some Quarter',
+                    'isTvrtka': True,
+                    'nazivTvrtka': 'Test Tvrtka',
+                    'mjestoTvrtka': 'Test City',
+                    'opisTvrtka': 'Test description for the new company.',
+                    'brojOcjena': 0,
+                    'zbrojOcjena': 0,
+                },
+        },
+        
+        # Step 2: Log in to the application (using Selenium)
+        self.driver.get(self.host_url + "prijava/")  # Navigate to the login page
+        email = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "email"))
+        )
+        password = self.driver.find_element(By.ID, "password")
+        submit = self.driver.find_element(By.ID, "submit")
+
+        email.send_keys("cigo@gmail.com")  # Test credentials
+        password.send_keys("admin123")
+        submit.send_keys(Keys.RETURN)
+
+        time.sleep(4)  # Wait for the login to complete
+        self.assertEqual(self.driver.current_url, self.host_url)
+
+        # Step 3: Navigate to the Tvrtke page and check if the new Tvrtka is present
+        self.driver.get(self.host_url + "tvrtke/")
+        time.sleep(3)
+
+        tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
+        print(f"Found {len(tvrtka_cards)} tvrtka cards before search.")
+        # Step 4: Perform the search for the newly created Tvrtka
+        search_input = self.driver.find_element(By.ID, "search1")
+        search_input.send_keys("Test")  # Search for the created Tvrtka
+        search_input.send_keys(Keys.RETURN)
+
+        time.sleep(5)  # Allow debounce and loading to complete
+
+        # Verify search results
+        tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
+        print(f"Found {len(tvrtka_cards)} tvrtka cards after search.")
+        self.assertGreater(len(tvrtka_cards), 0, "No results found for the search.")
+        found_tvrtka = any("Test" in card.text for card in tvrtka_cards)
+        self.assertTrue(found_tvrtka, "Searched tvrtka not found in the results.")
+
+        # Step 5: Test sorting functionality
+        sort_dropdown = self.driver.find_element(By.ID, "sort_tvrtke")
+        sort_dropdown.click()
+        sort_option = self.driver.find_element(By.XPATH, "//option[@value='ocjena']")
+        sort_option.click()
+
+        time.sleep(5)  # Allow sorting to apply
+
+        # Re-fetch and verify the sorted results
+        tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
+        self.assertGreater(len(tvrtka_cards), 0, "No tvrtka cards found after sorting.")
+
+        # Step 6: Click on a TvrtkaCard and verify navigation
+        tvrtka_cards[0].click()  # Click the first card
+        time.sleep(3)
+
+        # Verify that the user is redirected to the tvrtka details page
+        self.assertTrue(
+            "/tvrtka/" in self.driver.current_url,
+            "Navigation to the tvrtka details page failed.",
+        )

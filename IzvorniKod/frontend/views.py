@@ -64,7 +64,7 @@ class registracija(APIView):
         mjestoSusjed = request.data.get('mjestoSusjed', '')
         opisSusjed = request.data.get('opisSusjed', '')
         skills = request.data.get('skills', [])
-
+        print("ENTRY POST")
         # Check if email already exists
         if Korisnik.objects.filter(email=email).exists():
             return Response({'error': 'Email already registered'}, status=status.HTTP_400_BAD_REQUEST)
