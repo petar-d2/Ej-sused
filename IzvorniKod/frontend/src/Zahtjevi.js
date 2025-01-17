@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import ZahtjevCard from './ZahtjevCard';
 import './styles/zahtjevi.css';
 
 const Zahtjevi = () => {
@@ -84,14 +85,8 @@ const Zahtjevi = () => {
       </div>
 
       <div className="zahtjevi-container">
-        {zahtjevi.map((zahtjev) => (
-          <div key={zahtjev.id} className="zahtjev-card">
-            <h3>{zahtjev.nazivZahtjev}</h3>
-            <p><strong>Adresa:</strong> {zahtjev.adresaZahtjev}</p>
-            <p><strong>Status:</strong> {zahtjev.statusZahtjev}</p>
-            <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'Nema opisa'}</p>
-            <p><strong>Cijena (bodovi):</strong> {zahtjev.cijenaBod}</p>
-          </div>
+        {zahtjevi.map((event) => (
+          <ZahtjevCard key={event.id} event={event} />
         ))}
       </div>
     </div>

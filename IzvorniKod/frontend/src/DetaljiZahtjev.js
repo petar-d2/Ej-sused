@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import './styles/detalji_dogadaj.css';
+import './styles/detalji_zahtjev.css';
 
-const DetaljiDogadaj = () => {
+const DetaljiZahtjev = () => {
     const { id } = useParams();  
     const navigate = useNavigate();
-    const [dogadaj, setDogadaj] = useState(null);
+    const [zahtjev, setZahtjev] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchDogadajDetails = async () => {
+        const fetchZahtjevDetails = async () => {
             try {
-                const apiUrl = window.location.href.replace(window.location.pathname, '/') + `dogadaj/${id}/`;
+                const apiUrl = window.location.href.replace(window.location.pathname, '/') + `zahtjev/${id}/`;
                 const response = await axios.post(apiUrl); 
-                setDogadaj(response.data);
+                setZahtjev(response.data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching dogadaj details:', error);
+                console.error('Error fetching zahtjev details:', error);
                 setLoading(false);
             }
         };
 
-        fetchDogadajDetails();
+        fetchZahtjevDetails();
     }, [id]);
 
     const handleViewOnMapsClick = () => {
-        const location = `${dogadaj.adresaDogadaj}`;
+        const location = `${zahtjev.adresaZahtjev}`;
         const encodedLocation = encodeURIComponent(location);
         const mapsUrl = `https://www.google.com/maps?q=${encodedLocation}`;
         window.open(mapsUrl, '_blank');
@@ -35,7 +35,7 @@ const DetaljiDogadaj = () => {
 
     const handleConfirm = () => {
         const userData = JSON.parse(localStorage.getItem('user'));
-        console.log('Dolazak potvrden:', userData.id);
+        console.log('Zahtjev potvrden:', userData.id);
     };
 
     if (loading) {
@@ -46,35 +46,32 @@ const DetaljiDogadaj = () => {
         );
     }
 
-    if (!dogadaj) {
+    if (!zahtjev) {
         return (
             <div className="error-message">
-                <h3>Događaj nije nađen</h3>
-                <p>Nismo uspjeli pronaći taj događaj! Molimo pokušajte opet!</p>
+                <h3>Zahtjev nije nađen</h3>
+                <p>Nismo uspjeli pronaći taj zahtjev! Molimo pokušajte opet!</p>
                 <button onClick={() => navigate(-1)}>Povratak</button> 
             </div>
         );
     }
 
     return (
-        <div className="dogadaj-details-container">
-            <h2>Detalji događaja</h2>
-            <p><strong>Datum:</strong> {dogadaj.datumDogadaj}</p>
-            <p><strong>Vrijeme:</strong> {dogadaj.vrijemeDogadaj}</p>
-            <p><strong>Adresa:</strong> {dogadaj.adresaDogadaj}</p>
-            <p><strong>Vrsta:</strong> {dogadaj.vrstaDogadaj}</p>
-            <p><strong>Opis:</strong> {dogadaj.opisDogadaj || 'N/A'}</p>
-            <p><strong>Status:</strong> {dogadaj.statusDogadaj}</p>
-            <p><strong>Broj bodova za dolazak:</strong> {dogadaj.nagradaBod}</p>
+        <div className="zahtjev-details-container">
+            <h2>Detalji zahtjeva</h2>
+            <p><strong>Adresa:</strong> {zahtjev.adresaZahtjev}</p>
+            <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'N/A'}</p>
+            <p><strong>Status:</strong> {zahtjev.statusZahtjev}</p>
+            <p><strong>Cijena (bodovi):</strong> {zahtjev.cijenaBod}</p>
             <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
                 Pogledaj lokaciju na karti
             </button>
 
-            <button onClick={handleConfirm}>Potvrdi dolazak</button>
+            <button onClick={handleConfirm}>Prihvati zahtjev</button>
 
             <button onClick={() => navigate(-1)}>Povratak</button>
         </div>
     );
 };
 
-export default DetaljiDogadaj;
+export default DetaljiZahtjev;

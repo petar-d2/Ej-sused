@@ -227,10 +227,20 @@ class detaljiDogadajView(APIView):
             serializer = DogadajSerializer(user)
             return Response(serializer.data)
         except Dogadaj.DoesNotExist:
-            return Response({"detail": "User not found"}, status=404)
+            return Response({"detail": "Event not found"}, status=404)
     def get(self, request, sifDogadaj):
         return render(request, "index.html")
 
+class detaljiZahtjevView(APIView):
+    def post(self, request, sifZahtjev):
+        try:
+            user = Zahtjev.objects.get(id=sifZahtjev)
+            serializer = ZahtjevSerializer(user)
+            return Response(serializer.data)
+        except Zahtjev.DoesNotExist:
+            return Response({"detail": "Zahtjev not found"}, status=404)
+    def get(self, request, sifZahtjev):
+        return render(request, "index.html")
 
 class SkillsView(APIView):
     def get(self, request):

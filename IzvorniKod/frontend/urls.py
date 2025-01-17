@@ -17,6 +17,7 @@ urlpatterns = [
     path('susjed/<int:sifSusjed>/', detaljiSusjedView.as_view(), name='susjed-detail'),
     path('tvrtka/<int:sifTvrtka>/', detaljiTvrtkaView.as_view(), name='tvrtka-detail'),
     path('dogadaj/<int:sifDogadaj>/', detaljiDogadajView.as_view(), name='dogadaj-detail'),
+    path('zahtjev/<int:sifZahtjev>/', detaljiZahtjevView.as_view(), name='zahtjev-detail'),
     path("home/", homeView.as_view()),
     path("odjava/", odjava.as_view(), name="odjava"),
     path("google-login/", googleLogin.as_view(), name="google_login"),
