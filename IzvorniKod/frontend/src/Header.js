@@ -16,6 +16,7 @@ const Header = () => {
         '/susjedi': 'Susjedi',
         '/dogadaji': 'Događaji',
         '/moji-zahtjevi': 'Moji zahtjevi',
+        '/zahtjevi': 'Zahtjevi',
         '/napravi-zahtjev': 'Novi zahtjev',
         '/moji-dogadaji': 'Moji događaji',
         '/kreiraj-dogadaj': 'Novi događaj',
@@ -31,6 +32,7 @@ const Header = () => {
         '/Susjedi/': 'Susjedi',
         '/dogadaji/': 'Događaji',
         '/moji-zahtjevi/': 'Moji zahtjevi',
+        '/zahtjevi/': 'Zahtjevi',
         '/napravi-zahtjev/': 'Novi zahtjev',
         '/moji-dogadaji/': 'Moji događaji',
         '/kreiraj-dogadaj/': 'Novi događaj',
@@ -169,6 +171,7 @@ const Header = () => {
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     {isSusjed2() && (
                                         <>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
                                             {isVolonter2() && (
@@ -216,6 +219,7 @@ const Header = () => {
                                 <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                 {isSusjed2() && (
                                     <>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
                                         {isVolonter2() && (
