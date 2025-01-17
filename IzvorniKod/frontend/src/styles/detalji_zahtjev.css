@@ -1,0 +1,120 @@
+.zahtjev-details-container {
+    width: 40vw;
+    min-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #000000;
+}
+
+.zahtjev-details-container h2 {
+    text-align: center;
+    color: #007bff;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.zahtjev-details-container p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.zahtjev-details-container p strong {
+    color: #555;
+}
+
+.zahtjev-details-container button {
+    display: block;
+    width: 50%;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 25%;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.zahtjev-details-container button:hover {
+    background-color: #0056b3;
+}
+
+.zahtjev-details-container button:active {
+    background-color: #00408b;
+}
+
+.zahtjev-details-container button:last-child {
+    background-color: #6c757d;
+}
+
+.zahtjev-details-container button:last-child:hover {
+    background-color: #5a6268;
+}
+.view-map-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-map-button:hover {
+    background-color: #555;
+}
+
+/* spinner za ucitavanje */
+.spinner {
+border: 4px solid #f3f3f3;
+border-top: 4px solid #007bff;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+margin: 0 auto;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* centriranje kontejnera s loadingom */
+.loading-container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background-color: rgba(255, 255, 255, 0.7);
+}
+
+.error-message {
+max-width: 600px;
+margin: 20px auto;
+padding: 20px;
+background-color: #f8d7da;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+font-family: Arial, sans-serif;
+color: #721c24;
+text-align: center;
+}
+
+.error-message h3 {
+font-size: 1.8em;
+margin-bottom: 15px;
+}
+
+.error-message p {
+font-size: 1.1em;
+line-height: 1.6;
+}

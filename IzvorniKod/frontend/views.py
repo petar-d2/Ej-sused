@@ -164,7 +164,7 @@ class googleLogin(APIView):
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
-class ponudeSusjedaListView(APIView):
+class susjediListView(APIView):
     def post(self, request):
         #Fetch from database
         susjedi = Susjed.objects.all()
@@ -227,10 +227,20 @@ class detaljiDogadajView(APIView):
             serializer = DogadajSerializer(user)
             return Response(serializer.data)
         except Dogadaj.DoesNotExist:
-            return Response({"detail": "User not found"}, status=404)
+            return Response({"detail": "Event not found"}, status=404)
     def get(self, request, sifDogadaj):
         return render(request, "index.html")
 
+class detaljiZahtjevView(APIView):
+    def post(self, request, sifZahtjev):
+        try:
+            user = Zahtjev.objects.get(id=sifZahtjev)
+            serializer = ZahtjevSerializer(user)
+            return Response(serializer.data)
+        except Zahtjev.DoesNotExist:
+            return Response({"detail": "Zahtjev not found"}, status=404)
+    def get(self, request, sifZahtjev):
+        return render(request, "index.html")
 
 class SkillsView(APIView):
     def get(self, request):
@@ -255,6 +265,11 @@ class searchSortView(APIView):
             'model': Dogadaj,
             'serializer': DogadajSerializer,
             'fields': ['datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
+        },
+        'zahtjev': {
+            'model': Zahtjev,
+            'serializer': ZahtjevSerializer,
+            'fields': ['statusZahtjev', 'opisZahtjev', 'cijenaBod', 'nazivZahtjev']
         }
     }
 
@@ -292,6 +307,8 @@ class searchSortView(APIView):
         # Sorting logic
         if sortBy:
             if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod'] and modelName=='dogadaj':
+                queryset = queryset.order_by(sortBy)
+            elif sortBy in ['cijenaBod', '-cijenaBod'] and modelName=='zahtjev':
                 queryset = queryset.order_by(sortBy)
             elif sortBy in ['ocjena', '-ocjena']:
                 if modelName == 'tvrtka' or modelName=='susjed':
@@ -697,7 +714,7 @@ class pokaziKomentareView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class listZahtjeviView(APIView):
-    def get(self, request):
+    def post(self, request):
         # Fetch all Zahtjevi or filter based on query params
         naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
         if naziv_filter:
@@ -707,6 +724,8 @@ class listZahtjeviView(APIView):
         
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
     
 
 class mojiZahtjeviView(APIView):
@@ -714,6 +733,8 @@ class mojiZahtjeviView(APIView):
         zahtjevi = Zahtjev.objects.filter(sifSusjed=user_id)  
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id):
+        return render(request, "index.html")
     
 class adminPrikazView(APIView):
     def get(self, request):

@@ -26,13 +26,14 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
         return (
             <div className="login_signup-container">
                 <h2>Vrsta registracije:</h2>
-                <form onSubmit={handleSignup}>
+                <form onSubmit={handleSignup} className='login_form'>
                     <h3>Odaberite vrstu korisnika:</h3>
                     <div className='reg_vrsta'>
                         <div>
                             <label>
                                 <input
                                     id="vrstaTvrtka"
+                                    className='login_input'
                                     type="radio"
                                     value="tvrtka"
                                     checked={vrstaKorisnika === 'tvrtka'}
@@ -46,6 +47,7 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                             <label>
                                 <input
                                     id="vrstaSusjed"
+                                    className='login_input'
                                     type="radio"
                                     value="susjed"
                                     checked={vrstaKorisnika === 'susjed'}
@@ -55,19 +57,6 @@ const RegistracijaVrsta = ({user2, setUser2}) => {
                                 Susjed
                             </label>
                         </div>
-                        {/*<div>
-                            <label>
-                                <input
-                                    id="vrstaVolonter"
-                                    type="radio"
-                                    value="volonter"
-                                    checked={vrstaKorisnika === 'volonter'}
-                                    onChange={(e) => setVrstaKorisnika(e.target.value)}
-                                    style = {{width : "50px"}}
-                                />
-                                Volonter
-                            </label>
-                        </div>*/}
                     </div>
                     <button className="button_1" type="submit">Nastavi</button>
                 </form>

@@ -63,8 +63,8 @@ const Tvrtke = () => {
   }
 
   return (
-    <div className="body">
-      <div className="headera" id="search">
+    <div className="tvrtke_body">
+      <div className="header-tvrtke" id="search">
         <input
           id="search1"
           type="text"
@@ -85,7 +85,7 @@ const Tvrtke = () => {
         </select>
       </div>
 
-      <div className="susjed-card-container">
+      <div className="tvrtka-card-container">
         {users.map((tvrtka) => (
           <TvrtkaCard key={tvrtka.korisnik_id} tvrtka={tvrtka} /> // Render card for each company
         ))}

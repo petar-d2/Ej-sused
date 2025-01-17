@@ -85,11 +85,12 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
     return (
         <div className="login_signup-container">
             <h2>{tekst}</h2>
-            <form onSubmit={handleSignup}>
+            <form onSubmit={handleSignup} className='login_form'>
                 <div className="form-group">
                     <label>Ime:</label>
                     <input 
                         id="ime"
+                        className='login_input'
                         type="text" 
                         value={ime} 
                         onChange={(e) => setIme(e.target.value)} 
@@ -100,26 +101,18 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                     <label>Prezime:</label>
                     <input 
                         id="prezime"
+                        className='login_input'
                         type="text" 
                         value={prezime} 
                         onChange={(e) => setPrezime(e.target.value)} 
                         required 
                     />
                 </div>
-                {/*<div className="form-group">
-                    <label>Adresa:</label>
-                    <input 
-                        id="adresa"
-                        type="text" 
-                        value={adresa} 
-                        onChange={(e) => setAdresa(e.target.value)} 
-                        required
-                    />
-                </div>*/}
                 <div className="form-group">
                     <label style={{width: "30vw", maxWidth:"400px"}}>Kvart:</label>
                     <select 
                         id="options" 
+                        className='login_select'
                         name="options" 
                         value={kvart}
                         onChange={(e) => setKvart(e.target.value)}
@@ -129,21 +122,11 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                         ))}
                     </select>
                 </div>
-
-                {/* <div className="form-group">
-                    <label>Mjesto:</label>
-                    <input 
-                        id="mjestoSusjed"
-                        type="text" 
-                        value={mjestoSusjed} 
-                        onChange={(e) => setMjestoSusjed(e.target.value)} 
-                        required 
-                    />
-                </div> */}
                 <div className="form-group">
                     <label>Opis susjeda:</label>
                     <textarea 
                         id="opisSusjed"
+                        className='login_textarea'
                         value={opisSusjed} 
                         onChange={(e) => setOpisSusjed(e.target.value)} 
                         placeholder="Unesite opis (opcionalno)"
@@ -155,6 +138,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                     <label>Volonter:</label>
                     <input 
                         id="volonter"
+                        className='login_input'
                         type="checkbox" 
                         checked={isVolonter} 
                         onChange={(e) => setIsVolonter(e.target.checked)} 
@@ -167,6 +151,7 @@ const RegistracijaSusjed = ({ user2, setUser2 }) => {
                             <div key={index} className="skill-item">
                                 <input
                                     type="checkbox"
+                                    className='login_input'
                                     id={`skill-${index}`}
                                     checked={userSkills.includes(skill)}
                                     onChange={() => handleSkillChange(skill)}
