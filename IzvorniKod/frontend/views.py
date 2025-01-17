@@ -12,6 +12,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.http import Http404
 from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
+from django.db.models import F, FloatField, ExpressionWrapper, Case, When
+from django.db.models.functions import Cast
+
 
 # Render the main page
 def main(request):
@@ -49,6 +52,7 @@ class registracija(APIView):
         isSusjed = request.data.get('isSusjed', False)
         isTvrtka = request.data.get('isTvrtka', False)
         isNadlezna = request.data.get('isNadlezna', False)
+        isModerator = request.data.get('isModerator',False)
         brojOcjena = request.data.get('brojOcjena', 0)
         zbrojOcjena = request.data.get('zbrojOcjena', 0)
 
@@ -287,8 +291,23 @@ class searchSortView(APIView):
 
         # Sorting logic
         if sortBy:
-            if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod']:
+            if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod'] and modelName=='dogadaj':
                 queryset = queryset.order_by(sortBy)
+            elif sortBy in ['ocjena', '-ocjena']:
+                if modelName == 'tvrtka' or modelName=='susjed':
+                    # Annotate queryset with average rating
+                    queryset = queryset.annotate(
+                    ocjena=ExpressionWrapper(
+                        Case(
+                            When(brojOcjena=0, then=0),
+                            default=F('zbrojOcjena') / Cast(F('brojOcjena'), FloatField()), 
+                            output_field=FloatField()
+                        ),
+                        output_field=FloatField()
+                    )
+                    )
+                    # Order by the annotated field
+                    queryset = queryset.order_by(sortBy)
 
         serializer = serializerClass(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
