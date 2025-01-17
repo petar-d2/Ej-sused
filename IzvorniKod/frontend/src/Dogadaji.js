@@ -5,48 +5,55 @@ import './styles/dogadaji.css';
 
 const Dogadaji = () => {
   const [events, setEvents] = useState([]); // State for holding fetched events
-  const [filteredEvents, setFilteredEvents] = useState([]); // State for filtered events
   const [loading, setLoading] = useState(true); // Loading state
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const [sortBy, setSortBy] = useState(''); // State for sorting
   const inputRef = useRef(null); // Reference for the input field
 
-  const fetchData = async (query = '') => {
+  // Fetch data from the server
+  const fetchData = async (query = '', sort = '') => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${window.location.href.replace(window.location.pathname, '/') + 'search/'}?search=${query}&model=dogadaj`
+        `${window.location.href.replace(
+          window.location.pathname,
+          '/'
+        ) + 'search/'}?search=${query}&model=dogadaj&sort_by=${sort}`
       );
-      setEvents(response.data); // Update users with search results
+      setEvents(response.data); // Update events with fetched data
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
-  // Debounce fetchData to reduce API calls (optional but recommended)
+
+  // Trigger fetchData whenever searchQuery or sortBy changes
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchData(searchQuery);
-    }, 500); // Wait 300ms after user stops typing
+      fetchData(searchQuery, sortBy);
+    }, 500); // Delay to avoid excessive API calls
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+  }, [searchQuery, sortBy]);
+
+  // Auto-focus the input field when the component loads
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value); // Update search query
   };
 
-  // Auto-focus the input field when the component loads
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus(); // Focus on the input field
-    }
-  }, []);
+  // Handle sorting dropdown change
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value); // Update sortBy state
+  };
 
-
-  
-  // Ensure filteredEvents is an array before calling .map
   if (loading) {
     return (
       <div className="loading-container">
@@ -56,24 +63,34 @@ const Dogadaji = () => {
   }
 
   return (
-    <div>
+    <div className="body">
       <div className="headera" id="search">
         <input
           type="text"
+          id="search1"
           ref={inputRef}
           placeholder="Pretraži po nazivu događaja..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="search-input"
         />
+        <select id="sort_dogadaji"
+          className="filter-dropdown"
+          value={sortBy}
+          onChange={handleSortChange}
+        >
+          <option value="">Sortiraj</option>
+          <option value="datumDogadaj">Datum - Uzlazno</option>
+          <option value="-datumDogadaj">Datum - Silazno</option>
+          <option value="nagradaBod">Bodovi - Uzlazno</option>
+          <option value="-nagradaBod">Bodovi - Silazno</option>
+        </select>
       </div>
 
       <div className="dogadaj-card-container">
-        {/* Check if filteredEvents is an array before calling map */}
-          {events.map((event) => (
-            <DogadajCard key={event.id} event={event} />
-          ))}
-
+        {events.map((event) => (
+          <DogadajCard key={event.id} event={event} />
+        ))}
       </div>
     </div>
   );

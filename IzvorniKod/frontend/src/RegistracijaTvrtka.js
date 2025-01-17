@@ -64,6 +64,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Adresa:</label>
                     <input 
+                        id="adresa"
                         type="text" 
                         value={adresa} 
                         onChange={(e) => setAdresa(e.target.value)} 
@@ -73,6 +74,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Naziv:</label>
                     <input 
+                        id="naziv"
                         type="text" 
                         value={naziv} 
                         onChange={(e) => setNaziv(e.target.value)} 
@@ -95,6 +97,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                 {/*<div className="form-group">
                     <label>Mjesto:</label>
                     <input 
+                        id="mjesto"
                         type="text" 
                         value={mjesto} 
                         onChange={(e) => setMjesto(e.target.value)} 
@@ -105,6 +108,7 @@ const RegistracijaTvrtka = ({ user2, setUser2 }) => {
                 <div className="form-group">
                     <label>Opis Tvrtke:</label>
                     <textarea 
+                        id="opis"
                         value={opis} 
                         onChange={(e) => setOpis(e.target.value)} 
                         placeholder="Unesite opis tvrtke (opcionalno)"

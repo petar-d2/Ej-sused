@@ -1,7 +1,11 @@
 from django.urls import path
 from .views import *
 
+
+
 urlpatterns = [
+    path('search/', searchSortView.as_view(), name='search'),
+    path('skills/', SkillsView.as_view(), name='skills'),
     path("prijava/", prijava.as_view(), name="prijava"),
     path("registracija/", registracija.as_view(), name="registracija"),
     path("dogadaji/", dogadajiListView.as_view(), name='dogadaji'),
