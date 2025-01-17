@@ -1,0 +1,33 @@
+from django.urls import path
+from .views import *
+
+urlpatterns = [
+    path("prijava/", prijava.as_view(), name="prijava"),
+    path("registracija/", registracija.as_view(), name="registracija"),
+    path("dogadaji/", dogadajiListView.as_view(), name='dogadaji'),
+    path("moji-dogadaji/<int:sifVolonter>/", mojiDogadajiListView.as_view(), name='moji-dogadaji'),
+    path("kreiraj-dogadaj/", createDogadajView.as_view(), name='kreiraj-dogadaj'),
+    path("tvrtke/", tvrtkeListView.as_view(), name='tvrtke_list'),
+    path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
+    path('susjed/<int:sifSusjed>/', detaljiSusjedView.as_view(), name='susjed-detail'),
+    path('tvrtka/<int:sifTvrtka>/', detaljiTvrtkaView.as_view(), name='tvrtka-detail'),
+    path('dogadaj/<int:sifDogadaj>/', detaljiDogadajView.as_view(), name='dogadaj-detail'),
+    path("home/", homeView.as_view()),
+    path("odjava/", odjava.as_view(), name="odjava"),
+    path("google-login/", googleLogin.as_view(), name="google_login"),
+    path("search/", searchSortView.as_view(), name='search'),
+    path("user-info/", userInfo.as_view(), name='user-info'),
+    path("user-edit/", userEdit.as_view(), name='user-edit'),
+    path("napravi-zahtjev/", napraviZahtjevView.as_view(), name="napravi-zahtjev"),
+    path("zahtjevi/", listZahtjeviView.as_view(), name='zahtjevi'),
+    path("moji-zahtjevi/", mojiZahtjeviView.as_view(), name='moji-zahtjevi'),
+    path("unesi-komentar/", unesiKomentarView.as_view(), name="unesi-komentar"),
+    path("ocjena-edit/", ocjenaEdit.as_view(), name='ocjena-edit'),
+    path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
+    path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
+    path('pokazi-komentare/<int:sifTvrtka>/', pokaziKomentareView.as_view(), name='pokazi-komentare'),
+    path('admin-prikaz/',adminPrikazView.as_view(),name='admin-prikaz'),
+    path('uredi-profil', main),
+    path('komentari/', listKomentariView.as_view(), name='komentari'),
+    path("", main),
+]

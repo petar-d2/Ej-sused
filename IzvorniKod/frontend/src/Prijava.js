@@ -1,99 +1,142 @@
-import React, { useState,useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/login_signup.css';
-import { jwtDecode } from 'jwt-decode';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./styles/login_signup.css";
+import axios from "axios";
+import GoogleButton from "react-google-button";
 
 const Prijava = () => {
-    const navigate=useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleLogInGoogle = (response) => {
-        var userObject=jwtDecode(response.credential);
-        const loggedUser={
-            email: userObject.email,
-            password: "abc"
-        };
-        localStorage.setItem("user", JSON.stringify(loggedUser));
-        navigate('/');
+  const onGoogleLoginSuccess = () => {
+    const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+
+    const scope = [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ].join(" ");
+
+    const params = {
+      response_type: "code",
+      client_id: "371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com",
+      redirect_uri:
+        window.location.href.replace(window.location.pathname, "/") +
+        "google-login/",
+      prompt: "select_account",
+      access_type: "offline",
+      scope,
     };
+    const urlParams = new URLSearchParams(params).toString();
+    window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
+  };
 
-    useEffect(() => {
-        /* global google */
-        google.accounts.id.initialize({
-            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
-            callback: handleLogInGoogle
-        });
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-        google.accounts.id.renderButton(
-            document.getElementById('GoogleDiv'),
-            {theme: "outline", size: "large"}
-        );
+    if (!email || !password) {
+        setError("Unesite email i lozinku.");
+        return;
+      }
+    
+    setError(""); // Reset error
+    setLoading(true);
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-            navigate('/');
+    try {
+      const response = await axios.post(
+        window.location.href.replace(window.location.pathname, "/") + "prijava/",
+        { email, password }
+      );
+
+      localStorage.setItem("accessToken", response.data.access);
+      localStorage.setItem("refreshToken", response.data.refresh);
+
+      const response2 = await axios.get(
+        window.location.href.replace(window.location.pathname, "/") +
+          "user-info/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
+      );
 
-    },[navigate]);
+      localStorage.setItem("user", JSON.stringify(response2.data));
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      setError(
+        error.response?.data?.detail || "Neuspješna prijava. Pokušajte ponovno."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-
-        if (!email || !password) {
-            alert("Molimo unesite i email i lozinku.");
-            return;
-        }
-
-        setEmail('');
-        setPassword('');
-        const loggedUser={
-            email: email,
-            password: password
-        };
-        localStorage.setItem("user", JSON.stringify({ loggedUser }));
-        navigate('/');
-
-    };
-
-    return (
-        <div className="login_signup-container">
-            <h2>Prijava</h2>
-            <form onSubmit={handleLogin}>
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Lozinka:</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <button className="button_1" type="submit">Prijava</button>
-            </form>
-            <div id='GoogleDiv'></div>
-            <div className="horizontalna_crta" style={{ 
-                height: '2px', 
-                backgroundColor: 'black',
-                width: '90%',
-                marginTop: '30px',
-                marginBottom: '10px'
-            }}></div>
-            <p className='redirect'>
-                Nemate račun? 
-                <button className='button_2' onClick={() => navigate('/registracija')}>Registracija</button>
-            </p>
+  return (
+    <div className="login_signup-container">
+      <h2>Prijava</h2>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+          />
         </div>
-    );
-}
+        <div className="form-group">
+          <label>Lozinka:</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
+          />
+        </div>
+        {error && <p id="error-message">{error}</p>}
+        <button
+          className="button_1"
+          type="submit"
+          id="submit"
+          disabled={loading}
+        >
+          {loading ? "Prijava..." : "Prijava"}
+        </button>
+      </form>
+      <GoogleButton
+        type="light"
+        onClick={onGoogleLoginSuccess}
+        label="Sign in with Google"
+        disabled={loading}
+      />
+      <div
+        className="horizontalna_crta"
+        style={{
+          height: "2px",
+          backgroundColor: "black",
+          width: "90%",
+          marginTop: "30px",
+          marginBottom: "10px",
+        }}
+      ></div>
+      <p className="redirect">
+        Nemate račun?
+        <button
+          className="button_2"
+          onClick={() => navigate("/registracija")}
+          disabled={loading}
+        >
+          Registracija
+        </button>
+      </p>
+    </div>
+  );
+};
 
 export default Prijava;

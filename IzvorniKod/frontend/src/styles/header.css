@@ -1,39 +1,126 @@
-.header{
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 10px;
+    position: relative;
+}
+
+.hamburger {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+}
+
+.header-title-container {
     display: flex;
     flex-direction: column;
-}
-
-.header_slika{
-    height: 80%;
-}
-
-.header_grid{
-    margin-top: 30px;
-    margin-left: 40%;
-    display: flex;
-    justify-content: right;
-    flex-wrap: nowrap;
-    margin-right: 5%;
-
-}
-
-.header_gumb{
-    margin: 0 1vw;
-    border-radius: 10px;
-    border-style: solid;
-    border-color: gray;
-    background-color: lightgray;
-    color: black;
-    border-width: 3px;
-    height: 40px;
-    cursor: pointer;
+    align-items: center;
     text-align: center;
-    padding: 6px;
+    flex-grow: 1;
+}
+
+.header-title {
+    font-size: 35px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.header-subtitle {
+    font-size: 26px;
+    margin-top: 5px;
+    color: #ccc;
+}
+
+.header-right {
+    position: absolute;
+    right: 20px;
+    font-size: 40px;
     font-weight: bold;
 }
 
-.header_gumb:hover {
-    color: white;
-    background-color: black;
-    border-color: lightgray;
+
+
+@font-face {
+    font-family: 'Naslov'; 
+    src: url('../../public/static/fonts/LeagueGothic-Regular.otf') format('truetype'); 
 }
+
+
+
+.header_grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.header_gumb {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 100px;
+}
+
+.header_gumb:hover {
+    background-color: #777;
+}
+.dropdown_menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #333;
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    width: 150px; 
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.dropdown_menu .header_gumb {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background-color: #555;
+    color: white;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+
+.dropdown_menu .header_gumb:hover {
+    background-color: #777;
+}
+
+
+/* ako je manje od 875px prikazi dropdown menu, a inace obicne gumbe */
+/* ipak uvijek dropdown */
+@media (max-width: 10000px) {
+    .header_grid {
+        display: none; 
+    }
+    .header_gumb{
+        border-radius: 0px;
+    }
+}
+
+

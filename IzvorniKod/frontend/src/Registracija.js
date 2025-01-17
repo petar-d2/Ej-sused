@@ -1,75 +1,66 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/login_signup.css';
-import { jwtDecode } from 'jwt-decode';
 import RegistracijaVrsta from './RegistracijaVrsta';
+import GoogleButton from "react-google-button";
 
-const Registracija = ({kvartovi}) => {
+const Registracija = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [user2, setUser2] = useState({});
-
-    const handleSignUpGoogle = (response) => {
-        var userObject=jwtDecode(response.credential);
-        const newUser={
-            email: userObject.email,
-            password: "abc"
+    
+    const onGoogleLoginSuccess = () => {
+        const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
+        
+        const scope = [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile"
+        ].join(' ');
+        
+        const params = {
+            response_type: "code",
+            client_id: "371280955009-aguas7h3hg0aao1d6kiq2mo536vitc0n.apps.googleusercontent.com",
+            redirect_uri: window.location.href.replace(window.location.pathname,'/') + "google-login/",
+            prompt: "select_account",
+            access_type: "offline",
+            scope
         };
-        setUser2(newUser);
-        //navigate('/prijava');
+        
+        const urlParams = new URLSearchParams(params).toString();
+        window.location = `${GOOGLE_AUTH_URL}?${urlParams}`;
     };
-
-    useEffect(() => {
-        /* global google */
-        google.accounts.id.initialize({
-            client_id: "696378051112-h9ccj11heq8k72f5pci6ontvfushtltt.apps.googleusercontent.com",
-            callback: handleSignUpGoogle
-        });
-
-        google.accounts.id.renderButton(
-            document.getElementById('GoogleDiv'),
-            {theme: "outline", size: "large"}
-        );
-
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-            navigate('/');
-        }
-
-    },[navigate]);
-
-
-
-    const handleSignup = (e) => {
+    
+    const handleSignup = async (e) => {
         e.preventDefault();
-
         if (!email || !password || !confirmPassword) {
             alert("Molimo unesite i email i lozinku.");
             return;
         }
-
-
         if (password !== confirmPassword) {
             alert("Lozinke se ne podudaraju. Molimo pokušajte ponovno.");
             return;
         }
-
-        const newUser={
-            email: email,
-            password: password
-        };
-        setUser2(newUser);
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        //navigate('/prijava');
+        /*
+        try {
+            await axios.post(window.location.href.replace(window.location.pathname,'/') + 'registracija/', {
+                email,
+                password,
+            });
+            alert("Uspješno ste registrirani!");
+            navigate('/prijava');
+        } catch (error) {
+          console.error('Registration failed:', error.response.data);
+          alert("Neuspješna registracija!");
+          return;
+        }
+        */
+        setUser2({email: email, password: password});
     };
 
-    //const user = JSON.parse(localStorage.getItem("user"));
-
-    if (! (user2 && user2.email && user2.password)){
+    //ako nije upisan mail i password
+    if (! (user2 && user2.email)){
         return (
             <div className="login_signup-container">
                 <h2>Registracija</h2>
@@ -77,6 +68,7 @@ const Registracija = ({kvartovi}) => {
                     <div className="form-group">
                         <label>Email:</label>
                         <input 
+                            id="email"
                             type="email" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
@@ -86,6 +78,7 @@ const Registracija = ({kvartovi}) => {
                     <div className="form-group">
                         <label>Lozinka:</label>
                         <input 
+                            id="password1"
                             type="password" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
@@ -95,15 +88,16 @@ const Registracija = ({kvartovi}) => {
                     <div className="form-group">
                         <label>Potvrdite lozinku:</label>
                         <input 
+                            id="password2"
                             type="password" 
                             value={confirmPassword} 
                             onChange={(e) => setConfirmPassword(e.target.value)} 
                             required 
                         />
                     </div>
-                    <button className="button_1" type="submit">Registracija</button>
+                    <button id="button_1" className="button_1" type="submit">Registracija</button>
                 </form>
-                <div id='GoogleDiv'></div>
+                <GoogleButton type="light" onClick={onGoogleLoginSuccess} label="Sign in with Google"/>
                 <div className="horizontalna_crta" style={{ 
                     height: '2px', 
                     backgroundColor: 'black',
@@ -118,9 +112,10 @@ const Registracija = ({kvartovi}) => {
             </div>
         );
     }
+    //kad se upise mail i password
     else {
         return (
-            <RegistracijaVrsta kvartovi={kvartovi} user2={user2} setUser2={setUser2}/>
+            <RegistracijaVrsta user2={user2} setUser2={setUser2}/>
         );
     }
 

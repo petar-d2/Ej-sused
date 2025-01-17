@@ -4,10 +4,11 @@ import './styles/login_signup.css';
 import RegistracijaTvrtka from './RegistracijaTvrtka';
 import RegistracijaSusjed from './RegistracijaSusjed';
 
-const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
+const RegistracijaVrsta = ({user2, setUser2}) => {
     const navigate = useNavigate();
     const [vrstaKorisnika, setVrstaKorisnika] = useState('tvrtka');
 
+    //unos vrste korisnika
     const handleSignup = (e) => {
         e.preventDefault();
 
@@ -18,15 +19,13 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
         };
         setUser2(newUser);
         setVrstaKorisnika('tvrtka');
-        //navigate('/prijava');
     };
 
-    //const user = JSON.parse(localStorage.getItem("user"));
-
+    //ako nije odabrana vrsta
     if (!(user2 && user2.vrsta)){
         return (
             <div className="login_signup-container">
-                <h2>Registracija</h2>
+                <h2>Vrsta registracije:</h2>
                 <form onSubmit={handleSignup}>
                     <h3>Odaberite vrstu korisnika:</h3>
                     <div className='reg_vrsta'>
@@ -37,6 +36,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
                                     value="tvrtka"
                                     checked={vrstaKorisnika === 'tvrtka'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Tvrtka
                             </label>
@@ -48,6 +48,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
                                     value="susjed"
                                     checked={vrstaKorisnika === 'susjed'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Susjed
                             </label>
@@ -59,6 +60,7 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
                                     value="volonter"
                                     checked={vrstaKorisnika === 'volonter'}
                                     onChange={(e) => setVrstaKorisnika(e.target.value)}
+                                    style = {{width : "50px"}}
                                 />
                                 Volonter
                             </label>
@@ -69,15 +71,18 @@ const RegistracijaVrsta = ({kvartovi, user2, setUser2}) => {
             </div>
         );
     }
+
+    //ako je odabrana tvrtka
     else if (user2.vrsta==="tvrtka") {
         return (
-            <RegistracijaTvrtka kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaTvrtka user2={user2} setUser2={setUser2}/>
         );
     }
 
-    else if (user2.vrsta==="susjed") {
+    //ako je odabran susjed/volonter
+    else if (user2.vrsta==="susjed" || user2.vrsta==="volonter") {
         return (
-            <RegistracijaSusjed kvartovi={kvartovi} user2={user2}/>
+            <RegistracijaSusjed user2={user2} setUser2={setUser2}/>
         );
     }
 

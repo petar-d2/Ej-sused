@@ -1,0 +1,23 @@
+databases:
+  - name: EjSused-baza
+    plan: free
+    databaseName: baza
+    user: test
+
+services:
+  - type: web
+    plan: free
+    name: EjSused
+    runtime: python
+    region: frankfurt
+    buildCommand: "./build.sh"
+    startCommand: "cd ./IzvorniKod && python -m gunicorn EjSused.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: EjSused-baza
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

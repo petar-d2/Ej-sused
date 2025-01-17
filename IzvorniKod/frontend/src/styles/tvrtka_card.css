@@ -1,0 +1,56 @@
+/* kontejner s karticama tvrtki */
+.tvrtka-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: 40vw;
+    min-width: 250px;
+    margin: 15px;
+    background-color: white;
+}
+    
+/* povecaj malo karticu na hover */
+.tvrtka-card:hover {
+    transform: scale(1.03);
+}
+
+.tvrtka-card h3 {
+    font-size: 1.2rem;
+    color: #000000;
+    margin: 0;
+}
+
+.tvrtka-card p {
+    margin: 10px 0;
+    color: #000000;
+}
+
+.tvrtka-location {
+    font-size: 0.9rem;
+    color: #000000;
+}
+
+/* zvjezdice za rating */
+.star-rating {
+    color: #FFD700; /* zlatna boja */
+    font-size: 1.2rem;
+}
+
+/* gumb za kartu */
+.view-map-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.view-map-button:hover {
+    background-color: #555;
+}
