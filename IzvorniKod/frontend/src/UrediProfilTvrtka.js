@@ -61,7 +61,7 @@ const UrediProfilTvrtka = ({ user, setUser2 }) => {
             isTvrtka: true,
             isNadlezna: false,
             adresa: adresa,
-            naziv: naziv,
+            nazivTvrtka: naziv,
             kvart: kvart,
             mjestoTvrtka: user.mjesto,
             opisTvrtka: opis,

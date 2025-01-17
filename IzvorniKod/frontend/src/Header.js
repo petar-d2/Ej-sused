@@ -188,7 +188,7 @@ const Header = () => {
                                     {isTvrtka2() && (
                                         <>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova ponuda</button>
                                         </>
                                     )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
@@ -236,7 +236,7 @@ const Header = () => {
                                 {isTvrtka2() && (
                                     <>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova ponuda</button>
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>

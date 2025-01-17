@@ -23,6 +23,8 @@ import AdminPrikaz from './AdminPrikaz';
 import MojePonude from './MojePonude';
 import NapraviPonudu from './NapraviPonudu';
 import DetaljiZahtjev from './DetaljiZahtjev';
+import DetaljiPonuda from './DetaljiPonuda';
+import Ponude from './Ponude';
 function App() {
     //ako ne postoji token, tj. ako nije ulogiran
    /* if (!(localStorage.getItem("accessToken"))){
@@ -61,11 +63,13 @@ function App() {
             <Route path="/tvrtka/:id" element={<DetaljiTvrtka />} />
             <Route path="/dogadaj/:id" element={<DetaljiDogadaj />} />
             <Route path="/zahtjev/:id" element={<DetaljiZahtjev />} />
+            <Route path="/ponuda/:id" element={<DetaljiPonuda />} />
             <Route path="/kreiraj-dogadaj" element={<KreirajDogadaj />} />
             <Route path="/moji-dogadaji" element={<MojiDogadaji />} />
             <Route path="/napravi-zahtjev" element={<NapraviZahtjev />} />
             <Route path="/moji-zahtjevi" element={<MojiZahtjevi />} />
             <Route path="/zahtjevi" element={<Zahtjevi />} />
+            <Route path="/ponude" element={<Ponude />} />
             <Route path="/admin-prikaz" element={<AdminPrikaz />} />
             <Route path="/moje-ponude" element={<MojePonude/>} />
             <Route path="/napravi-ponudu" element={<NapraviPonudu/>} />

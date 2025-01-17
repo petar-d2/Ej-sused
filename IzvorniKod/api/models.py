@@ -170,13 +170,14 @@ class Prihvaca(models.Model):
     def __str__(self):
         return f"Prihvaca - Susjed: {self.sifSusjed}, KadZadano: {self.kadZadano}, Tvrtka: {self.sifTvrtka}"
 class Ponuda(models.Model):
-    kadZadano = models.DateTimeField()
+    kadZadano = models.CharField(max_length=255)
     cijenaNovac = models.FloatField(null=True, blank=True)
     nazivPonuda = models.CharField(max_length=255)
     isAktivna = models.BooleanField()
     opisPonuda = models.CharField(max_length=2048, null=True, blank=True)
     sifTvrtka = models.ForeignKey('Tvrtka', on_delete=models.CASCADE)
-    sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.SET_NULL, null=True, blank=True)
+    sifVrsta = models.TextField(default="")
+    #sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         constraints = [
