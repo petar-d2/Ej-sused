@@ -1,0 +1,109 @@
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import './styles/kreirajZahtjev.css'; // Stilovi, ako ih koristiš
+import { GlobalContext } from './GlobalContext'; // Ispravi ime fajla ako je drugačije
+
+const NapraviPonudu = () => {
+  const userData = JSON.parse(localStorage.getItem('user')); // Uzmi podatke o korisniku
+  const adresaTvrtka = userData?.tvrtka?.adresaTvrtka || '';
+
+  const [formData, setFormData] = useState({
+    kadZadan: Date.now(),
+    sifTvrtka: userData.id,
+    nazivPonuda: '',
+    adresaPonuda: adresaTvrtka,
+    opisPonuda: '',
+    cijena: 0,
+  });
+
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    console.log(formData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.nazivPonuda || !formData.cijena) {
+      setErrorMessage('Sva polja osim opisa su obavezna.');
+      setSuccessMessage('');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        window.location.href.replace(window.location.pathname, '/') + 'napravi-ponudu/',
+        formData
+      );
+      setSuccessMessage('Ponuda uspješno kreirana!');
+      setErrorMessage('');
+      setFormData({
+        kadZadan: Date.now(),
+        sifTvrtka: userData.id,
+        nazivPonuda: '',
+        adresaPonuda: adresaTvrtka,        
+        opisZahtjev: '',
+        cijena: 0,
+      });
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Greška prilikom kreiranja ponude.');
+      setSuccessMessage('');
+    }
+  };
+
+  return (
+    <div className="napravi-ponudu-container">
+      <h1>Napravi Ponudu</h1>
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+      <form onSubmit={handleSubmit} className="zahtjev-form">
+        <div className="form-group">
+          <label htmlFor="nazivPonuda">Naziv Ponude:</label>
+          <input
+            type="text"
+            id="nazivPonuda"
+            name="nazivPonuda"
+            value={formData.nazivPonuda}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="cijena">Cijena (euri):</label>
+          <input
+            type="number"
+            id="cijena"
+            name="cijena"
+            value={formData.cijena}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="opisPonuda">Opis:</label>
+          <textarea
+            id="opisPonuda"
+            name="opisPonuda"
+            value={formData.opisPonuda}
+            onChange={handleChange}
+            className="form-control"
+            rows="4"
+          ></textarea>
+        </div>
+        <button type="submit" className="btn-primary2">Kreiraj Ponudu</button>
+      </form>
+    </div>
+  );
+};
+
+export default NapraviPonudu;

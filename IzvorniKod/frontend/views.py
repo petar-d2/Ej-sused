@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna, Ponuda
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -560,6 +560,43 @@ class napraviZahtjevView(APIView):
 
     def get(self, request):
         return render(request, "index.html")
+
+class napraviPonuduView(APIView):
+    def post(self, request):
+        print("ENTRY POST")
+        print("Request Data:", request.data)
+        
+        # Preuzimanje podataka sa zahteva
+        nazivPonuda = request.data.get('nazivPonuda')
+        opisPonuda = request.data.get('opisPonuda', None)
+        cijena = request.data.get('cijena')
+        sifTvrtka_id = request.data.get('sifTvrtka')
+        print("test")
+        # Validacija obaveznih polja
+        if not all([nazivPonuda, cijena, sifTvrtka_id]):
+            return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Preuzimanje odnosa
+        sifTvrtka = get_object_or_404(Tvrtka, pk=sifTvrtka_id)
+        print("test2")
+        try:
+            # Kreiranje nove Ponude
+            ponuda = Ponuda.objects.create(
+                nazivPonuda=nazivPonuda,
+                opisPonuda=opisPonuda,
+                cijena=cijena,
+                sifTvrtka=sifTvrtka,
+            )
+            ponuda.save()
+            return Response({"message": "Ponuda uspešno kreiran!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request):
+        return render(request, "index.html")
+
+    
 
 class unesiKomentarView(APIView):
     def post(self, request):
