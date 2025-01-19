@@ -10,7 +10,7 @@ import time
 #time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
 
 class LoginFormTest(LiveServerTestCase):
-    host_url = "http://127.0.0.1:8000/"  # Use environment variable or Django settings if possible
+    host_url = "http://127.0.0.1:8000/"
 
     def setUp(self):
         self.driver = webdriver.Chrome()  # Ensure you have the correct driver installed and in PATH
@@ -45,11 +45,7 @@ class LoginFormTest(LiveServerTestCase):
 
         time.sleep(5)  # Give time for the validation to trigger
 
-        # Print page source to see if any validation message appears
-        #print(self.driver.page_source)
-
-        # Check for validation message (like "Unesite ovo polje" for empty fields)
-        # We assume here that the validation message will be present as part of the form error
+        
         error_message = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, "error-message"))
         )
@@ -344,8 +340,6 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
     @patch("requests.post")
     def test_tvrtke_create_search_sort_and_navigation(self, mock_post):
-        # Step 1: Mock the POST request to the registration endpoint
-        # Simulate a successful response from the backend as if the Tvrtka was created
         mock_post.return_value.status_code = 201  # Mocking the 201 Created response
         mock_response = {
             "data":
@@ -380,7 +374,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
         # Step 3: Navigate to the Tvrtke page and check if the new Tvrtka is present
         self.driver.get(self.host_url + "tvrtke/")
-        time.sleep(3)
+        time.sleep(5)
 
         tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
         print(f"Found {len(tvrtka_cards)} tvrtka cards before search.")

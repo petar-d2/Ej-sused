@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
-# Create your models here.
-
+# Custom User model
 class Korisnik(AbstractUser):
     isTvrtka = models.BooleanField(default=False)
     isSusjed = models.BooleanField(default=True)
@@ -12,6 +12,8 @@ class Korisnik(AbstractUser):
     def __str__(self):
         return self.email
 
+
+# Tvrtka model (Company)
 class Tvrtka(models.Model):
     nazivTvrtka = models.CharField(max_length=255)
     adresaTvrtka = models.CharField(max_length=255)
@@ -22,17 +24,19 @@ class Tvrtka(models.Model):
     zbrojOcjena = models.IntegerField(default=0)
 
     sifTvrtka = models.OneToOneField(
-        Korisnik,
+        settings.AUTH_USER_MODEL,  # Reference to the custom user model
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="tvrtka"
+        related_name="tvrtka_account"  # Ensure unique related_name
     )
 
     def __str__(self):
         return self.nazivTvrtka
 
+
+# Susjed model (Neighbor)
 class Susjed(models.Model):
-    bodovi = models.PositiveSmallIntegerField(default=5) 
+    bodovi = models.PositiveSmallIntegerField(default=5)
     isVolonter = models.BooleanField(default=False)
     mjestoSusjed = models.CharField(max_length=255)
     kvartSusjed = models.CharField(max_length=255)
@@ -42,31 +46,34 @@ class Susjed(models.Model):
     brojOcjena = models.IntegerField(default=0)
     zbrojOcjena = models.IntegerField(default=0)
     skills = models.TextField(default="")
-    
+
     sifSusjed = models.OneToOneField(
-        Korisnik,
+        settings.AUTH_USER_MODEL,  # Reference to the custom user model
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="susjed"
+        related_name="susjed_account"  # Ensure unique related_name
     )
 
     def __str__(self):
         return f"{self.ime} {self.prezime}"
 
 
+# Nadlezna model (Responsible entity)
 class Nadlezna(models.Model):
     isAdmin = models.BooleanField(default=False)
 
     sifNadlezna = models.OneToOneField(
-        Korisnik,
+        settings.AUTH_USER_MODEL,  # Reference to the custom user model
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name="nadlezna"
+        related_name="nadlezna_account"  # Ensure unique related_name
     )
 
     def __str__(self):
         return self.sifNadlezna
-    
+
+
+# Dogadaj model (Event)
 class Dogadaj(models.Model):
     kadZadano = models.CharField(max_length=255)
     sifVolonter = models.IntegerField()
@@ -79,9 +86,6 @@ class Dogadaj(models.Model):
     opisDogadaj = models.CharField(max_length=2047, null=True)
     nagradaBod = models.IntegerField()
 
-    """djangov ORM ne podrzava kompozitne ključeve pa to moramo rijesiti
-    negdje drugdje, za sada samo moraju biti unique ova dva atributa
-    primarni ključ je id koji django izgenerira"""
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['sifVolonter', 'kadZadano'], name='unique_volonter_event')
@@ -89,26 +93,25 @@ class Dogadaj(models.Model):
 
     def __str__(self):
         return f"Dogadaj {self.nazivDogadaj} - {self.datumDogadaj}"
-    
 
+
+# Komentar model (Comment)
 class Komentar(models.Model):
     sifKom = models.AutoField(primary_key=True)
-    ##sifKom = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     textKom = models.CharField(max_length=2047)
     sifPrima = models.ForeignKey(Tvrtka, on_delete=models.CASCADE)
-    sifDaje = models.ForeignKey(Korisnik, on_delete=models.CASCADE)
+    sifDaje = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Reference to custom user model
 
     def __str__(self):
         return f"Komentar {self.sifKom}"
-    
 
+
+# PrijavljenNa model (Volunteer registration)
 class PrijavljenNa(models.Model):
-    """ovdje će isto biti generiran id, kompozitni strani ključ treba
-    drukcije napraviti"""
     isNagraden = models.BooleanField(default=False)
-    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)  
-    kadZadano = models.IntegerField() 
-    sifVolonter = models.IntegerField() 
+    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
+    kadZadano = models.IntegerField()
+    sifVolonter = models.IntegerField()
 
     class Meta:
         constraints = [
@@ -118,33 +121,38 @@ class PrijavljenNa(models.Model):
     def __str__(self):
         return f"PrijavljenNa {self.sifSusjed} - {self.kadZadano} - {self.sifVolonter}"
 
+
+# Zahtjev model (Request)
 class Zahtjev(models.Model):
     cijenaBod = models.IntegerField()
-    nazivZahtjev = models.CharField(max_length=255)  
-    adresaZahtjev = models.CharField(max_length=255) 
-    statusZahtjev = models.CharField(max_length=255)  
-    opisZahtjev = models.CharField(max_length=2047, null=True)  
-    
+    nazivZahtjev = models.CharField(max_length=255)
+    adresaZahtjev = models.CharField(max_length=255)
+    statusZahtjev = models.CharField(max_length=255)
+    opisZahtjev = models.CharField(max_length=2047, null=True)
+
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
     sifVrsta = models.TextField(default="")
     sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['sifSusjed'], name='unique_kadZadan_sifSusjed')
+            models.UniqueConstraint(fields=['sifSusjed'], name='izvornik_unique_kadZadan_sifSusjed')  # Updated name
         ]
 
     def __str__(self):
         return f"Zahtjev {self.nazivZahtjev} - ({self.sifSusjed})"
-    
 
+
+# VrstaUsluga model (Service type)
 class VrstaUsluga(models.Model):
     sifVrsta = models.IntegerField(primary_key=True)
     nazivVrsta = models.CharField(max_length=255)
 
     def __str__(self):
         return self.nazivVrsta
-    
+
+
+# JeSposoban model (Is capable)
 class JeSposoban(models.Model):
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
     sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.CASCADE)
@@ -157,18 +165,24 @@ class JeSposoban(models.Model):
     def __str__(self):
         return f"JeSposoban - Susjed: {self.sifSusjed}, Vrsta: {self.sifVrsta}"
 
+
+# Prihvaca model (Acceptance)
 class Prihvaca(models.Model):
     ocjenaPonuda = models.IntegerField()
     sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
     kadZadano = models.DateTimeField()
     sifTvrtka = models.ForeignKey('Tvrtka', on_delete=models.CASCADE)
 
-    class Meta:[
+    class Meta:
+        constraints = [
             models.UniqueConstraint(fields=['sifSusjed', 'kadZadano', 'sifTvrtka'], name='unique_susjed_kadZadano_tvrtka')
         ]
 
     def __str__(self):
         return f"Prihvaca - Susjed: {self.sifSusjed}, KadZadano: {self.kadZadano}, Tvrtka: {self.sifTvrtka}"
+
+
+# Ponuda model (Offer)
 class Ponuda(models.Model):
     kadZadano = models.CharField(max_length=255)
     cijenaNovac = models.FloatField(null=True, blank=True)
@@ -177,7 +191,6 @@ class Ponuda(models.Model):
     opisPonuda = models.CharField(max_length=2048, null=True, blank=True)
     sifTvrtka = models.ForeignKey('Tvrtka', on_delete=models.CASCADE)
     sifVrsta = models.TextField(default="")
-    #sifVrsta = models.ForeignKey('VrstaUsluga', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         constraints = [
