@@ -1,3 +1,86 @@
+/* Container for the service types (vrsta usluge) */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+/* Badge style for each service type (vrsta usluge) */
+.skill-badge {
+    background-color: #555;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Status styles */
+.status-waiting {
+    color: orange;
+    font-weight: bold;
+}
+
+.status-canceled {
+    color: red;
+    font-weight: bold;
+}
+
+.status-accepted {
+    color: green;
+    font-weight: bold;
+}
+
+/* Spinner for loading state */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Loading container styles */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Error message styling */
+.error-message {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8d7da;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #721c24;
+    text-align: center;
+}
+
+.error-message h3 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.error-message p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* General container for zahtjev details */
 .zahtjev-details-container {
     width: 40vw;
     min-width: 300px;
@@ -10,6 +93,7 @@
     color: #000000;
 }
 
+/* Heading styles */
 .zahtjev-details-container h2 {
     text-align: center;
     color: #007bff;
@@ -17,6 +101,7 @@
     margin-bottom: 20px;
 }
 
+/* Paragraph text styles */
 .zahtjev-details-container p {
     font-size: 1.1em;
     line-height: 1.6;
@@ -27,6 +112,7 @@
     color: #555;
 }
 
+/* Button styles */
 .zahtjev-details-container button {
     display: block;
     width: 50%;
@@ -58,6 +144,8 @@
 .zahtjev-details-container button:last-child:hover {
     background-color: #5a6268;
 }
+
+/* Map view button style */
 .view-map-button {
     background-color: #333;
     color: white;
@@ -70,51 +158,4 @@
 
 .view-map-button:hover {
     background-color: #555;
-}
-
-/* spinner za ucitavanje */
-.spinner {
-border: 4px solid #f3f3f3;
-border-top: 4px solid #007bff;
-border-radius: 50%;
-width: 50px;
-height: 50px;
-animation: spin 2s linear infinite;
-margin: 0 auto;
-}
-
-@keyframes spin {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
-}
-
-/* centriranje kontejnera s loadingom */
-.loading-container {
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-background-color: rgba(255, 255, 255, 0.7);
-}
-
-.error-message {
-max-width: 600px;
-margin: 20px auto;
-padding: 20px;
-background-color: #f8d7da;
-border-radius: 8px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-font-family: Arial, sans-serif;
-color: #721c24;
-text-align: center;
-}
-
-.error-message h3 {
-font-size: 1.8em;
-margin-bottom: 15px;
-}
-
-.error-message p {
-font-size: 1.1em;
-line-height: 1.6;
 }

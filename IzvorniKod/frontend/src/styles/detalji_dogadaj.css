@@ -118,3 +118,16 @@ margin-bottom: 15px;
 font-size: 1.1em;
 line-height: 1.6;
 }
+
+/* Status styling */
+.status-waiting {
+    color: orange; /* Orange for ČEKANJE */
+  }
+  
+  .status-rejected {
+    color: red; /* Red for PREKINUTO */
+  }
+  
+  .status-other {
+    color: green; /* Green for other statuses */
+  }

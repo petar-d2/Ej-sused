@@ -15,6 +15,17 @@ from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
 from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.db.models.functions import Cast
 
+def validate_field_types(data, field_types):
+    errors = {}
+    for field, expected_type in field_types.items():
+        value = data.get(field)
+        if not isinstance(value, expected_type) and value is not None:
+            try:
+                # Attempt to cast the value to the expected type (e.g., str -> int)
+                expected_type(value)
+            except (ValueError, TypeError):
+                errors[field] = f"Expected {expected_type.__name__}, but got {type(value).__name__}"
+    return errors
 
 # Render the main page
 def main(request):
@@ -556,43 +567,32 @@ class napraviZahtjevView(APIView):
     def post(self, request):
         print("ENTRY POST")
         print("Request Data:", request.data)
-        
-        # Preuzimanje podataka sa zahtjeva
+        # Extract and validate data
         nazivZahtjev = request.data.get('nazivZahtjev')
         adresaZahtjev = request.data.get('adresaZahtjev')
-        statusZahtjev = request.data.get('statusZahtjev')
+        statusZahtjev = request.data.get('statusZahtjev', 'ČEKANJE')  # Default value for status
         opisZahtjev = request.data.get('opisZahtjev', None)
         cijenaBod = request.data.get('cijenaBod')
         sifSusjed_id = request.data.get('sifSusjed')
         sifVrsta_id = request.data.get('sifVrsta')
-        sifIzvrsitelj_id = request.data.get('sifIzvrsitelj')
-        print("test")
-        # Validacija obaveznih polja
-        if not all([nazivZahtjev, adresaZahtjev, cijenaBod, sifSusjed_id, sifVrsta_id]):
-            return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Preuzimanje odnosa
-        sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
-        sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
-        print("test2")
+        sifIzvrsitelj_id = -1  # Default value for sifIzvrsitelj
+        print(sifIzvrsitelj_id, sifSusjed_id, sifVrsta_id, cijenaBod, nazivZahtjev, adresaZahtjev, statusZahtjev, opisZahtjev)
+        print(type(sifSusjed_id), type(sifVrsta_id), type(sifIzvrsitelj_id), type(cijenaBod), type(nazivZahtjev), type(adresaZahtjev), type(statusZahtjev), type(opisZahtjev))
         try:
-            # Kreiranje novog Zahtjeva
+            # Create Zahtjev object
             zahtjev = Zahtjev.objects.create(
                 nazivZahtjev=nazivZahtjev,
                 adresaZahtjev=adresaZahtjev,
                 statusZahtjev=statusZahtjev,
                 opisZahtjev=opisZahtjev,
                 cijenaBod=cijenaBod,
-                sifSusjed=sifSusjed,
+                sifSusjed=sifSusjed_id,
                 sifVrsta=sifVrsta_id,
-                sifIzvrsitelj=sifIzvrsitelj,
+                sifIzvrsitelj=sifIzvrsitelj_id,
             )
-            zahtjev.save()
             return Response({"message": "Zahtjev uspešno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
-        
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     def get(self, request):
         return render(request, "index.html")
 
@@ -793,4 +793,18 @@ class listKomentariView(APIView):
         
         # Return serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
+     
+class updateZahtjevStatusView(APIView):
+    def post(self, request, sifZahtjev):
+        new_status = request.data.get('status')
+        if not new_status:
+            return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+
+        zahtjev.statusZahtjev = new_status
+        zahtjev.save()
+        
+        return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+
      

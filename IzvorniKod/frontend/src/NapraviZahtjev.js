@@ -16,7 +16,7 @@ const NapraviZahtjev = () => {
     opisZahtjev: '',
     cijenaBod: 0,
     sifVrsta: '', // ID vrste usluge (izabran skill)
-    sifIzvrsitelj: '',
+    sifIzvrsitelj: -1,
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -56,7 +56,7 @@ const NapraviZahtjev = () => {
         opisZahtjev: '',
         cijenaBod: 0,
         sifVrsta: '',
-        sifIzvrsitelj: '',
+        sifIzvrsitelj: -1,
       });
     } catch (error) {
       console.error(error);

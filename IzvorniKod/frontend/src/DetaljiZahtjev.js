@@ -31,11 +31,22 @@ const DetaljiZahtjev = () => {
         const mapsUrl = `https://www.google.com/maps?q=${encodedLocation}`;
         window.open(mapsUrl, '_blank');
     };
-    
 
     const handleConfirm = () => {
         const userData = JSON.parse(localStorage.getItem('user'));
         console.log('Zahtjev potvrden:', userData.id);
+    };
+
+    // Function to determine the status class
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'ČEKANJE':
+                return 'status-waiting';  // Orange color for ČEKANJE
+            case 'PREKINUTO':
+                return 'status-canceled'; // Red color for PREKINUTO
+            default:
+                return 'status-accepted'; // Green color for any other status
+        }
     };
 
     if (loading) {
@@ -61,8 +72,19 @@ const DetaljiZahtjev = () => {
             <h2>Detalji zahtjeva</h2>
             <p><strong>Adresa:</strong> {zahtjev.adresaZahtjev}</p>
             <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'N/A'}</p>
-            <p><strong>Status:</strong> {zahtjev.statusZahtjev}</p>
+            
+            {/* Vrsta usluge container with badges */}
+            <div className="skills-container">
+                {Array.isArray(zahtjev.sifVrsta) 
+                    ? zahtjev.sifVrsta.map((service, index) => (
+                        <span key={index} className="skill-badge">{service}</span>
+                    ))
+                    : <span className="skill-badge">{zahtjev.sifVrsta}</span>}
+            </div>
+
+            <p><strong>Status:</strong> <span className={getStatusClass(zahtjev.statusZahtjev)}>{zahtjev.statusZahtjev}</span></p>
             <p><strong>Cijena (bodovi):</strong> {zahtjev.cijenaBod}</p>
+
             <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
                 Pogledaj lokaciju na karti
             </button>

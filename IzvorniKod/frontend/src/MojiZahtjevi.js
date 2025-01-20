@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './styles/zahtjevi.css';
-import ZahtjevCard from './ZahtjevCard';
+import MojZahtjevCard from './MojZahtjevCard';
 
 const MojiZahtjevi = () => {
   const [zahtjevi, setZahtjevi] = useState([]); // State for user's zahtjevi
@@ -41,7 +41,7 @@ const MojiZahtjevi = () => {
       <div className="zahtjevi-container">
         {zahtjevi.length > 0 ? (
           zahtjevi.map((event) => (
-            <ZahtjevCard key={event.id} event={event} />
+            <MojZahtjevCard key={event.id} event={event} />
           ))
         ) : (
           <p>Nemate nijedan zahtjev.</p>

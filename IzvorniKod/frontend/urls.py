@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import *
 
-
-
 urlpatterns = [
     path('search/', searchSortView.as_view(), name='search'),
     path('skills/', SkillsView.as_view(), name='skills'),
@@ -41,5 +39,6 @@ urlpatterns = [
     path('admin-prikaz/',adminPrikazView.as_view(),name='admin-prikaz'),
     path('uredi-profil/', main),
     path('komentari/', listKomentariView.as_view(), name='komentari'),
+    path('zahtjev/update-status/<int:sifZahtjev>/', updateZahtjevStatusView.as_view(), name='update-zahtjev-status'),
     path("", main),
 ]

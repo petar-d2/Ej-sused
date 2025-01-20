@@ -130,13 +130,13 @@ class Zahtjev(models.Model):
     statusZahtjev = models.CharField(max_length=255)
     opisZahtjev = models.CharField(max_length=2047, null=True)
 
-    sifSusjed = models.ForeignKey('Susjed', on_delete=models.CASCADE)
+    sifSusjed =  models.IntegerField()
     sifVrsta = models.TextField(default="")
-    sifIzvrsitelj = models.ForeignKey('Susjed', on_delete=models.CASCADE, related_name='izvrsitelj_set', null=True, blank=True)
+    sifIzvrsitelj =  models.IntegerField(default=-1)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['sifSusjed'], name='izvornik_unique_kadZadan_sifSusjed')  # Updated name
+            models.UniqueConstraint(fields=['sifSusjed', 'nazivZahtjev'], name='izvornik_unique_nazivZahjev_sifSusjed')  # Updated name
         ]
 
     def __str__(self):
