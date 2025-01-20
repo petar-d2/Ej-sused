@@ -808,3 +808,15 @@ class updateZahtjevStatusView(APIView):
         return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
 
      
+class assignIzvrsiteljView(APIView):
+    def post(self, request, sifZahtjev):
+        user_id = request.data.get('user_id')
+        if not user_id:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+        zahtjev.statusZahtjev = 'PRIHVAĆEN'
+        zahtjev.sifIzvrsitelj = user_id
+        zahtjev.save()
+
+        return Response({"message": "Izvršitelj assigned successfully"}, status=status.HTTP_200_OK)

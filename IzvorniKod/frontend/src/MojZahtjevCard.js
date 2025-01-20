@@ -69,6 +69,7 @@ const MojZahtjevCard = ({ event }) => {
       </div>
       {event.opisZahtjev && <p><strong>Opis:</strong> {event.opisZahtjev}</p>}
       <p><strong>Cijena (bodovi):</strong> {event.cijenaBod}</p>
+      <p><strong>Izvršitelj:</strong> {event.sifIzvrsitelj}</p>
       <div className="action-buttons">
         <button className="btn-obavljeno" onClick={handleObavljenoClick}>OBAVLJENO</button>
         <button className="btn-neprihvaceno" onClick={handleNeprihvacenoClick}>PREKINUTO</button>

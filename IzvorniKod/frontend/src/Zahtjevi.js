@@ -9,6 +9,8 @@ const Zahtjevi = () => {
   const [sortBy, setSortBy] = useState(''); // State for sorting
   const [loading, setLoading] = useState(true); // Loading state
   const inputRef = useRef(null); // Reference for input
+  const userData = JSON.parse(localStorage.getItem('user')); // Retrieve user data
+  const userSifSusjed = userData.id; // Extract user's sifSusjed
 
   // Fetch all zahtjevi
   const fetchZahtjevi = async (query = '', sort = '') => {
@@ -20,7 +22,13 @@ const Zahtjevi = () => {
           '/'
         ) + 'search/'}?search=${query}&model=zahtjev&sort_by=${sort}`
       );
-      setZahtjevi(response.data);
+
+      // Filter zahtjevi to only include those with matching sifSusjed
+      const filteredZahtjevi = response.data.filter(
+        (event) => event.sifSusjed !== userSifSusjed
+      );
+      console.log(filteredZahtjevi);
+      setZahtjevi(filteredZahtjevi);
     } catch (error) {
       console.error('Error fetching zahtjevi:', error);
     } finally {
@@ -44,7 +52,7 @@ const Zahtjevi = () => {
     }
   }, []);
 
-  // Fetch zahtjevi whenever searchQuery changes
+  // Fetch zahtjevi whenever searchQuery or sortBy changes
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchZahtjevi(searchQuery, sortBy);
@@ -73,7 +81,8 @@ const Zahtjevi = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select id="sort_zahtjevi"
+        <select
+          id="sort_zahtjevi"
           className="filter-dropdown"
           value={sortBy}
           onChange={handleSortChange}
