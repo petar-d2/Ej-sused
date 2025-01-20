@@ -40,3 +40,8 @@
   .status-other {
     color: green; /* Green for other statuses */
   }
+
+  .button-container {
+    display: flex;
+    gap: 10px; /* This will add a gap of 10px between the buttons */
+  }

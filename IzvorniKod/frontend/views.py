@@ -458,6 +458,7 @@ class userInfo(APIView):
                 "isSusjed": user.isSusjed,
                 "isTvrtka": user.isTvrtka,
                 "isNadlezna": user.isNadlezna,
+                "isModerator": user.isModerator
             }
             # Dodatni podaci za Susjeda ili Tvrtku
             if user.isSusjed:
@@ -820,3 +821,21 @@ class assignIzvrsiteljView(APIView):
         zahtjev.save()
 
         return Response({"message": "Izvršitelj assigned successfully"}, status=status.HTTP_200_OK)
+    
+
+class izmijeniStatusDogadajaView(APIView):
+    def patch(self, request, id):
+        event = get_object_or_404(Dogadaj, id=id)
+        
+        new_status = request.data.get('statusDogadaj', None)
+        
+        if not new_status:
+            return Response({'detail': 'Status is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        event.statusDogadaj = new_status
+        event.save()
+
+        return Response(
+            {'id': event.id, 'statusDogadaj': event.statusDogadaj},
+            status=status.HTTP_200_OK
+        )
