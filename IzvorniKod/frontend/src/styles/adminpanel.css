@@ -1,0 +1,11 @@
+
+
+.section-selector {
+    display: flex;
+    justify-content: center;  /* Center buttons horizontally */
+    gap: 15px;                /* Add space between buttons */
+    margin-bottom: 20px;
+}
+
+
+
