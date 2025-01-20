@@ -1,0 +1,136 @@
+/* Default card styling */
+.zahtjev-card {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+.zahtjev-card:hover {
+    background-color: #f4f4f4;
+}
+
+/* Status styling */
+.status-waiting {
+    color: orange; /* Orange for ČEKANJE */
+}
+
+.status-rejected {
+    color: red; /* Red for PREKINUTO */
+}
+
+.status-other {
+    color: green; /* Green for other statuses */
+}
+
+/* sifVrsta container (service type in badge format) */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.skill-badge {
+    background-color: #555;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: space-between; /* Add space between buttons */
+    margin-top: 10px; /* Add some margin at the top */
+}
+
+.action-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 48%;
+    text-align: center; /* Center the text */
+}
+
+.btn-obavljeno {
+    background-color: green;
+    color: white;
+}
+
+.btn-obavljeno:hover {
+    background-color: darkgreen;
+}
+
+.btn-neprihvaceno {
+    background-color: red;
+    color: white;
+    text-align: left;
+    align-content: left;
+    align-items: left;
+}
+
+.btn-neprihvaceno:hover {
+    background-color: darkred;
+}
+
+/* Custom Alert Styles */
+.custom-alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.custom-alert.error {
+    background-color: #f44336;
+}
+
+.custom-alert.success {
+    background-color: #4caf50; /* Green for success */
+}
+
+.custom-alert p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.prihvati-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background-color 0.3s;
+  }
+  
+  .prihvati-button:hover {
+    background-color: #218838;
+  }
+  
+  .button-icon {
+    margin-right: 8px;
+    font-size: 14px; /* Adjust icon size */
+    font-weight: bold; /* Make it stand out slightly */
+  }
+  

@@ -63,8 +63,8 @@ const Dogadaji = () => {
   }
 
   return (
-    <div className="body">
-      <div className="headera" id="search">
+    <div className="body_dogadaji">
+      <div className="header-dogadaji" id="search">
         <input
           type="text"
           id="search1"

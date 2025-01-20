@@ -16,7 +16,7 @@ const NapraviZahtjev = () => {
     opisZahtjev: '',
     cijenaBod: 0,
     sifVrsta: '', // ID vrste usluge (izabran skill)
-    sifIzvrsitelj: '',
+    sifIzvrsitelj: -1,
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -56,7 +56,7 @@ const NapraviZahtjev = () => {
         opisZahtjev: '',
         cijenaBod: 0,
         sifVrsta: '',
-        sifIzvrsitelj: '',
+        sifIzvrsitelj: -1,
       });
     } catch (error) {
       console.error(error);
@@ -72,7 +72,7 @@ const NapraviZahtjev = () => {
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
       <form onSubmit={handleSubmit} className="zahtjev-form">
         <div className="form-group">
-          <label htmlFor="nazivZahtjev">Naziv Zahtjeva:</label>
+          <label htmlFor="nazivZahtjev">Naziv zahtjeva:</label>
           <input
             type="text"
             id="nazivZahtjev"
@@ -80,7 +80,7 @@ const NapraviZahtjev = () => {
             value={formData.nazivZahtjev}
             onChange={handleChange}
             required
-            className="form-control"
+            className="zahtjev_input"
           />
         </div>
         <div className="form-group">
@@ -92,7 +92,7 @@ const NapraviZahtjev = () => {
             value={formData.adresaZahtjev}
             onChange={handleChange}
             required
-            className="form-control"
+            className="zahtjev_input"
           />
         </div>
         <div className="form-group">
@@ -104,7 +104,7 @@ const NapraviZahtjev = () => {
             value={formData.cijenaBod}
             onChange={handleChange}
             required
-            className="form-control"
+            className="zahtjev_input"
           />
         </div>
         <div className="form-group">
@@ -114,7 +114,7 @@ const NapraviZahtjev = () => {
             name="opisZahtjev"
             value={formData.opisZahtjev}
             onChange={handleChange}
-            className="form-control"
+            className="zahtjev_textarea"
             rows="4"
           ></textarea>
         </div>
@@ -126,7 +126,7 @@ const NapraviZahtjev = () => {
             value={formData.sifVrsta}
             onChange={handleChange}
             required
-            className="form-control"
+            className="zahtjev_select"
           >
             <option value="" disabled>Izaberi vrstu usluge</option>
             {skills.map((skill, index) => (

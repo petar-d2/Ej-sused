@@ -17,7 +17,7 @@ const DetaljiDogadaj = () => {
                 setDogadaj(response.data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching tvrtka details:', error);
+                console.error('Error fetching dogadaj details:', error);
                 setLoading(false);
             }
         };
@@ -55,7 +55,11 @@ const DetaljiDogadaj = () => {
             </div>
         );
     }
-
+    const getStatusClass = (status) => {
+        if (status === 'ODOBRAVANJE') return 'status-waiting'; // Orange for ČEKANJE
+        if (status === 'PREKINUTO') return 'status-rejected'; // Red for PREKINUTO
+        return 'status-other'; // Green for other statuses
+      };
     return (
         <div className="dogadaj-details-container">
             <h2>Detalji događaja</h2>
@@ -64,7 +68,7 @@ const DetaljiDogadaj = () => {
             <p><strong>Adresa:</strong> {dogadaj.adresaDogadaj}</p>
             <p><strong>Vrsta:</strong> {dogadaj.vrstaDogadaj}</p>
             <p><strong>Opis:</strong> {dogadaj.opisDogadaj || 'N/A'}</p>
-            <p><strong>Status:</strong> {dogadaj.statusDogadaj}</p>
+            <p><strong>Status:</strong> <span className={getStatusClass(dogadaj.statusDogadaj)}>{dogadaj.statusDogadaj}</span></p>
             <p><strong>Broj bodova za dolazak:</strong> {dogadaj.nagradaBod}</p>
             <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
                 Pogledaj lokaciju na karti

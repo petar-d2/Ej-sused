@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './styles/zahtjevi.css';
+import MojZahtjevCard from './MojZahtjevCard';
 
 const MojiZahtjevi = () => {
   const [zahtjevi, setZahtjevi] = useState([]); // State for user's zahtjevi
@@ -11,7 +12,7 @@ const MojiZahtjevi = () => {
     try {
       const userData = JSON.parse(localStorage.getItem('user')); // Retrieve user data
       const response = await axios.post(
-        `/api/zahtjevi/moji-zahtjevi/${userData.id}/` // Backend endpoint for user's zahtjevi
+        window.location.href.replace(window.location.pathname, '/')+`moji-zahtjevi/${userData.id}/` // Backend endpoint for user's zahtjevi
       );
       setZahtjevi(response.data);
     } catch (error) {
@@ -35,18 +36,12 @@ const MojiZahtjevi = () => {
   }
 
   return (
-    <div>
+    <div className='body_zahtjevi'>
       <h2>Moji Zahtjevi</h2>
       <div className="zahtjevi-container">
         {zahtjevi.length > 0 ? (
-          zahtjevi.map((zahtjev) => (
-            <div key={zahtjev.id} className="zahtjev-card">
-              <h3>{zahtjev.nazivZahtjev}</h3>
-              <p><strong>Adresa:</strong> {zahtjev.adresaZahtjev}</p>
-              <p><strong>Status:</strong> {zahtjev.statusZahtjev}</p>
-              <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'Nema opisa'}</p>
-              <p><strong>Cijena Bodova:</strong> {zahtjev.cijenaBod}</p>
-            </div>
+          zahtjevi.map((event) => (
+            <MojZahtjevCard key={event.id} event={event} />
           ))
         ) : (
           <p>Nemate nijedan zahtjev.</p>

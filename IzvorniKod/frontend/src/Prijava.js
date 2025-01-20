@@ -78,11 +78,12 @@ const Prijava = () => {
   return (
     <div className="login_signup-container">
       <h2>Prijava</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className='login_form'>
         <div className="form-group">
           <label>Email:</label>
           <input
             id="email"
+            className='login_input'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -93,6 +94,7 @@ const Prijava = () => {
           <label>Lozinka:</label>
           <input
             id="password"
+            className='login_input'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

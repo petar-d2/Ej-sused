@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles/header.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -8,13 +8,15 @@ const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState('');
 
     const pageTitles = {
         '/': 'Početna',
         '/tvrtke': 'Tvrtke',
-        '/ponude-susjeda': 'Ponude susjeda',
+        '/susjedi': 'Susjedi',
         '/dogadaji': 'Događaji',
         '/moji-zahtjevi': 'Moji zahtjevi',
+        '/zahtjevi': 'Zahtjevi',
         '/napravi-zahtjev': 'Novi zahtjev',
         '/moji-dogadaji': 'Moji događaji',
         '/kreiraj-dogadaj': 'Novi događaj',
@@ -23,9 +25,29 @@ const Header = () => {
         '/uredi-profil': 'Uredi profil',
         '/prijava': 'Prijava',
         '/registracija': 'Registracija',
+
+        '/home': 'Početna',
+        '/home/': 'Početna',
+        '/tvrtke/': 'Tvrtke',
+        '/Susjedi/': 'Susjedi',
+        '/dogadaji/': 'Događaji',
+        '/moji-zahtjevi/': 'Moji zahtjevi',
+        '/zahtjevi/': 'Zahtjevi',
+        '/napravi-zahtjev/': 'Novi zahtjev',
+        '/moji-dogadaji/': 'Moji događaji',
+        '/kreiraj-dogadaj/': 'Novi događaj',
+        '/moje-ponude/': 'Moje ponude',
+        '/napravi-ponudu/': 'Nova ponuda',
+        '/uredi-profil/': 'Uredi profil',
+        '/prijava/': 'Prijava',
+        '/registracija/': 'Registracija',
     };
 
-    const currentPage = pageTitles[location.pathname] || '';
+    useEffect(() => {
+        // Postavljanje naslova na temelju trenutne lokacije
+        const pageTitle = pageTitles[location.pathname] || '';
+        setCurrentPage(pageTitle);
+    }, [location.pathname]);
 
     const handleLogout = async () => {
         const access = localStorage.getItem("accessToken");
@@ -145,10 +167,11 @@ const Header = () => {
                             {isLoggedIn() ? (
                                 <>
                                     <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button>
+                                    <button className="header_gumb" onClick={() => handleNavigate('/susjedi')}>Susjedi</button>
                                     <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                     {isSusjed2() && (
                                         <>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
                                             {isVolonter2() && (
@@ -165,7 +188,7 @@ const Header = () => {
                                     {isTvrtka2() && (
                                         <>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova ponuda</button>
                                         </>
                                     )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
@@ -192,10 +215,11 @@ const Header = () => {
                             <>
                                 
                                 <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                                <button className="header_gumb" onClick={() => handleNavigate('/ponude-susjeda')}>Ponude susjeda</button> 
+                                <button className="header_gumb" onClick={() => handleNavigate('/susjedi')}>Susjedi</button> 
                                 <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                 {isSusjed2() && (
                                     <>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
                                         {isVolonter2() && (
@@ -212,7 +236,7 @@ const Header = () => {
                                 {isTvrtka2() && (
                                     <>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moje-ponude')}>Moje ponude</button>
-                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova Ponuda</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/napravi-ponudu')}>Nova ponuda</button>
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna, Ponuda
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.hashers import make_password  # Import password hasher
@@ -12,6 +12,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.http import Http404
 from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
+from django.db.models import F, FloatField, ExpressionWrapper, Case, When
+from django.db.models.functions import Cast
+
+def validate_field_types(data, field_types):
+    errors = {}
+    for field, expected_type in field_types.items():
+        value = data.get(field)
+        if not isinstance(value, expected_type) and value is not None:
+            try:
+                # Attempt to cast the value to the expected type (e.g., str -> int)
+                expected_type(value)
+            except (ValueError, TypeError):
+                errors[field] = f"Expected {expected_type.__name__}, but got {type(value).__name__}"
+    return errors
 
 # Render the main page
 def main(request):
@@ -49,6 +63,7 @@ class registracija(APIView):
         isSusjed = request.data.get('isSusjed', False)
         isTvrtka = request.data.get('isTvrtka', False)
         isNadlezna = request.data.get('isNadlezna', False)
+        isModerator = request.data.get('isModerator',False)
         brojOcjena = request.data.get('brojOcjena', 0)
         zbrojOcjena = request.data.get('zbrojOcjena', 0)
 
@@ -160,7 +175,7 @@ class googleLogin(APIView):
         except ValueError:
             return Response({"error": "Invalid Google token"}, status=status.HTTP_400_BAD_REQUEST)
 
-class ponudeSusjedaListView(APIView):
+class susjediListView(APIView):
     def post(self, request):
         #Fetch from database
         susjedi = Susjed.objects.all()
@@ -223,10 +238,31 @@ class detaljiDogadajView(APIView):
             serializer = DogadajSerializer(user)
             return Response(serializer.data)
         except Dogadaj.DoesNotExist:
-            return Response({"detail": "User not found"}, status=404)
+            return Response({"detail": "Event not found"}, status=404)
     def get(self, request, sifDogadaj):
         return render(request, "index.html")
 
+class detaljiZahtjevView(APIView):
+    def post(self, request, sifZahtjev):
+        try:
+            user = Zahtjev.objects.get(id=sifZahtjev)
+            serializer = ZahtjevSerializer(user)
+            return Response(serializer.data)
+        except Zahtjev.DoesNotExist:
+            return Response({"detail": "Zahtjev not found"}, status=404)
+    def get(self, request, sifZahtjev):
+        return render(request, "index.html")
+
+class detaljiPonudaView(APIView):
+    def post(self, request, sifPonuda):
+        try:
+            user = Ponuda.objects.get(id=sifPonuda)
+            serializer = PonudaSerializer(user)
+            return Response(serializer.data)
+        except Ponuda.DoesNotExist:
+            return Response({"detail": "Ponuda not found"}, status=404)
+    def get(self, request, sifPonuda):
+        return render(request, "index.html")
 
 class SkillsView(APIView):
     def get(self, request):
@@ -251,6 +287,16 @@ class searchSortView(APIView):
             'model': Dogadaj,
             'serializer': DogadajSerializer,
             'fields': ['datumDogadaj', 'vrijemeDogadaj', 'nazivDogadaj', 'statusDogadaj', 'vrstaDogadaj', 'opisDogadaj', 'nagradaBod']
+        },
+        'zahtjev': {
+            'model': Zahtjev,
+            'serializer': ZahtjevSerializer,
+            'fields': ['statusZahtjev', 'opisZahtjev', 'cijenaBod', 'nazivZahtjev']
+        },
+        'ponuda': {
+            'model': Ponuda,
+            'serializer': PonudaSerializer,
+            'fields': ['adresaTvrtka', 'opisPonuda', 'cijenaNovac', 'nazivPonuda']
         }
     }
 
@@ -287,8 +333,27 @@ class searchSortView(APIView):
 
         # Sorting logic
         if sortBy:
-            if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod']:
+            if sortBy in ['datumDogadaj', '-datumDogadaj', 'nagradaBod', '-nagradaBod'] and modelName=='dogadaj':
                 queryset = queryset.order_by(sortBy)
+            elif sortBy in ['cijenaBod', '-cijenaBod'] and modelName=='zahtjev':
+                queryset = queryset.order_by(sortBy)
+            elif sortBy in ['cijenaNovac', '-cijenaNovac'] and modelName=='ponuda':
+                queryset = queryset.order_by(sortBy)
+            elif sortBy in ['ocjena', '-ocjena']:
+                if modelName == 'tvrtka' or modelName=='susjed':
+                    # Annotate queryset with average rating
+                    queryset = queryset.annotate(
+                    ocjena=ExpressionWrapper(
+                        Case(
+                            When(brojOcjena=0, then=0),
+                            default=F('zbrojOcjena') / Cast(F('brojOcjena'), FloatField()), 
+                            output_field=FloatField()
+                        ),
+                        output_field=FloatField()
+                    )
+                    )
+                    # Order by the annotated field
+                    queryset = queryset.order_by(sortBy)
 
         serializer = serializerClass(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -502,45 +567,75 @@ class napraviZahtjevView(APIView):
     def post(self, request):
         print("ENTRY POST")
         print("Request Data:", request.data)
-        
-        # Preuzimanje podataka sa zahteva
+        # Extract and validate data
         nazivZahtjev = request.data.get('nazivZahtjev')
         adresaZahtjev = request.data.get('adresaZahtjev')
-        statusZahtjev = request.data.get('statusZahtjev')
+        statusZahtjev = request.data.get('statusZahtjev', 'ČEKANJE')  # Default value for status
         opisZahtjev = request.data.get('opisZahtjev', None)
         cijenaBod = request.data.get('cijenaBod')
         sifSusjed_id = request.data.get('sifSusjed')
         sifVrsta_id = request.data.get('sifVrsta')
-        sifIzvrsitelj_id = request.data.get('sifIzvrsitelj')
-        print("test")
-        # Validacija obaveznih polja
-        if not all([nazivZahtjev, adresaZahtjev, cijenaBod, sifSusjed_id, sifVrsta_id]):
-            return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Preuzimanje odnosa
-        sifSusjed = get_object_or_404(Susjed, pk=sifSusjed_id)
-        sifIzvrsitelj = get_object_or_404(Susjed, pk=sifIzvrsitelj_id) if sifIzvrsitelj_id else None
-        print("test2")
+        sifIzvrsitelj_id = -1  # Default value for sifIzvrsitelj
+        print(sifIzvrsitelj_id, sifSusjed_id, sifVrsta_id, cijenaBod, nazivZahtjev, adresaZahtjev, statusZahtjev, opisZahtjev)
+        print(type(sifSusjed_id), type(sifVrsta_id), type(sifIzvrsitelj_id), type(cijenaBod), type(nazivZahtjev), type(adresaZahtjev), type(statusZahtjev), type(opisZahtjev))
         try:
-            # Kreiranje novog Zahtjeva
+            # Create Zahtjev object
             zahtjev = Zahtjev.objects.create(
                 nazivZahtjev=nazivZahtjev,
                 adresaZahtjev=adresaZahtjev,
                 statusZahtjev=statusZahtjev,
                 opisZahtjev=opisZahtjev,
                 cijenaBod=cijenaBod,
-                sifSusjed=sifSusjed,
+                sifSusjed=sifSusjed_id,
                 sifVrsta=sifVrsta_id,
-                sifIzvrsitelj=sifIzvrsitelj,
+                sifIzvrsitelj=sifIzvrsitelj_id,
             )
-            zahtjev.save()
             return Response({"message": "Zahtjev uspešno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    def get(self, request):
+        return render(request, "index.html")
+
+class napraviPonuduView(APIView):
+    def post(self, request):
+        print("ENTRY POST")
+        print("Request Data:", request.data)
+        
+        kadZadano = request.data.get('kadZadano')
+        nazivPonuda = request.data.get('nazivPonuda')
+        opisPonuda = request.data.get('opisPonuda', None)
+        cijenaNovac = request.data.get('cijenaNovac')
+        sifTvrtka_id = request.data.get('sifTvrtka')
+        isAktivna = request.data.get('isAktivna')
+        sifVrsta_id = request.data.get('sifVrsta')
+        # Validacija obaveznih polja
+        if not all([nazivPonuda, cijenaNovac, sifTvrtka_id]):
+            return Response({"error": "Sva polja osim opisa su obavezna."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Preuzimanje odnosa
+        sifTvrtka = get_object_or_404(Tvrtka, pk=sifTvrtka_id)
+        print("test2")
+        try:
+            # Kreiranje nove Ponude
+            ponuda = Ponuda.objects.create(
+                kadZadano = kadZadano,
+                nazivPonuda=nazivPonuda,
+                opisPonuda=opisPonuda,
+                cijenaNovac=cijenaNovac,
+                sifTvrtka=sifTvrtka,
+                sifVrsta=sifVrsta_id,
+                isAktivna=isAktivna
+            )
+            ponuda.save()
+            return Response({"message": "Ponuda uspešno kreiran!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
         return render(request, "index.html")
+
+    
 
 class unesiKomentarView(APIView):
     def post(self, request):
@@ -641,7 +736,7 @@ class pokaziKomentareView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class listZahtjeviView(APIView):
-    def get(self, request):
+    def post(self, request):
         # Fetch all Zahtjevi or filter based on query params
         naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
         if naziv_filter:
@@ -651,13 +746,38 @@ class listZahtjeviView(APIView):
         
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
     
+class listPonudeView(APIView):
+    def post(self, request):
+        # Fetch all Zahtjevi or filter based on query params
+        naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
+        if naziv_filter:
+            ponude = Ponuda.objects.filter(nazivPonuda=naziv_filter)
+        else:
+            ponude = Ponuda.objects.all()
+        
+        serializer = PonudaSerializer(ponude, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        return render(request, "index.html")
 
 class mojiZahtjeviView(APIView):
     def post(self, request, user_id):
         zahtjevi = Zahtjev.objects.filter(sifSusjed=user_id)  
         serializer = ZahtjevSerializer(zahtjevi, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id):
+        return render(request, "index.html")
+
+class mojePonudeView(APIView):
+    def post(self, request, user_id):
+        ponude = Ponuda.objects.filter(sifTvrtka=user_id)  
+        serializer = PonudaSerializer(ponude, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id):
+        return render(request, "index.html")
     
 class adminPrikazView(APIView):
     def get(self, request):
@@ -674,3 +794,29 @@ class listKomentariView(APIView):
         # Return serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
      
+class updateZahtjevStatusView(APIView):
+    def post(self, request, sifZahtjev):
+        new_status = request.data.get('status')
+        if not new_status:
+            return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+
+        zahtjev.statusZahtjev = new_status
+        zahtjev.save()
+        
+        return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+
+     
+class assignIzvrsiteljView(APIView):
+    def post(self, request, sifZahtjev):
+        user_id = request.data.get('user_id')
+        if not user_id:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+        zahtjev.statusZahtjev = 'PRIHVAĆEN'
+        zahtjev.sifIzvrsitelj = user_id
+        zahtjev.save()
+
+        return Response({"message": "Izvršitelj assigned successfully"}, status=status.HTTP_200_OK)

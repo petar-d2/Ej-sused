@@ -1,36 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import ZahtjevCard from './ZahtjevCard';
-import './styles/zahtjevi.css';
+import PonudaCard from './PonudaCard';
+import './styles/ponude.css';
 
-const Zahtjevi = () => {
-  const [zahtjevi, setZahtjevi] = useState([]); // State for all zahtjevi
+const Ponude = () => {
+  const [ponude, setPonude] = useState([]);
   const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const [sortBy, setSortBy] = useState(''); // State for sorting
   const [loading, setLoading] = useState(true); // Loading state
   const inputRef = useRef(null); // Reference for input
-  const userData = JSON.parse(localStorage.getItem('user')); // Retrieve user data
-  const userSifSusjed = userData.id; // Extract user's sifSusjed
 
   // Fetch all zahtjevi
-  const fetchZahtjevi = async (query = '', sort = '') => {
+  const fetchPonude = async (query = '', sort = '') => {
     setLoading(true);
     try {
       const response = await axios.get(
         `${window.location.href.replace(
           window.location.pathname,
           '/'
-        ) + 'search/'}?search=${query}&model=zahtjev&sort_by=${sort}`
+        ) + 'search/'}?search=${query}&model=ponuda&sort_by=${sort}`
       );
-
-      // Filter zahtjevi to only include those with matching sifSusjed
-      const filteredZahtjevi = response.data.filter(
-        (event) => event.sifSusjed !== userSifSusjed
-      );
-      console.log(filteredZahtjevi);
-      setZahtjevi(filteredZahtjevi);
+      setPonude(response.data);
     } catch (error) {
-      console.error('Error fetching zahtjevi:', error);
+      console.error('Error fetching ponude:', error);
     } finally {
       setLoading(false);
     }
@@ -52,10 +44,10 @@ const Zahtjevi = () => {
     }
   }, []);
 
-  // Fetch zahtjevi whenever searchQuery or sortBy changes
+  // Fetch zahtjevi whenever searchQuery changes
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      fetchZahtjevi(searchQuery, sortBy);
+      fetchPonude(searchQuery, sortBy);
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
@@ -70,8 +62,8 @@ const Zahtjevi = () => {
   }
 
   return (
-    <div className="body_zahtjevi">
-      <div className="header-zahtjevi" id="search">
+    <div className="body_ponude">
+      <div className="header-ponude" id="search">
         <input
           id="search1"
           type="text"
@@ -81,25 +73,24 @@ const Zahtjevi = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select
-          id="sort_zahtjevi"
+        <select id="sort_ponude"
           className="filter-dropdown"
           value={sortBy}
           onChange={handleSortChange}
         >
           <option value="">Sortiraj</option>
-          <option value="cijenaBod">Bodovi - Uzlazno</option>
-          <option value="-cijenaBod">Bodovi - Silazno</option>
+          <option value="cijenaNovac">Cijena - Uzlazno</option>
+          <option value="-cijenaNovac">Cijena - Silazno</option>
         </select>
       </div>
 
-      <div className="zahtjevi-container">
-        {zahtjevi.map((event) => (
-          <ZahtjevCard key={event.id} event={event} />
+      <div className="ponude-container">
+        {ponude.map((event) => (
+          <PonudaCard key={event.id} event={event} />
         ))}
       </div>
     </div>
   );
 };
 
-export default Zahtjevi;
+export default Ponude;

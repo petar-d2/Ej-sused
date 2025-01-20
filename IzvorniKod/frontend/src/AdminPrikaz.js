@@ -18,7 +18,6 @@ const AdminPrikaz = () => {
             navigate('/unauthorized');
         }
     }, [navigate]);
-    // Fetch Susjeds, Tvrtkas, and Komentari
     useEffect(() => {
         const fetchData = async () => {
             try {

@@ -31,7 +31,6 @@
 h2{
     text-align: center;
     margin-top: 20px;
-  
     font-size: 30px;
 }
 
@@ -56,7 +55,7 @@ h2{
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
-select {
+.filter-dropdown {
     padding: 10px 15px;
     font-size: 16px;
     border: 1px solid #ddd;
@@ -67,38 +66,34 @@ select {
     transition: border-color 0.3s, box-shadow 0.3s;
     margin-right: 10px;
     max-width: 30%;
-  }
+}
   
-  select:focus {
+.filter-dropdown:focus {
     border-color: #007bff;
     box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
     outline: none;
-  }
+}
   
-  select option {
+.filter-dropdown option {
     background-color: #fff;
     color: #333;
-  }
+}
   
-  .headera {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: #f4f4f4;
+.header-susjedi {
+    margin: 20px 0;
+    text-align: center;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 20px 100%;
-    width: 90%;
+    box-shadow: 0 4px 6px #0000001a;
+    gap: 15px;
     max-width: 1200px;
-  }
-  .body {
-    display: flex
-;
+    padding: 10px;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.susjedi_body {
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;

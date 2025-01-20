@@ -148,7 +148,7 @@ const DetaljiTvrtka = () => {
             <p className="ocjena">
                 <strong>Ocjena:</strong>
                 <span className="star-rating">{renderStars2(tvrtka.brojOcjena!=0 ? tvrtka.zbrojOcjena/tvrtka.brojOcjena : 0.0)}</span>
-                ({tvrtka.brojOcjena!=0 ? Math.round((tvrtka.zbrojOcjena / tvrtka.brojOcjena) * 100) / 100 : 0.0})
+                <p style={{textAlign:"center"}}>({tvrtka.brojOcjena!=0 ? Math.round((tvrtka.zbrojOcjena / tvrtka.brojOcjena) * 100) / 100 : 0.0})</p>
             </p>
 
             <p className='ocjena'>

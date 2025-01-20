@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import *
 
-
-
 urlpatterns = [
     path('search/', searchSortView.as_view(), name='search'),
     path('skills/', SkillsView.as_view(), name='skills'),
@@ -10,12 +8,15 @@ urlpatterns = [
     path("registracija/", registracija.as_view(), name="registracija"),
     path("dogadaji/", dogadajiListView.as_view(), name='dogadaji'),
     path("moji-dogadaji/<int:sifVolonter>/", mojiDogadajiListView.as_view(), name='moji-dogadaji'),
+    path("moji-dogadaji/", main),
     path("kreiraj-dogadaj/", createDogadajView.as_view(), name='kreiraj-dogadaj'),
     path("tvrtke/", tvrtkeListView.as_view(), name='tvrtke_list'),
-    path('ponude-susjeda/', ponudeSusjedaListView.as_view(), name='ponude_susjeda_list'),
+    path('susjedi/', susjediListView.as_view(), name='susjedi_list'),
     path('susjed/<int:sifSusjed>/', detaljiSusjedView.as_view(), name='susjed-detail'),
     path('tvrtka/<int:sifTvrtka>/', detaljiTvrtkaView.as_view(), name='tvrtka-detail'),
     path('dogadaj/<int:sifDogadaj>/', detaljiDogadajView.as_view(), name='dogadaj-detail'),
+    path('zahtjev/<int:sifZahtjev>/', detaljiZahtjevView.as_view(), name='zahtjev-detail'),
+    path('ponuda/<int:sifPonuda>/', detaljiPonudaView.as_view(), name='ponuda-detail'),
     path("home/", homeView.as_view()),
     path("odjava/", odjava.as_view(), name="odjava"),
     path("google-login/", googleLogin.as_view(), name="google_login"),
@@ -24,14 +25,21 @@ urlpatterns = [
     path("user-edit/", userEdit.as_view(), name='user-edit'),
     path("napravi-zahtjev/", napraviZahtjevView.as_view(), name="napravi-zahtjev"),
     path("zahtjevi/", listZahtjeviView.as_view(), name='zahtjevi'),
-    path("moji-zahtjevi/", mojiZahtjeviView.as_view(), name='moji-zahtjevi'),
+    path("moji-zahtjevi/<int:user_id>/", mojiZahtjeviView.as_view(), name='moji-zahtjevi'),
+    path("moji-zahtjevi/", main),
+    path("napravi-ponudu/", napraviPonuduView.as_view(), name="napravi-ponudu"),
+    path("ponude/", listPonudeView.as_view(), name='ponude'),
+    path("moje-ponude/<int:user_id>/", mojePonudeView.as_view(), name='moje-ponude'),
+    path("moje-ponude/", main),
     path("unesi-komentar/", unesiKomentarView.as_view(), name="unesi-komentar"),
     path("ocjena-edit/", ocjenaEdit.as_view(), name='ocjena-edit'),
     path('delete/komentar/<int:komentar_id>/', adminDeleteView.as_view(), name='delete_komentar'),
     path('delete/user/<int:user_id>/', adminDeleteView.as_view(), name='delete_user'),
     path('pokazi-komentare/<int:sifTvrtka>/', pokaziKomentareView.as_view(), name='pokazi-komentare'),
     path('admin-prikaz/',adminPrikazView.as_view(),name='admin-prikaz'),
-    path('uredi-profil', main),
+    path('uredi-profil/', main),
     path('komentari/', listKomentariView.as_view(), name='komentari'),
+    path('zahtjev/update-status/<int:sifZahtjev>/', updateZahtjevStatusView.as_view(), name='update-zahtjev-status'),
+    path('zahtjev/assign-izvrsitelj/<int:sifZahtjev>/', assignIzvrsiteljView.as_view(), name='assign-izvrsitelj'),
     path("", main),
 ]

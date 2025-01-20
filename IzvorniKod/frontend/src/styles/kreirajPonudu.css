@@ -1,4 +1,4 @@
-.napravi-zahtjev-container {
+.napravi-ponudu-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,7 +16,7 @@
     background-color: white;
 }
   
-.zahtjev-form {
+.ponuda-form {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -26,11 +26,11 @@
     margin-bottom: 20px;
 }
   
-/*.zahtjev-form .form-group {
+/*.ponuda-form .form-group {
     margin-bottom: 15px;
 }
     
-.zahtjev-form .form-control {
+.ponuda-form .form-control {
     padding: 10px;
     font-size: 16px;
 }*/
@@ -52,13 +52,13 @@
     background-color: #777;
 }
  
-.zahtjev_select {
+.ponuda_select {
     margin-bottom: 15px;
     margin-left: 12px;
     margin-right: 12px;
 }
 
-.zahtjev_input, .zahtjev_textarea {
+.ponuda_input, .ponuda_textarea {
     width: 30vw;
     padding: 8px;
     font-size: 16px;

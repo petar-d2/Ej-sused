@@ -1,4 +1,4 @@
-.dogadaj-details-container {
+.ponuda-details-container {
     width: 40vw;
     min-width: 300px;
     margin: 20px auto;
@@ -10,24 +10,24 @@
     color: #000000;
 }
 
-.dogadaj-details-container h2 {
+.ponuda-details-container h2 {
     text-align: center;
     color: #007bff;
     font-size: 1.8em;
     margin-bottom: 20px;
 }
 
-.dogadaj-details-container p {
+.ponuda-details-container p {
     font-size: 1.1em;
     line-height: 1.6;
     margin: 10px 0;
 }
 
-.dogadaj-details-container p strong {
+.ponuda-details-container p strong {
     color: #555;
 }
 
-.dogadaj-details-container button {
+.ponuda-details-container button {
     display: block;
     width: 50%;
     padding: 10px;
@@ -43,19 +43,19 @@
     transition: background-color 0.3s;
 }
 
-.dogadaj-details-container button:hover {
+.ponuda-details-container button:hover {
     background-color: #0056b3;
 }
 
-.dogadaj-details-container button:active {
+.ponuda-details-container button:active {
     background-color: #00408b;
 }
 
-.dogadaj-details-container button:last-child {
+.pounda-details-container button:last-child {
     background-color: #6c757d;
 }
 
-.dogadaj-details-container button:last-child:hover {
+.ponuda-details-container button:last-child:hover {
     background-color: #5a6268;
 }
 .view-map-button {
@@ -118,16 +118,3 @@ margin-bottom: 15px;
 font-size: 1.1em;
 line-height: 1.6;
 }
-
-/* Status styling */
-.status-waiting {
-    color: orange; /* Orange for ČEKANJE */
-  }
-  
-  .status-rejected {
-    color: red; /* Red for PREKINUTO */
-  }
-  
-  .status-other {
-    color: green; /* Green for other statuses */
-  }

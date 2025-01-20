@@ -83,7 +83,7 @@ const KreirajDogadaj = () => {
             value={formData.nazivDogadaj}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <div className="form-group">
@@ -95,7 +95,7 @@ const KreirajDogadaj = () => {
             value={formData.datumDogadaj}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <div className="form-group">
@@ -107,7 +107,7 @@ const KreirajDogadaj = () => {
             value={formData.vrijemeDogadaj}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <div className="form-group">
@@ -119,7 +119,7 @@ const KreirajDogadaj = () => {
             value={formData.adresaDogadaj}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <div className="form-group">
@@ -131,7 +131,7 @@ const KreirajDogadaj = () => {
             value={formData.vrstaDogadaj}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <div className="form-group">
@@ -141,7 +141,7 @@ const KreirajDogadaj = () => {
             name="opisDogadaj"
             value={formData.opisDogadaj}
             onChange={handleChange}
-            className="form-control"
+            className="dogadaj_textarea"
             rows="4"
           ></textarea>
         </div>
@@ -154,7 +154,7 @@ const KreirajDogadaj = () => {
             value={formData.nagradaBod}
             onChange={handleChange}
             required
-            className="form-control"
+            className="dogadaj_input"
           />
         </div>
         <button type="submit" className="btn btn-primary mt-3">Kreiraj Događaj</button>
