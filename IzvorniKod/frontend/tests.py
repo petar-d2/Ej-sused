@@ -160,7 +160,7 @@ class KreirajDogadajTest(LiveServerTestCase):
         print(self.driver.current_url)
         # Locate the form fields
         time.sleep(3)
-        print(self.driver.page_source)
+        # print(self.driver.page_source)
         naziv_dogadaj = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "nazivDogadaj"))
         )
@@ -233,7 +233,7 @@ class PonudeSusjedaTest(LiveServerTestCase):
         mock_post.return_value.json.return_value = mock_response
 
         # Step 2: Navigate to the page
-        self.driver.get(self.host_url + "ponude-susjeda/")
+        self.driver.get(self.host_url + "susjedi/")
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "susjed-card-container"))
         )
@@ -352,7 +352,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
     @patch("requests.post")
     def test_tvrtke_create_search_sort_and_navigation(self, mock_post):
         mock_post.return_value.status_code = 201  # Mocking the 201 Created response
-        mock_response = {
+        mock_response = {   # ne koristi se nigdje???
             "data":
                 {
                     'email': 'newcompany@example.com',
@@ -380,7 +380,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
         password.send_keys("admin123")
         submit.send_keys(Keys.RETURN)
 
-        time.sleep(4)  # Wait for the login to complete
+        time.sleep(6)  # Wait for the login to complete
         self.assertEqual(self.driver.current_url, self.host_url)
 
         # Step 3: Navigate to the Tvrtke page and check if the new Tvrtka is present
@@ -389,6 +389,8 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
         tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
         print(f"Found {len(tvrtka_cards)} tvrtka cards before search.")
+        time.sleep(4)
+
         # Step 4: Perform the search for the newly created Tvrtka
         search_input = self.driver.find_element(By.ID, "search1")
         search_input.send_keys("Test")  # Search for the created Tvrtka
@@ -420,7 +422,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
         # Step 6: Click on a TvrtkaCard and verify navigation
         tvrtka_cards[0].click()  # Click the first card
-        time.sleep(3)
+        time.sleep(6)
 
         # Verify that the user is redirected to the tvrtka details page
         self.assertTrue(

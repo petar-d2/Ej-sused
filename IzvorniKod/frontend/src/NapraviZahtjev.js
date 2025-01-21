@@ -45,7 +45,7 @@ const NapraviZahtjev = () => {
         window.location.href.replace(window.location.pathname, '/') + 'napravi-zahtjev/',
         formData
       );
-      setSuccessMessage('Zahtjev uspešno kreiran!');
+      setSuccessMessage('Zahtjev uspješno kreiran!');
       setErrorMessage('');
       setFormData({
         kadZadan: Date.now(),

@@ -591,7 +591,7 @@ class napraviZahtjevView(APIView):
                 sifVrsta=sifVrsta_id,
                 sifIzvrsitelj=sifIzvrsitelj_id,
             )
-            return Response({"message": "Zahtjev uspešno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Zahtjev uspješno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     def get(self, request):
@@ -628,7 +628,7 @@ class napraviPonuduView(APIView):
                 isAktivna=isAktivna
             )
             ponuda.save()
-            return Response({"message": "Ponuda uspešno kreiran!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Ponuda uspješno kreirana!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
