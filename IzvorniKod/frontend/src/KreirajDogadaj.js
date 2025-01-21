@@ -47,7 +47,7 @@ const KreirajDogadaj = () => {
         window.location.href.replace(window.location.pathname, '/') + 'kreiraj-dogadaj/',
         formData
       );
-      setSuccessMessage('Događaj uspešno kreiran!');
+      setSuccessMessage('Događaj uspješno kreiran!');
       setErrorMessage('');
       setFormData({
         kadZadano: Date.now(),

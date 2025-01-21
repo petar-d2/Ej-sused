@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import './styles/kreirajZahtjev.css'; // Stilovi, ako ih koristiš
+import './styles/KreirajZahtjev.css'; // Stilovi, ako ih koristiš
 import { GlobalContext } from './GlobalContext'; // Ispravi ime fajla ako je drugačije
 
 const NapraviZahtjev = () => {

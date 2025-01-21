@@ -31,6 +31,7 @@ class LoginFormTest(LiveServerTestCase):
         # Assert redirection to a logged-in page (modify expected URL/title as needed)
         WebDriverWait(self.driver, 10).until(EC.title_contains("EjSused"))
         self.assertIn(self.host_url, self.driver.current_url)
+        time.sleep(8)
 
     def test_login_empty_input(self):
         self.driver.get(self.host_url + "prijava/")
@@ -65,11 +66,12 @@ class LoginFormTest(LiveServerTestCase):
         email.send_keys("wronguser@gmail.com")
         password.send_keys("wrongpassword")
         submit.send_keys(Keys.RETURN)
-        time.sleep(3)
         # Validate error for invalid credentials
         error_message = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, "error-message"))
         )
+
+        time.sleep(4)
         self.assertIn("Neuspješna prijava", error_message.text)
 
     def tearDown(self):
@@ -97,7 +99,7 @@ class RegistrationFormTest(LiveServerTestCase):
         # Wait for redirection to another page or confirmation
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "h2")))  # Modify tag (e.g., h2) to reflect successful registration UI
         success_message = self.driver.find_element(By.TAG_NAME, "h2").text  # Adjust based on UI element
-        time.sleep(2)
+        time.sleep(3)
         #print(self.driver.page_source)
         self.assertIn("Vrsta registracije", success_message, "Registration was not successful or incorrect redirection occurred.")
 
@@ -114,11 +116,13 @@ class RegistrationFormTest(LiveServerTestCase):
         email.send_keys("newuser@gmail.com")
         password.send_keys("password1")
         confirm_password.send_keys("password2")
+        time.sleep(3)
         submit.click()
 
         # Wait for validation error
         alert = WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         alert_text = alert.text
+        time.sleep(3)
 
         self.assertIn("Lozinke se ne podudaraju", alert_text, "Validation message for mismatched passwords is incorrect.")
 
@@ -184,7 +188,9 @@ class KreirajDogadajTest(LiveServerTestCase):
         success_message = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "alert-success"))
         )
-        self.assertIn("Događaj uspešno kreiran!", success_message.text)
+
+        time.sleep(4)
+        self.assertIn("Događaj uspješno kreiran!", success_message.text)
 import json
 from unittest.mock import patch
 
@@ -231,6 +237,7 @@ class PonudeSusjedaTest(LiveServerTestCase):
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "susjed-card-container"))
         )
+        time.sleep(4)
 
         # Verify that the correct number of cards are displayed
         cards = self.driver.find_elements(By.CLASS_NAME, "susjed-card")
@@ -239,11 +246,14 @@ class PonudeSusjedaTest(LiveServerTestCase):
         # Step 3: Click on a SusjedCard
         first_card = cards[0]
         first_card.click()
+        time.sleep(4)
 
         # Step 4: Assert redirection to the correct URL
         user_id = mock_response["data"][0]["korisnik_id"]
         expected_url = f"{self.host_url}susjed/{user_id}"
         WebDriverWait(self.driver, 10).until(EC.url_contains(expected_url))
+        time.sleep(4)
+
         self.assertEqual(self.driver.current_url, expected_url)
 
 
@@ -289,7 +299,7 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         submit_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
 
         # Fill in the form fields
-        naziv_dogadaj.send_keys("test.py Event")
+        naziv_dogadaj.send_keys("test search")
         datum_dogadaj.send_keys("1.2.2025")  # Example date
         vrijeme_dogadaj.send_keys("15:30")     # Example time
         adresa_dogadaj.send_keys("Testna Adresa 123")
@@ -310,7 +320,7 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         
         # Step 4: Enter the event name in the search box
         search_input = self.driver.find_element(By.CLASS_NAME, "search-input")
-        search_input.send_keys("test.py Event")  # Enter the name of the event to search for
+        search_input.send_keys("test search")  # Enter the name of the event to search for
         search_input.send_keys(Keys.RETURN)
         
         # Allow debounce and loading to complete
@@ -324,8 +334,9 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         self.assertGreater(len(event_cards), 0, "No event cards found.")  # Ensure there are event cards
 
         # Check if the event name exists in one of the cards
-        found_event = any("test.py Event" in card.text for card in event_cards)
-        self.assertTrue(found_event, f"Event 'test.py Event' was not found in the list.")  # Check if the event name is in one of the cards
+        found_event = any("test search" in card.text for card in event_cards)
+        time.sleep(4)
+        self.assertTrue(found_event, f"Event 'test search' was not found in the list.")  # Check if the event name is in one of the cards
 
 
 
@@ -388,8 +399,11 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
         # Verify search results
         tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
         print(f"Found {len(tvrtka_cards)} tvrtka cards after search.")
+        time.sleep(5)
         self.assertGreater(len(tvrtka_cards), 0, "No results found for the search.")
+        
         found_tvrtka = any("Test" in card.text for card in tvrtka_cards)
+        time.sleep(5)
         self.assertTrue(found_tvrtka, "Searched tvrtka not found in the results.")
 
         # Step 5: Test sorting functionality
