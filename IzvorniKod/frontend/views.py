@@ -3,14 +3,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Ponuda
+from api.models import Dogadaj, Komentar, Korisnik, Susjed, Tvrtka, Zahtjev, Nadlezna, Ponuda
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password  # Import password hasher
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.http import Http404
+from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
 from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.db.models.functions import Cast
 
