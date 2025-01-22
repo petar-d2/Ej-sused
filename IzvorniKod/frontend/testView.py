@@ -5,7 +5,7 @@ class TestModels(TestCase):
 
     # ========================= Korisnik Model =========================
     
-    def test_korisnik_creation(self):   ### FAIL AssertionError: ValueError not raised
+    def test_korisnik_creation(self):
         # Create an actual Korisnik instance in the test database
         korisnik = Korisnik.objects.create(
             username='testuser',
@@ -21,7 +21,7 @@ class TestModels(TestCase):
         self.assertEqual(korisnik.isSusjed, True)
         self.assertTrue(korisnik.pk)  # Check that the instance has been saved
         
-    def test_korisnik_creation_failed(self):
+    def test_korisnik_creation_failed(self):    ### FAIL AssertionError: ValueError not raised
         with self.assertRaises(ValueError):
             Korisnik.objects.create(
                 username='',
@@ -211,7 +211,7 @@ class TestModels(TestCase):
 
     # ========================= Događaj Model =========================
 
-    def test_dogadaj_creation_failed(self):     ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user2@example.com>.
+    def test_dogadaj_creation_failed(self):     ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='event_user2',
             email='event_user2@example.com',
@@ -219,10 +219,20 @@ class TestModels(TestCase):
             isTvrtka=False,
             isSusjed=True
         )
+
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            isVolonter=True
+        )
         
         with self.assertRaises(ValueError):
             Dogadaj.objects.create(
-                sifVolonter=korisnik,
+                sifVolonter=susjed,
                 nazivDogadaj='',
                 adresaDogadaj='',
                 datumDogadaj=''#,
@@ -230,7 +240,7 @@ class TestModels(TestCase):
                 # i falit će vrijemeDogadaj (i par drugih obaveznih još...)
             )
     
-    def test_dogadaj_model_relation(self):  ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user@example.com>.
+    def test_dogadaj_model_relation(self):  ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='event_user',
             email='event_user@example.com',
@@ -238,9 +248,19 @@ class TestModels(TestCase):
             isTvrtka=False,
             isSusjed=True
         )
+
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            isVolonter=True
+        )
         
         dogadaj = Dogadaj.objects.create(
-            sifVolonter=korisnik,
+            sifVolonter=susjed,
             nazivDogadaj='Test Event',
             adresaDogadaj='Test Location',
             datumDogadaj='2025-01-01'#,
@@ -250,7 +270,7 @@ class TestModels(TestCase):
         
         self.assertEqual(dogadaj.sifVolonter.email, 'event_user@example.com')  # Reverse relationship
 
-    def test_dogadaj_edge_case(self):   ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: edge_case_event@example.com>.
+    def test_dogadaj_edge_case(self):   ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='edge_case_event',
             email='edge_case_event@example.com',
@@ -258,9 +278,19 @@ class TestModels(TestCase):
             isTvrtka=False,
             isSusjed=True
         )
+
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            isVolonter=True
+        )
         
         dogadaj = Dogadaj.objects.create(
-            sifVolonter=korisnik,
+            sifVolonter=susjed,
             nazivDogadaj='A' * 255,  # Max length for the event name
             adresaDogadaj='B' * 255,
             datumDogadaj='2025-01-01'#,
@@ -273,7 +303,7 @@ class TestModels(TestCase):
     
     # ========================= Zahtjev Model =========================
 
-    def test_zahtjev_creation(self):    ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user2@example.com>.
+    def test_zahtjev_creation(self):    ### ERROR TypeError: Field 'sifSusjed' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='request_user',
             email='request_user@example.com',
@@ -281,9 +311,18 @@ class TestModels(TestCase):
             isTvrtka=False,
             isSusjed=True
         )
+
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar'
+        )
         
         zahtjev = Zahtjev.objects.create(
-            sifSusjed=korisnik,
+            sifSusjed=susjed,
             nazivZahtjev='Test Request',
             #datumZahtjev='2025-01-01',    -> NE POSTOJI datumZahtjev U models.py!!!
             statusZahtjev='ČEKANJE'
@@ -294,7 +333,7 @@ class TestModels(TestCase):
         self.assertEqual(zahtjev.statusZahtjev, 'ČEKANJE')
         self.assertTrue(zahtjev.pk)  # Check that the instance has been saved
     
-    def test_zahtjev_creation_failed(self): ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user2@example.com>.
+    def test_zahtjev_creation_failed(self): ### ERROR TypeError: Field 'sifSusjed' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='request_user2',
             email='request_user2@example.com',
@@ -302,16 +341,25 @@ class TestModels(TestCase):
             isTvrtka=False,
             isSusjed=True
         )
+
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar'
+        )
         
         with self.assertRaises(ValueError):
             Zahtjev.objects.create(
-                sifSusjed=korisnik,
+                sifSusjed=susjed,
                 nazivZahtjev='',
                 #datumZahtjev='',    -> NE POSTOJI datumZahtjev U models.py!!!
                 statusZahtjev=''
             )
     
-    def test_zahtjev_unique_constraint(self):   ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user2@example.com>.
+    def test_zahtjev_unique_constraint(self):   ### ERROR TypeError: Field 'sifSusjed' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='unique_request_user',
             email='unique_request_user@example.com',
@@ -320,9 +368,18 @@ class TestModels(TestCase):
             isSusjed=True
         )
 
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
+            sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar'
+        )
+
         # Create Zahtjev for the user
         Zahtjev.objects.create(
-            sifSusjed=korisnik,
+            sifSusjed=susjed,
             nazivZahtjev='Unique Request',
             #datumZahtjev='2025-01-01',    -> NE POSTOJI datumZahtjev U models.py!!!
             statusZahtjev='ČEKANJE'
@@ -331,13 +388,13 @@ class TestModels(TestCase):
         # Attempt to create a second Zahtjev for the same user, which should fail due to the unique constraint
         with self.assertRaises(Exception):  # Expecting a unique constraint error
             Zahtjev.objects.create(
-                sifSusjed=korisnik,  # Same user, should fail
+                sifSusjed=susjed,  # Same user, should fail
                 nazivZahtjev='Another Request',
                 #datumZahtjev='2025-02-01',    -> NE POSTOJI datumZahtjev U models.py!!!
                 statusZahtjev='PRIHVAĆEN'
             )
 
-    def test_zahtjev_model_relation(self):  ### ERROR TypeError: Field 'sifVolonter' expected a number but got <Korisnik: event_user2@example.com>.
+    def test_zahtjev_model_relation(self):  ### ERROR TypeError: Field 'sifSusjed' expected a number but got <Susjed: Ivan Horvat>.
         korisnik = Korisnik.objects.create(
             username='request_user',
             email='request_user@example.com',
@@ -346,18 +403,27 @@ class TestModels(TestCase):
             isSusjed=True
         )
         
-        zahtjev = Zahtjev.objects.create(
+        # Create an actual Susjed instance in the test database
+        susjed = Susjed.objects.create(
             sifSusjed=korisnik,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar'
+        )
+
+        zahtjev = Zahtjev.objects.create(
+            sifSusjed=susjed,
             nazivZahtjev='Test Request',
             #datumZahtjev='2025-01-01',    -> NE POSTOJI datumZahtjev U models.py!!!
             statusZahtjev='ČEKANJE'
         )
         
-        self.assertEqual(zahtjev.sifSusjed.email, 'request_user@example.com')  # Reverse relationship
+        self.assertEqual(zahtjev.sifSusjed.sifSusjed.email, 'request_user@example.com')  # Reverse relationship
     
     # ========================= Ponuda Model =========================
 
-    def test_ponuda_creation(self): ### ERROR ValueError: Cannot assign "<Korisnik: offer_user@example.com>": "Ponuda.sifTvrtka" must be a "Tvrtka" instance.
+    def test_ponuda_creation(self):
         korisnik = Korisnik.objects.create(
             username='offer_user',
             email='offer_user@example.com',
@@ -366,19 +432,33 @@ class TestModels(TestCase):
             isSusjed=False
         )
         
-        ponuda = Ponuda.objects.create(
+        # Create an actual Tvrtka instance in the test database
+        tvrtka = Tvrtka.objects.create(
             sifTvrtka=korisnik,
-            nazivPonude='Test Offer',
+            nazivTvrtka='Test Tvrtka',
+            adresaTvrtka='Ulica 21',
+            kvartTvrtka='Maksimir',
+            mjestoTvrtka='Grad'
+        )
+        
+        ponuda = Ponuda.objects.create(
+            sifTvrtka=tvrtka,
+            nazivPonuda='Test Offer',
             kadZadano='2025-01-01',
-            statusPonude='ČEKANJE'
+            # statusPonude='ČEKANJE'    -> NE POSTOJI statusPonude U models.py!!!
+            opisPonuda='Opisujem ponudu ovu.',
+            cijenaNovac=5,
+            isAktivna=True,
+            sifVrsta='Vodoinstalaterski radovi'
         )
         
         # Verify the instance
-        self.assertEqual(ponuda.nazivPonude, 'Test Offer')
-        self.assertEqual(ponuda.statusPonude, 'ČEKANJE')
+        self.assertEqual(ponuda.nazivPonuda, 'Test Offer')
+        self.assertEqual(ponuda.opisPonuda, 'Opisujem ponudu ovu.')
+        self.assertEqual(ponuda.cijenaNovac, 5)
         self.assertTrue(ponuda.pk)  # Check that the instance has been saved
 
-    def test_ponuda_creation_failed(self):
+    def test_ponuda_creation_failed(self):      ### FAIL AssertionError: ValueError not raised
         korisnik = Korisnik.objects.create(
             username='offer_user2',
             email='offer_user2@example.com',
@@ -386,16 +466,28 @@ class TestModels(TestCase):
             isTvrtka=True,
             isSusjed=False
         )
+
+        # Create an actual Tvrtka instance in the test database
+        tvrtka = Tvrtka.objects.create(
+            sifTvrtka=korisnik,
+            nazivTvrtka='Fail Tvrtka',
+            adresaTvrtka='Prisavlje 3',
+            kvartTvrtka='Žitnjak',
+            mjestoTvrtka='Selo'
+        )
         
         with self.assertRaises(ValueError):
             Ponuda.objects.create(
-                sifTvrtka=korisnik,
-                nazivPonude='',
+                sifTvrtka=tvrtka,
+                nazivPonuda='',
                 kadZadano='',
-                statusPonude=''
+                #statusPonude=''    -> NE POSTOJI statusPonude U models.py!!!
+                opisPonuda='',
+                cijenaNovac=0,
+                isAktivna=True
             )
     
-    def test_ponuda_model_relation(self):   ### ERROR ValueError: Cannot assign "<Korisnik: offer_user@example.com>": "Ponuda.sifTvrtka" must be a "Tvrtka" instance.
+    def test_ponuda_model_relation(self):
         korisnik = Korisnik.objects.create(
             username='offer_user',
             email='offer_user@example.com',
@@ -403,12 +495,25 @@ class TestModels(TestCase):
             isTvrtka=True,
             isSusjed=False
         )
-        
-        ponuda = Ponuda.objects.create(
+
+        # Create an actual Tvrtka instance in the test database
+        tvrtka = Tvrtka.objects.create(
             sifTvrtka=korisnik,
-            nazivPonude='Test Offer',
-            kadZadano='2025-01-01',
-            statusPonude='ČEKANJE'
+            nazivTvrtka='Test Tvrtka',
+            adresaTvrtka='Prisavlje 3',
+            kvartTvrtka='Žitnjak',
+            mjestoTvrtka='Selo'
         )
         
-        self.assertEqual(ponuda.sifTvrtka.email, 'offer_user@example.com')  # Reverse relationship
+        ponuda = Ponuda.objects.create(
+            sifTvrtka=tvrtka,
+            nazivPonuda='Test Offer',
+            kadZadano='2025-01-01',
+            #statusPonude='ČEKANJE'    -> NE POSTOJI statusPonude U models.py!!!
+            opisPonuda='Opis ponude',
+            cijenaNovac=50,
+            isAktivna=True,
+            sifVrsta='Vožnja i dostava'
+            )
+        
+        self.assertEqual(ponuda.sifTvrtka.sifTvrtka.email, 'offer_user@example.com')  # Reverse relationship
