@@ -24,8 +24,8 @@ class LoginFormTest(LiveServerTestCase):
         submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, "submit")))
 
         # Enter credentials
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in the test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in the test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
 
         # Assert redirection to a logged-in page (modify expected URL/title as needed)
@@ -149,8 +149,8 @@ class KreirajDogadajTest(LiveServerTestCase):
         submit = self.driver.find_element(By.ID, "submit")
 
         # Use test credentials for a valid user
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in your test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in your test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
         time.sleep(4)
         print(self.driver.current_url)
@@ -276,8 +276,8 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         submit = self.driver.find_element(By.ID, "submit")
 
         # Use test credentials for a valid user
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in your test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in your test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
         time.sleep(4)  # Wait for login to complete
         self.assertEqual(self.host_url, self.driver.current_url)  # Verify successful login
@@ -376,8 +376,8 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
         password = self.driver.find_element(By.ID, "password")
         submit = self.driver.find_element(By.ID, "submit")
 
-        email.send_keys("cigo@gmail.com")  # Test credentials
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Test credentials
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
 
         time.sleep(6)  # Wait for the login to complete

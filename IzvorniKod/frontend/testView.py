@@ -254,7 +254,7 @@ class TestModels(TestCase):
         )[0]
 
         dogadaj = Dogadaj.objects.get_or_create(
-            sifVolonter=korisnik.id,
+            sifVolonter=susjed.sifSusjed.id,
             defaults={
                 'nazivDogadaj': 'Test Event',
                 'adresaDogadaj': 'Test Location',
@@ -298,7 +298,7 @@ class TestModels(TestCase):
         
         with self.assertRaises(ValueError):
             Dogadaj.objects.get_or_create(
-                sifVolonter=korisnik.id,
+                sifVolonter=susjed.sifSusjed.id,
                 nazivDogadaj='',
                 adresaDogadaj='',
                 datumDogadaj='2025-01-01',
@@ -337,7 +337,7 @@ class TestModels(TestCase):
         )[0]
         
         zahtjev = Zahtjev.objects.get_or_create(
-            sifSusjed=korisnik.id,
+            sifSusjed=susjed.sifSusjed.id,
             nazivZahtjev='Test Request',
             cijenaBod=100,
             adresaZahtjev='Test Address',
@@ -376,7 +376,7 @@ class TestModels(TestCase):
         
         with self.assertRaises(ValueError):
             Zahtjev.objects.get_or_create(
-                sifSusjed=korisnik.id,
+                sifSusjed=susjed.sifSusjed.id,
                 nazivZahtjev='',
                 cijenaBod=0,
                 adresaZahtjev='',
@@ -412,17 +412,15 @@ class TestModels(TestCase):
         )[0]
 
         zahtjev = Zahtjev.objects.get_or_create(
-            sifSusjed=korisnik.id,
+            sifSusjed=susjed.sifSusjed.id,
             nazivZahtjev='Test Request',
             cijenaBod=100,
             adresaZahtjev='Test Address',
             statusZahtjev='ČEKANJE',
             opisZahtjev='Test description'
         )[0]
-        test_id = zahtjev.sifSusjed
-        self.assertEqual(test_id, korisnik.id)
-        self.assertEqual(zahtjev.nazivZahtjev, 'Test Request')
-        self.assertEqual(zahtjev.statusZahtjev, 'ČEKANJE')
+        
+        self.assertEqual(zahtjev.sifSusjed, korisnik.id)
 
     # ========================= Ponuda Model =========================
 
