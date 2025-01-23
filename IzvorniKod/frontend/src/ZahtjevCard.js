@@ -40,10 +40,15 @@ const ZahtjevCard = ({ event, onIzvrsiteljAssigned }) => {
     e.stopPropagation(); // Prevent the card's onClick from triggering
     try {
       const userData = JSON.parse(localStorage.getItem('user'));
+      if (userData.bodovi < event.cijenaBod) {
+        alertUser('Nedovoljno bodova za prihvat zahtjeva.', 'error');
+        return;
+      }
+  
       const response = await axios.post(`/zahtjev/assign-izvrsitelj/${event.id}/`, {
         user_id: userData.id,
       });
-
+  
       if (response.status === 200) {
         alertUser('Izvršitelj uspješno dodijeljen!', 'success');
         setTimeout(() => { navigate(`/zahtjev/${event.id}`); }, 3500);
@@ -55,8 +60,8 @@ const ZahtjevCard = ({ event, onIzvrsiteljAssigned }) => {
       console.error('Error assigning izvršitelj:', error);
       alertUser('Greška prilikom dodjele izvršitelja.', 'error');
     }
-    setTimeout(() => { navigate(`/zahtjev/${event.id}`); }, 3500);
   };
+  
   return (
     <div id="zahtjev-card" className="zahtjev-card" onClick={handleCardClick}>
       <h3>{event.nazivZahtjev}</h3>

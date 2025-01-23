@@ -14,6 +14,8 @@ from django.http import Http404
 from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
 from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.db.models.functions import Cast
+from django.db import transaction
+from rest_framework.exceptions import ValidationError
 
 def validate_field_types(data, field_types):
     errors = {}
@@ -809,19 +811,30 @@ class updateZahtjevStatusView(APIView):
         return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
 
      
-class assignIzvrsiteljView(APIView):
+
+
+class AssignIzvrsiteljView(APIView):
     def post(self, request, sifZahtjev):
-        user_id = request.data.get('user_id')
+        user_id = request.data.get("user_id")
         if not user_id:
             return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
-        zahtjev.statusZahtjev = 'PRIHVAĆEN'
-        zahtjev.sifIzvrsitelj = user_id
-        zahtjev.save()
+        susjed = get_object_or_404(Susjed, sifSusjed=user_id)
 
-        return Response({"message": "Izvršitelj assigned successfully"}, status=status.HTTP_200_OK)
-    
+        if susjed.bodovi < zahtjev.cijenaBod:
+            return Response({"error": "Not enough points to accept the request"}, status=status.HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():  # Ensure changes are consistent
+            susjed.bodovi -= zahtjev.cijenaBod
+            if susjed.bodovi < 0:
+                raise ValidationError("Insufficient points.")
+            susjed.save()
+
+            zahtjev.statusZahtjev = "PRIHVAĆENO"
+            zahtjev.save()
+
+        return Response({"message": "Request accepted successfully"}, status=status.HTTP_200_OK)
 
 class izmijeniStatusDogadajaView(APIView):
     def patch(self, request, id):
