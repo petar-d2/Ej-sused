@@ -9,7 +9,7 @@ const Header = () => {
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('');
-
+    const [userBodovi, setUserBodovi] = useState(0); // State to store "ned.bodovi
     const pageTitles = {
         '/': 'Početna',
         '/tvrtke': 'Tvrtke',
@@ -43,11 +43,23 @@ const Header = () => {
         '/registracija/': 'Registracija',
     };
 
+
     useEffect(() => {
-        // Postavljanje naslova na temelju trenutne lokacije
         const pageTitle = pageTitles[location.pathname] || '';
         setCurrentPage(pageTitle);
     }, [location.pathname]);
+
+    useEffect(() => {
+        // Fetch "ned.bodovi" from localStorage or API
+        const fetchUserBodovi = () => {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData && userData.ned && userData.ned.bodovi !== undefined) {
+                setUserBodovi(userData.ned.bodovi);
+            }
+        };
+        fetchUserBodovi();
+    }, []);
+
 
     const handleLogout = async () => {
         const access = localStorage.getItem("accessToken");
@@ -153,13 +165,16 @@ const Header = () => {
                     <button className="hamburger" onClick={handleDropdownClick}>
                         ☰
                     </button>
+                    <div className="points-display">
+                        <strong>Bodovi:</strong> {userBodovi}
+                    </div>
+
                     <div className="header-title-container">
                         {currentPage && <div className="header-subtitle">{currentPage}</div>}
                     </div>
                     <h1 className="header-right">
                         Ej Sused
                     </h1>
-
                     
                     {isDropdownOpen && (
                         <div className="dropdown_menu">
@@ -174,6 +189,7 @@ const Header = () => {
                                             <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                             {isVolonter2() && (
                                                 <>
                                                     <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
@@ -222,6 +238,7 @@ const Header = () => {
                                         <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                         {isVolonter2() && (
                                             <>
                                                 <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>

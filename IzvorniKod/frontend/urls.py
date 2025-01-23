@@ -40,7 +40,8 @@ urlpatterns = [
     path('uredi-profil/', main),
     path('komentari/', listKomentariView.as_view(), name='komentari'),
     path('zahtjev/update-status/<int:sifZahtjev>/', updateZahtjevStatusView.as_view(), name='update-zahtjev-status'),
-    path('zahtjev/assign-izvrsitelj/<int:sifZahtjev>/', assignIzvrsiteljView.as_view(), name='assign-izvrsitelj'),
+    path('zahtjev/assign-izvrsitelj/<int:sifZahtjev>/', AssignIzvrsiteljView.as_view(), name='assign-izvrsitelj'),
     path('dogadaji/<int:id>/status/', izmijeniStatusDogadajaView.as_view(), name='izmijeni-status-dogadaja'),
+    path('pokazi-ponude/<int:sifTvrtka>/', pokaziPonudeView.as_view(), name='pokazi-ponude'),
     path("", main),
 ]

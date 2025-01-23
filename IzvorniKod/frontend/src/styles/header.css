@@ -77,6 +77,13 @@
     transition: background-color 0.3s ease;
     min-width: 100px;
 }
+.points-display {
+    font-size: 1rem;
+    color: #FFD700; /* Gold color for visibility */
+    margin-left: 1rem;
+    font-weight: bold;
+    padding-left: 15px;
+}
 
 .header_gumb:hover {
     background-color: #777;
