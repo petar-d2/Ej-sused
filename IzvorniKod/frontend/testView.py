@@ -524,7 +524,7 @@ class TestModels(TestCase):
 
         # ========================= Komentar Model =========================
 
-    def test_komentar_creation(self): ### FAIL: AssertionError: <Tvrtka: Test Tvrtka> != 93
+    def test_komentar_creation(self):
         # korisnik (susjed) koji komentira
         korisnik1 = Korisnik.objects.get_or_create(
             username='comment_user',
@@ -570,8 +570,7 @@ class TestModels(TestCase):
             opisTvrtka='Test description.'
         )
         
-        komentar = Komentar.objects.get_or_create(        
-            #sifKom=?????     susjed.sifSusjed.id,
+        komentar = Komentar.objects.get_or_create(
             textKom='Ispitni komentar.',
             sifPrima=tvrtka,
             sifDaje=susjed.sifSusjed
@@ -627,8 +626,7 @@ class TestModels(TestCase):
         )
         
         with self.assertRaises(ValueError):
-            Komentar.objects.create(        
-                #sifKom=?????     susjed.sifSusjed.id,
+            Komentar.objects.create(
                 textKom='',
                 sifPrima=tvrtka,
                 sifDaje=susjed.sifSusjed
@@ -680,8 +678,7 @@ class TestModels(TestCase):
             opisTvrtka='Test description.'
         )
             
-        komentar = Komentar.objects.get_or_create(        
-            #sifKom=?????     susjed.sifSusjed.id,
+        komentar = Komentar.objects.get_or_create(
             textKom='Ispitni komentar.',
             sifPrima=tvrtka,
             sifDaje=susjed.sifSusjed

@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from django.test import LiveServerTestCase
 from selenium import webdriver
-import os
+from unittest.mock import patch
 import time
 
 #time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
@@ -191,9 +191,6 @@ class KreirajDogadajTest(LiveServerTestCase):
 
         time.sleep(4)
         self.assertIn("Događaj uspješno kreiran!", success_message.text)
-import json
-from unittest.mock import patch
-
 
 class PonudeSusjedaTest(LiveServerTestCase):
     host_url = "http://127.0.0.1:8000/"  # Update with your Django server's URL
