@@ -11,10 +11,12 @@ const DetaljiTvrtka = () => {
     const [rating, setRating] = useState(0);
     const [komentar, setKomentar] = useState('');
     const [komentari, setKomentari] = useState([]);
+    const [ponude, setPonude] = useState([]);
 
     useEffect(() => {
         const fetchTvrtkaDetails = async () => {
             try {
+                console.log("HERE");
                 const apiUrl = window.location.href.replace(window.location.pathname, '/') + `tvrtka/${id}/`;
                 const response = await axios.post(apiUrl); 
                 setTvrtka(response.data);
@@ -35,8 +37,31 @@ const DetaljiTvrtka = () => {
             }
         };
 
+        const fetchPonude = async () => {
+            try {
+                const apiUrl = window.location.href.replace(window.location.pathname, '/') + `pokazi-ponude/${id}/`;
+                console.log("Fetching ponude with GET from:", apiUrl);
+                
+                // Send the GET request
+                const ponudeResponse = await axios.get(apiUrl);
+        
+                // Log the response
+                console.log('Ponude response:', ponudeResponse.data);
+        
+                if (ponudeResponse.data && ponudeResponse.data.length > 0) {
+                    setPonude(ponudeResponse.data);  // Set the fetched data to the state
+                } else {
+                    console.log('No ponude available or empty response');
+                }
+            } catch (error) {
+                console.error('Error fetching ponude:', error.message);
+                console.error(error);  // Log detailed error
+            }
+        }
+
         fetchTvrtkaDetails();
         fetchKomentari();
+        fetchPonude();
     }, [id]);
 
     const handleViewOnMapsClick = () => {
@@ -154,7 +179,7 @@ const DetaljiTvrtka = () => {
             <p className='ocjena'>
                 <strong>Ocijeni:</strong>
                 <div className="star-rate">
-                    {renderStars(rating, true, true)} {/* Second row with interactivity */}
+                    {renderStars(rating, true, true)}
             </div>
             </p>
 
@@ -170,7 +195,6 @@ const DetaljiTvrtka = () => {
             />
             
             <button onClick={handleSubmitComment}>Pošaljite komentar</button>
-            
             <h3>Komentari:</h3>
             <div className="komentari-container">
                 {komentari.length > 0 ? (
@@ -182,6 +206,23 @@ const DetaljiTvrtka = () => {
                     ))
                 ) : (
                     <p>&emsp;Nema dostupnih komentara.</p>
+                )}
+            </div>
+
+            <h3>Ponude:</h3>
+            <div className="ponude-container">
+                {ponude.length > 0 ? (
+                    ponude.map((ponuda) => (
+                        <div key={ponuda.id} className="ponuda">
+                            <p><strong>Naziv:</strong> {ponuda.nazivPonuda}</p>
+                            <p><strong>Opis:</strong> {ponuda.opisPonuda || 'Nema opisa'}</p>
+                            <p><strong>Cijena:</strong> {ponuda.cijenaNovac ? `${ponuda.cijenaNovac} €` : 'N/A'}</p>
+                            <p><strong>Aktivna:</strong> {ponuda.isAktivna ? 'Da' : 'Ne'}</p>
+                            <p><strong>Datum:</strong> {ponuda.kadZadano}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>&emsp;Nema dostupnih ponuda.</p>
                 )}
             </div>
 

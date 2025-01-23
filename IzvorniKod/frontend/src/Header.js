@@ -189,6 +189,7 @@ const Header = () => {
                                             <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                             {isVolonter2() && (
                                                 <>
                                                     <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
@@ -237,6 +238,7 @@ const Header = () => {
                                         <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                         {isVolonter2() && (
                                             <>
                                                 <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>

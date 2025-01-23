@@ -756,11 +756,13 @@ class listPonudeView(APIView):
     def post(self, request):
         # Fetch all Zahtjevi or filter based on query params
         naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
+        sif_tvrtka = request.data.get('sifTvrtka', None)
+        ponude = Ponuda.objects.all()
+        if sif_tvrtka:
+            ponude = ponude.filter(sifTvrtka=sif_tvrtka)
         if naziv_filter:
-            ponude = Ponuda.objects.filter(nazivPonuda=naziv_filter)
-        else:
-            ponude = Ponuda.objects.all()
-        
+            ponude = ponude.filter(nazivPonuda__icontains=naziv_filter)
+
         serializer = PonudaSerializer(ponude, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def get(self, request):
@@ -852,3 +854,14 @@ class izmijeniStatusDogadajaView(APIView):
             {'id': event.id, 'statusDogadaj': event.statusDogadaj},
             status=status.HTTP_200_OK
         )
+    
+class pokaziPonudeView(APIView):
+    def get(self, request, sifTvrtka):
+        # Filter the Ponude based on the `sifTvrtka`
+        ponude = Ponuda.objects.filter(sifTvrtka=sifTvrtka)
+
+        # Serialize the Ponuda instances
+        serializer = PonudaSerializer(ponude, many=True)
+
+        # Return the serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)
