@@ -1,5 +1,5 @@
 from django.test import TestCase
-from api.models import Korisnik, Tvrtka, Susjed, Dogadaj, Zahtjev, Ponuda, VrstaUsluga
+from api.models import Korisnik, Tvrtka, Susjed, Dogadaj, Zahtjev, Ponuda, Komentar
 
 class TestModels(TestCase):
 
@@ -16,12 +16,12 @@ class TestModels(TestCase):
             isModerator=False
         )[0]
         
+        self.assertTrue(korisnik.pk)
         self.assertEqual(korisnik.email, 'testuser@example.com')
         self.assertEqual(korisnik.isTvrtka, False)
         self.assertEqual(korisnik.isSusjed, True)
         self.assertEqual(korisnik.isNadlezna, False)
         self.assertEqual(korisnik.isModerator, False)
-        self.assertTrue(korisnik.pk)
 
     def test_korisnik_creation_failed(self):
         with self.assertRaises(ValueError):
@@ -58,10 +58,10 @@ class TestModels(TestCase):
             opisTvrtka='This is a test company.'
         )
         
+        self.assertTrue(tvrtka.pk)
         self.assertEqual(tvrtka.nazivTvrtka, 'Test Company')
         self.assertEqual(tvrtka.adresaTvrtka, 'Test Street 123')
         self.assertEqual(tvrtka.mjestoTvrtka, 'Test City')
-        self.assertTrue(tvrtka.pk)
 
     def test_tvrtka_creation_failed(self):
         korisnik = Korisnik.objects.create_user(
@@ -163,10 +163,10 @@ class TestModels(TestCase):
             skills='Basic skills'
         )
         
+        self.assertTrue(susjed.pk)
         self.assertEqual(susjed.ime, 'John')
         self.assertEqual(susjed.prezime, 'Doe')
         self.assertEqual(susjed.mjestoSusjed, 'Zagreb')
-        self.assertTrue(susjed.pk)
 
     def test_susjed_creation_failed(self):
         korisnik = Korisnik.objects.create_user(
@@ -345,9 +345,9 @@ class TestModels(TestCase):
             opisZahtjev='Test description'
         )[0]
         
+        self.assertTrue(zahtjev.pk)
         self.assertEqual(zahtjev.nazivZahtjev, 'Test Request')
         self.assertEqual(zahtjev.statusZahtjev, 'ČEKANJE')
-        self.assertTrue(zahtjev.pk)
 
     def test_zahtjev_creation_failed(self):
         korisnik = Korisnik.objects.get_or_create(
@@ -419,7 +419,7 @@ class TestModels(TestCase):
             statusZahtjev='ČEKANJE',
             opisZahtjev='Test description'
         )[0]
-        
+
         self.assertEqual(zahtjev.sifSusjed, korisnik.id)
 
     # ========================= Ponuda Model =========================
@@ -454,10 +454,10 @@ class TestModels(TestCase):
             sifVrsta='Vodoinstalaterski radovi'
         )
         
+        self.assertTrue(ponuda.pk)
         self.assertEqual(ponuda.nazivPonuda, 'Test Offer')
         self.assertEqual(ponuda.opisPonuda, 'Opisujem ponudu ovu.')
         self.assertEqual(ponuda.cijenaNovac, 5)
-        self.assertTrue(ponuda.pk)
 
     def test_ponuda_creation_failed(self):
         korisnik = Korisnik.objects.create_user(
@@ -521,3 +521,170 @@ class TestModels(TestCase):
         )
         
         self.assertEqual(ponuda.sifTvrtka.sifTvrtka.email, 'offer_user@example.com')
+
+        # ========================= Komentar Model =========================
+
+    def test_komentar_creation(self): ### FAIL: AssertionError: <Tvrtka: Test Tvrtka> != 93
+        # korisnik (susjed) koji komentira
+        korisnik1 = Korisnik.objects.get_or_create(
+            username='comment_user',
+            email='comment_user@example.com',
+            password='password123',
+            isTvrtka=False,
+            isSusjed=True,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        susjed = Susjed.objects.get_or_create(
+            sifSusjed=korisnik1,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            bodovi=5,
+            isVolonter=False,
+            opisSusjed='Vrlo vješt.',
+            brojOcjena=0,
+            zbrojOcjena=0,
+            skills='Osnovne vještine'
+        )[0]
+
+        # korisnik (tvrtka) koji prima komentar
+        korisnik2 = Korisnik.objects.get_or_create(
+            username='tvrtka_user',
+            email='tvrtka_user@example.com',
+            password='password123',
+            isTvrtka=True,
+            isSusjed=False,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        tvrtka = Tvrtka.objects.create(
+            sifTvrtka=korisnik2,
+            nazivTvrtka='Test Tvrtka',
+            adresaTvrtka='Ulica 21',
+            kvartTvrtka='Maksimir',
+            mjestoTvrtka='Grad',
+            opisTvrtka='Test description.'
+        )
+        
+        komentar = Komentar.objects.get_or_create(        
+            #sifKom=?????     susjed.sifSusjed.id,
+            textKom='Ispitni komentar.',
+            sifPrima=tvrtka,
+            sifDaje=susjed.sifSusjed
+        )[0]
+        
+        self.assertTrue(komentar.pk)
+        self.assertEqual(komentar.textKom, 'Ispitni komentar.')
+
+    def test_komentar_creation_failed(self):
+        # korisnik (susjed) koji komentira
+        korisnik1 = Korisnik.objects.get_or_create(
+            username='comment_user',
+            email='comment_user@example.com',
+            password='password123',
+            isTvrtka=False,
+            isSusjed=True,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        susjed = Susjed.objects.get_or_create(
+            sifSusjed=korisnik1,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            bodovi=5,
+            isVolonter=False,
+            opisSusjed='Vrlo vješt.',
+            brojOcjena=0,
+            zbrojOcjena=0,
+            skills='Osnovne vještine'
+        )[0]
+
+        # korisnik (tvrtka) koji prima komentar
+        korisnik2 = Korisnik.objects.get_or_create(
+            username='tvrtka_user',
+            email='tvrtka_user@example.com',
+            password='password123',
+            isTvrtka=True,
+            isSusjed=False,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        tvrtka = Tvrtka.objects.create(
+            sifTvrtka=korisnik2,
+            nazivTvrtka='Test Tvrtka',
+            adresaTvrtka='Ulica 21',
+            kvartTvrtka='Maksimir',
+            mjestoTvrtka='Grad',
+            opisTvrtka='Test description.'
+        )
+        
+        with self.assertRaises(ValueError):
+            Komentar.objects.create(        
+                #sifKom=?????     susjed.sifSusjed.id,
+                textKom='',
+                sifPrima=tvrtka,
+                sifDaje=susjed.sifSusjed
+            )
+        
+    def test_komentar_model_relation(self):
+        # korisnik (susjed) koji komentira
+        korisnik1 = Korisnik.objects.get_or_create(
+            username='comment_user',
+            email='comment_user@example.com',
+            password='password123',
+            isTvrtka=False,
+            isSusjed=True,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        susjed = Susjed.objects.get_or_create(
+            sifSusjed=korisnik1,
+            ime='Ivan',
+            prezime='Horvat',
+            mjestoSusjed='Zagreb',
+            kvartSusjed='Centar',
+            bodovi=5,
+            isVolonter=False,
+            opisSusjed='Vrlo vješt.',
+            brojOcjena=0,
+            zbrojOcjena=0,
+            skills='Osnovne vještine'
+        )[0]
+
+        # korisnik (tvrtka) koji prima komentar
+        korisnik2 = Korisnik.objects.get_or_create(
+            username='tvrtka_user',
+            email='tvrtka_user@example.com',
+            password='password123',
+            isTvrtka=True,
+            isSusjed=False,
+            isNadlezna=False,
+            isModerator=False
+        )[0]
+
+        tvrtka = Tvrtka.objects.create(
+            sifTvrtka=korisnik2,
+            nazivTvrtka='Test Tvrtka',
+            adresaTvrtka='Ulica 21',
+            kvartTvrtka='Maksimir',
+            mjestoTvrtka='Grad',
+            opisTvrtka='Test description.'
+        )
+            
+        komentar = Komentar.objects.get_or_create(        
+            #sifKom=?????     susjed.sifSusjed.id,
+            textKom='Ispitni komentar.',
+            sifPrima=tvrtka,
+            sifDaje=susjed.sifSusjed
+        )[0]
+        
+        self.assertEqual(komentar.sifPrima.nazivTvrtka, 'Test Tvrtka')
