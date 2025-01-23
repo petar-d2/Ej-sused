@@ -298,7 +298,7 @@ class searchSortView(APIView):
         'ponuda': {
             'model': Ponuda,
             'serializer': PonudaSerializer,
-            'fields': ['adresaTvrtka', 'opisPonuda', 'cijenaNovac', 'nazivPonuda']
+            'fields': ['opisPonuda', 'cijenaNovac', 'nazivPonuda']
         }
     }
 
@@ -318,7 +318,6 @@ class searchSortView(APIView):
         model = modelStruct['model']
         serializerClass = modelStruct['serializer']
         fields = modelStruct['fields']
-
         queryset = model.objects.all()
         if searchQuery:
             query = Q()
