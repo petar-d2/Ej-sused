@@ -39,6 +39,9 @@ const Header = () => {
             if (userData && userData.ned && userData.ned.bodovi !== undefined) {
                 setUserBodovi(userData.ned.bodovi);
             }
+            else {
+                setUserBodovi(5);
+            }
         };
         fetchUserBodovi();
     }, []);
