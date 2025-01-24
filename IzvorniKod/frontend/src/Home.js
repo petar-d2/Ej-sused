@@ -20,15 +20,16 @@ const Home = () => {
 
   return (
     <div className="home_main">
-        <div className='mapa'>
-        <Mapa predefinedLocations={predefinedLocations} />
-        </div>
+
         <div className='kvartovi_home'>
             {kvartovi.map((kvart) => (
             <PrikazKvarta key={kvart.id} kvart={kvart} />
         
       ))}
       </div>
+      <div className='mapa'>
+        <Mapa predefinedLocations={predefinedLocations} style={{ zIndex: 0 }}/>
+        </div>
     </div>
   );
 };

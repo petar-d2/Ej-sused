@@ -70,3 +70,6 @@
     box-sizing: border-box;
     min-width: 200px;
 }
+.form-group{
+    display:grid;
+}
