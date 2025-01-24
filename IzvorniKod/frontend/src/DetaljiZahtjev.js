@@ -39,7 +39,7 @@ const DetaljiZahtjev = () => {
         };
 
         fetchZahtjevDetails();
-        fetchUserPoints(); // Fetch user points
+        //fetchUserPoints(); // Fetch user points
     }, [id]);
 
     const handleViewOnMapsClick = () => {
@@ -51,11 +51,6 @@ const DetaljiZahtjev = () => {
 
     const handleConfirm = async () => {
         try {
-            if (userPoints < zahtjev.cijenaBod) {
-                setErrorMessage('Nemate dovoljno bodova za prihvaćanje ovog zahtjeva!');
-                return;
-            }
-
             const userData = JSON.parse(localStorage.getItem('user'));
             if (!userData) {
                 setErrorMessage('Korisnik nije prijavljen!');
@@ -114,8 +109,6 @@ const DetaljiZahtjev = () => {
             <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'N/A'}</p>
 
             {/* User Points Display */}
-            <p><strong>Trenutni bodovi korisnika:</strong> {userPoints}</p>
-
             <div className="skills-container">
                 {Array.isArray(zahtjev.sifVrsta) 
                     ? zahtjev.sifVrsta.map((service, index) => (

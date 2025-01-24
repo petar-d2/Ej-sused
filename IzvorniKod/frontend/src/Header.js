@@ -33,17 +33,52 @@ const Header = () => {
         setCurrentPage(pageTitle);
     }, [location.pathname]);
 
+    const fetchUserBodovi = async () => {
+        try {
+            const check = JSON.parse(localStorage.getItem('user'));
+            if (!check) {
+                console.log("No user is logged in.");
+                setUserBodovi(0); 
+                return;
+            }
+            const response = await axios.get(
+                window.location.href.replace(window.location.pathname, "/") +
+                  "user-info/",
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  },
+                }
+              );
+    
+                const userData = response.data; 
+    
+                if (userData.bodovi !== undefined) {
+                    setUserBodovi(userData.bodovi); 
+                    localStorage.setItem('user', JSON.stringify(userData));
+                } else {
+                    console.log("bodovi not found in response");
+                    setUserBodovi(0); 
+                }
+        
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserBodovi(0);
+        }
+    };
+    
+
     useEffect(() => {
-        const fetchUserBodovi = () => {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData && userData.ned && userData.ned.bodovi !== undefined) {
-                setUserBodovi(userData.ned.bodovi);
-            }
-            else {
-                setUserBodovi(5);
-            }
+        fetchUserBodovi(); // Fetch user bodovi on initial render
+
+        const intervalId = setInterval(() => {
+            fetchUserBodovi(); // Re-fetch every 5 seconds
+        }, 5000);
+
+        // Clean up the interval when the component is unmounted
+        return () => {
+            clearInterval(intervalId);
         };
-        fetchUserBodovi();
     }, []);
 
     const handleLogout = async () => {

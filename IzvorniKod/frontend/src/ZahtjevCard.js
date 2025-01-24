@@ -40,11 +40,7 @@ const ZahtjevCard = ({ event, onIzvrsiteljAssigned }) => {
     e.stopPropagation(); // Prevent the card's onClick from triggering
     try {
       const userData = JSON.parse(localStorage.getItem('user'));
-      if (userData.bodovi < event.cijenaBod) {
-        alertUser('Nedovoljno bodova za prihvat zahtjeva.', 'error');
-        return;
-      }
-  
+      console.log(userData.id)
       const response = await axios.post(`/zahtjev/assign-izvrsitelj/${event.id}/`, {
         user_id: userData.id,
       });
