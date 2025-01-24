@@ -170,7 +170,9 @@ const Header = () => {
                                         </>
                                     )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                    {!Cookies.get('google') && ( // Hide "Edit Profile" for Google users
+                                        <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                    )}
                                 </>
                             ) : (
                                 <>
@@ -218,7 +220,9 @@ const Header = () => {
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                {!Cookies.get('google') && ( 
+                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                )}
                             </>
                         ) : (
                             <>
