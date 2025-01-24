@@ -131,3 +131,8 @@
 }
 
 
+@media (max-width: 600px) {
+    .header-title-container{
+        display: none;
+    }
+}
