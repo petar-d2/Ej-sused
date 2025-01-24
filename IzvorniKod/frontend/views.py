@@ -806,11 +806,11 @@ class updateZahtjevStatusView(APIView):
             if not new_status:
                 return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-
             zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
             izvršitelj_id = zahtjev.sifIzvrsitelj
             pomoc_trazitelj_id = zahtjev.sifSusjed 
-
+            if zahtjev.statusZahtjev == new_status or (zahtjev.statusZahtjev=="PREKINUTO" and new_status=="OBAVLJENO"):
+                return Response({"message": "No changes made."}, status=status.HTTP_200_OK)
             if izvršitelj_id == -1:
                 print("Skipping point update because sifIzvrsitelj is -1.")
 
