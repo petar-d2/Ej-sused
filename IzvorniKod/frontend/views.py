@@ -800,16 +800,52 @@ class listKomentariView(APIView):
      
 class updateZahtjevStatusView(APIView):
     def post(self, request, sifZahtjev):
-        new_status = request.data.get('status')
-        if not new_status:
-            return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Check for status in the request
+            new_status = request.data.get('status')
+            if not new_status:
+                return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
 
-        zahtjev.statusZahtjev = new_status
-        zahtjev.save()
-        
-        return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+            zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+            izvršitelj_id = zahtjev.sifIzvrsitelj
+            pomoc_trazitelj_id = zahtjev.sifSusjed 
+
+            if izvršitelj_id == -1:
+                print("Skipping point update because sifIzvrsitelj is -1.")
+
+            if izvršitelj_id != -1 and new_status == "OBAVLJENO":
+                try:
+                    izvršitelj = get_object_or_404(Susjed, sifSusjed=izvršitelj_id)
+                    print(f"Found izvršitelj: {izvršitelj.sifSusjed}, adding points: {zahtjev.cijenaBod}")
+                    with transaction.atomic():
+                        izvršitelj.bodovi += zahtjev.cijenaBod
+                        izvršitelj.save()
+                except Exception as e:
+                    print(f"Error updating points: {e}")
+                    return Response({"error": f"Failed to update points: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if pomoc_trazitelj_id != -1 and new_status == "OBAVLJENO":
+                try:
+                    pomoc_trazitelj = get_object_or_404(Susjed, sifSusjed=pomoc_trazitelj_id)
+                    print(f"Found pomoc_trazitelj: {pomoc_trazitelj.sifSusjed}, deducting points: {zahtjev.cijenaBod}")
+                    with transaction.atomic():
+                        pomoc_trazitelj.bodovi -= zahtjev.cijenaBod
+                        if pomoc_trazitelj.bodovi < 0:
+                            pomoc_trazitelj.bodovi = 0  # Ensure bodovi don't go negative
+                        pomoc_trazitelj.save()
+                except Exception as e:
+                    print(f"Error deducting points from pomoc_trazitelj: {e}")
+                    return Response({"error": f"Failed to deduct points from pomoc_trazitelj: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # Update the zahtjev status
+            zahtjev.statusZahtjev = new_status
+            zahtjev.save()
+            print(f"Status updated successfully for zahtjev ID {zahtjev.id} to {new_status}.")
+
+            return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            return Response({"error": f"Failed to update status: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
      
 
@@ -823,15 +859,17 @@ class AssignIzvrsiteljView(APIView):
         zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
         susjed = get_object_or_404(Susjed, sifSusjed=user_id)
 
-        if susjed.bodovi < zahtjev.cijenaBod:
-            return Response({"error": "Not enough points to accept the request"}, status=status.HTTP_400_BAD_REQUEST)
+        '''if susjed.bodovi < zahtjev.cijenaBod:
+            return Response({"error": "Not enough points to accept the request"}, status=status.HTTP_400_BAD_REQUEST)'''
 
         with transaction.atomic():  # Ensure changes are consistent
-            susjed.bodovi -= zahtjev.cijenaBod
+            '''susjed.bodovi -= zahtjev.cijenaBod
             if susjed.bodovi < 0:
                 raise ValidationError("Insufficient points.")
-            susjed.save()
-
+            susjed.save()'''
+            print(f"sifSusjed: {susjed.sifSusjed}")
+            print(f"Type of sifSusjed: {type(susjed.sifSusjed)}")
+            zahtjev.sifIzvrsitelj = susjed.sifSusjed.id
             zahtjev.statusZahtjev = "PRIHVAĆENO"
             zahtjev.save()
 
