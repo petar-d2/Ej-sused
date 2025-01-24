@@ -1,5 +1,7 @@
 from django.test import TestCase
 from api.models import Korisnik, Tvrtka, Susjed, Dogadaj, Zahtjev, Ponuda, Komentar
+##Testiranje je namjenjeno developerima za lokalno testiranje s obzirom da bi nam jako usporilo render
+#time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
 
 class TestModels(TestCase):
 

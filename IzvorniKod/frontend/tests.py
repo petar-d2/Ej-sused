@@ -6,7 +6,7 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 from unittest.mock import patch
 import time
-
+##Testiranje je namjenjeno developerima za lokalno testiranje s obzirom da bi nam jako usporilo render
 #time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
 
 class LoginFormTest(LiveServerTestCase):
