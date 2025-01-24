@@ -15,7 +15,9 @@
   position: relative;
   background-color: white;
 }
-
+.form-group{
+  display:grid;
+}
 .dogadaj-form {
   width: 80%;
   display: flex;
