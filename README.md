@@ -1,4 +1,4 @@
-# EJ SUSED
+# EJ SUSED(https://ej-sused-hphl.onrender.com/)
 Trenutno je uključena prva verzija programa u početnoj fazi razvoja, aplikacija se sporo učitava u Renderu na linku(napisan u samom repozitoriju) jer ne koristimo plaćenu verziju, koja dolazi sa sporijim dohvaćanjem iz baze i još nekolicinu nedostataka pa ćemo u budućnosti uključiti plaćenu verziju ako bude potrebno.
 
 Branchevi na kojima su se predavali commitovi su dev i frontend.
