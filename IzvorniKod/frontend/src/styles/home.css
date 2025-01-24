@@ -1,4 +1,4 @@
-.home_main {
+.kvartovi_home {
     margin-top: 70px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -12,6 +12,25 @@
     margin-bottom: 5%;
     padding: 20px 2%;
     height: fit-content;
+    border-radius: 10px;
+}
+.home_main{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.mapa{
+    min-height: 300px;
+    width: 70vw;
+    height: 35vw;
+    margin-top: 70px;
+    justify-items: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-bottom: 5%;
+    padding: 20px 2%;
     border-radius: 10px;
 }
 
@@ -54,4 +73,5 @@
     opacity: 0;
     display: none;
 }
+
 
