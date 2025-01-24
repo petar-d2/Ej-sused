@@ -68,7 +68,7 @@ const Ponude = () => {
           id="search1"
           type="text"
           ref={inputRef}
-          placeholder="Pretraži po nazivu zahtjeva..."
+          placeholder="Pretraži po nazivu ponude..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="search-input"

@@ -14,6 +14,8 @@ from django.http import Http404
 from rest_framework.permissions import IsAdminUser,AllowAny,IsAuthenticated
 from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.db.models.functions import Cast
+from django.db import transaction
+from rest_framework.exceptions import ValidationError
 
 def validate_field_types(data, field_types):
     errors = {}
@@ -296,7 +298,7 @@ class searchSortView(APIView):
         'ponuda': {
             'model': Ponuda,
             'serializer': PonudaSerializer,
-            'fields': ['adresaTvrtka', 'opisPonuda', 'cijenaNovac', 'nazivPonuda']
+            'fields': ['opisPonuda', 'cijenaNovac', 'nazivPonuda']
         }
     }
 
@@ -316,7 +318,6 @@ class searchSortView(APIView):
         model = modelStruct['model']
         serializerClass = modelStruct['serializer']
         fields = modelStruct['fields']
-
         queryset = model.objects.all()
         if searchQuery:
             query = Q()
@@ -458,6 +459,7 @@ class userInfo(APIView):
                 "isSusjed": user.isSusjed,
                 "isTvrtka": user.isTvrtka,
                 "isNadlezna": user.isNadlezna,
+                "isModerator": user.isModerator
             }
             # Dodatni podaci za Susjeda ili Tvrtku
             if user.isSusjed:
@@ -590,7 +592,7 @@ class napraviZahtjevView(APIView):
                 sifVrsta=sifVrsta_id,
                 sifIzvrsitelj=sifIzvrsitelj_id,
             )
-            return Response({"message": "Zahtjev uspešno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Zahtjev uspješno kreiran!", "zahtjev_id": zahtjev.id}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     def get(self, request):
@@ -627,7 +629,7 @@ class napraviPonuduView(APIView):
                 isAktivna=isAktivna
             )
             ponuda.save()
-            return Response({"message": "Ponuda uspešno kreiran!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Ponuda uspješno kreirana!", "ponuda_id": ponuda.id}, status=status.HTTP_201_CREATED)
         
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -753,11 +755,13 @@ class listPonudeView(APIView):
     def post(self, request):
         # Fetch all Zahtjevi or filter based on query params
         naziv_filter = request.query_params.get('naziv', None)  # Optional filter by naziv
+        sif_tvrtka = request.data.get('sifTvrtka', None)
+        ponude = Ponuda.objects.all()
+        if sif_tvrtka:
+            ponude = ponude.filter(sifTvrtka=sif_tvrtka)
         if naziv_filter:
-            ponude = Ponuda.objects.filter(nazivPonuda=naziv_filter)
-        else:
-            ponude = Ponuda.objects.all()
-        
+            ponude = ponude.filter(nazivPonuda__icontains=naziv_filter)
+
         serializer = PonudaSerializer(ponude, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def get(self, request):
@@ -796,27 +800,105 @@ class listKomentariView(APIView):
      
 class updateZahtjevStatusView(APIView):
     def post(self, request, sifZahtjev):
-        new_status = request.data.get('status')
-        if not new_status:
-            return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Check for status in the request
+            new_status = request.data.get('status')
+            if not new_status:
+                return Response({"error": "Status is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+            zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
+            izvršitelj_id = zahtjev.sifIzvrsitelj
+            pomoc_trazitelj_id = zahtjev.sifSusjed 
+            if zahtjev.statusZahtjev == new_status or (zahtjev.statusZahtjev=="PREKINUTO" and new_status=="OBAVLJENO"):
+                return Response({"message": "No changes made."}, status=status.HTTP_200_OK)
+            if izvršitelj_id == -1:
+                print("Skipping point update because sifIzvrsitelj is -1.")
 
-        zahtjev.statusZahtjev = new_status
-        zahtjev.save()
-        
-        return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+            if izvršitelj_id != -1 and new_status == "OBAVLJENO":
+                try:
+                    izvršitelj = get_object_or_404(Susjed, sifSusjed=izvršitelj_id)
+                    print(f"Found izvršitelj: {izvršitelj.sifSusjed}, adding points: {zahtjev.cijenaBod}")
+                    with transaction.atomic():
+                        izvršitelj.bodovi += zahtjev.cijenaBod
+                        izvršitelj.save()
+                except Exception as e:
+                    print(f"Error updating points: {e}")
+                    return Response({"error": f"Failed to update points: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if pomoc_trazitelj_id != -1 and new_status == "OBAVLJENO":
+                try:
+                    pomoc_trazitelj = get_object_or_404(Susjed, sifSusjed=pomoc_trazitelj_id)
+                    print(f"Found pomoc_trazitelj: {pomoc_trazitelj.sifSusjed}, deducting points: {zahtjev.cijenaBod}")
+                    with transaction.atomic():
+                        pomoc_trazitelj.bodovi -= zahtjev.cijenaBod
+                        if pomoc_trazitelj.bodovi < 0:
+                            pomoc_trazitelj.bodovi = 0  # Ensure bodovi don't go negative
+                        pomoc_trazitelj.save()
+                except Exception as e:
+                    print(f"Error deducting points from pomoc_trazitelj: {e}")
+                    return Response({"error": f"Failed to deduct points from pomoc_trazitelj: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # Update the zahtjev status
+            zahtjev.statusZahtjev = new_status
+            zahtjev.save()
+            print(f"Status updated successfully for zahtjev ID {zahtjev.id} to {new_status}.")
+
+            return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            return Response({"error": f"Failed to update status: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
      
-class assignIzvrsiteljView(APIView):
+
+
+class AssignIzvrsiteljView(APIView):
     def post(self, request, sifZahtjev):
-        user_id = request.data.get('user_id')
+        user_id = request.data.get("user_id")
         if not user_id:
             return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         zahtjev = get_object_or_404(Zahtjev, id=sifZahtjev)
-        zahtjev.statusZahtjev = 'PRIHVAĆEN'
-        zahtjev.sifIzvrsitelj = user_id
-        zahtjev.save()
+        susjed = get_object_or_404(Susjed, sifSusjed=user_id)
 
-        return Response({"message": "Izvršitelj assigned successfully"}, status=status.HTTP_200_OK)
+        '''if susjed.bodovi < zahtjev.cijenaBod:
+            return Response({"error": "Not enough points to accept the request"}, status=status.HTTP_400_BAD_REQUEST)'''
+
+        with transaction.atomic():  # Ensure changes are consistent
+            '''susjed.bodovi -= zahtjev.cijenaBod
+            if susjed.bodovi < 0:
+                raise ValidationError("Insufficient points.")
+            susjed.save()'''
+            print(f"sifSusjed: {susjed.sifSusjed}")
+            print(f"Type of sifSusjed: {type(susjed.sifSusjed)}")
+            zahtjev.sifIzvrsitelj = susjed.sifSusjed.id
+            zahtjev.statusZahtjev = "PRIHVAĆENO"
+            zahtjev.save()
+
+        return Response({"message": "Request accepted successfully"}, status=status.HTTP_200_OK)
+
+class izmijeniStatusDogadajaView(APIView):
+    def patch(self, request, id):
+        event = get_object_or_404(Dogadaj, id=id)
+        
+        new_status = request.data.get('statusDogadaj', None)
+        
+        if not new_status:
+            return Response({'detail': 'Status is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        event.statusDogadaj = new_status
+        event.save()
+
+        return Response(
+            {'id': event.id, 'statusDogadaj': event.statusDogadaj},
+            status=status.HTTP_200_OK
+        )
+    
+class pokaziPonudeView(APIView):
+    def get(self, request, sifTvrtka):
+        # Filter the Ponude based on the `sifTvrtka`
+        ponude = Ponuda.objects.filter(sifTvrtka=sifTvrtka)
+
+        # Serialize the Ponuda instances
+        serializer = PonudaSerializer(ponude, many=True)
+
+        # Return the serialized data with a 200 OK status
+        return Response(serializer.data, status=status.HTTP_200_OK)

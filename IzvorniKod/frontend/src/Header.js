@@ -9,6 +9,7 @@ const Header = () => {
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('');
+    const [userBodovi, setUserBodovi] = useState(0); // State to store "ned.bodovi"
 
     const pageTitles = {
         '/': 'Početna',
@@ -25,29 +26,60 @@ const Header = () => {
         '/uredi-profil': 'Uredi profil',
         '/prijava': 'Prijava',
         '/registracija': 'Registracija',
-
-        '/home': 'Početna',
-        '/home/': 'Početna',
-        '/tvrtke/': 'Tvrtke',
-        '/Susjedi/': 'Susjedi',
-        '/dogadaji/': 'Događaji',
-        '/moji-zahtjevi/': 'Moji zahtjevi',
-        '/zahtjevi/': 'Zahtjevi',
-        '/napravi-zahtjev/': 'Novi zahtjev',
-        '/moji-dogadaji/': 'Moji događaji',
-        '/kreiraj-dogadaj/': 'Novi događaj',
-        '/moje-ponude/': 'Moje ponude',
-        '/napravi-ponudu/': 'Nova ponuda',
-        '/uredi-profil/': 'Uredi profil',
-        '/prijava/': 'Prijava',
-        '/registracija/': 'Registracija',
     };
 
     useEffect(() => {
-        // Postavljanje naslova na temelju trenutne lokacije
         const pageTitle = pageTitles[location.pathname] || '';
         setCurrentPage(pageTitle);
     }, [location.pathname]);
+
+    const fetchUserBodovi = async () => {
+        try {
+            const check = JSON.parse(localStorage.getItem('user'));
+            if (!check) {
+                console.log("No user is logged in.");
+                setUserBodovi(0); 
+                return;
+            }
+            const response = await axios.get(
+                window.location.href.replace(window.location.pathname, "/") +
+                  "user-info/",
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  },
+                }
+              );
+    
+                const userData = response.data; 
+    
+                if (userData.bodovi !== undefined) {
+                    setUserBodovi(userData.bodovi); 
+                    localStorage.setItem('user', JSON.stringify(userData));
+                } else {
+                    console.log("bodovi not found in response");
+                    setUserBodovi(0); 
+                }
+        
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserBodovi(0);
+        }
+    };
+    
+
+    useEffect(() => {
+        fetchUserBodovi(); // Fetch user bodovi on initial render
+
+        const intervalId = setInterval(() => {
+            fetchUserBodovi(); // Re-fetch every 5 seconds
+        }, 5000);
+
+        // Clean up the interval when the component is unmounted
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     const handleLogout = async () => {
         const access = localStorage.getItem("accessToken");
@@ -73,67 +105,44 @@ const Header = () => {
         return localStorage.getItem("accessToken") !== null;
     };
 
-    const isSusjed2 = () => {
+    const getUserData = () => {
         const userData = JSON.parse(localStorage.getItem('user'));
         if (!userData) {
-            handleLogout();
-            return false;
+            return null;
         }
-        return userData.isSusjed;
+        return userData;
+    };
+
+    const isSusjed2 = () => {
+        const userData = getUserData();
+        return userData?.isSusjed || false; // Safely check if isSusjed exists
     };
 
     const isVolonter2 = () => {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        if (!userData) {
-            handleLogout();
-            return false;
-        }
-        return userData.isVolonter;
+        const userData = getUserData();
+        return userData?.isVolonter || false; // Safely check if isVolonter exists
     };
 
     const isTvrtka2 = () => {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        if (!userData) {
-            handleLogout();
-            return false;
-        }
-        return userData.isTvrtka;
+        const userData = getUserData();
+        return userData?.isTvrtka || false; // Safely check if isTvrtka exists
     };
-    
+
     const isAdmin = () => {
-        if (typeof(localStorage.getItem("accessToken")) != undefined && localStorage.getItem("accessToken") != null) {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData==null){
-                handleLogout();
-            }
-            return userData.isNadlezna;
-        } else {
-            return false;
-        }
-    }
+        const userData = getUserData();
+        return userData?.isNadlezna || false; // Safely check if isNadlezna exists
+    };
 
-
-    { // login cookie provjera
-        var refresh = Cookies.get("refresh");
-        var access = Cookies.get("access");
-        var google = Cookies.get("google");
-        if (typeof(refresh) != undefined && typeof(access) != undefined && refresh != null && access != null){
+    useEffect(() => {
+        const refresh = Cookies.get("refresh");
+        const access = Cookies.get("access");
+        const google = Cookies.get("google");
+        if (refresh && access) {
             localStorage.setItem('accessToken', refresh);
             localStorage.setItem('refreshToken', access);
-            if (typeof(google) != undefined && google != null) localStorage.setItem('googleToken', google);
+            if (google) localStorage.setItem('googleToken', google);
         }
-    }
-
-    /*useEffect(() => {
-        if (isLoggedIn()) {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            setLoggedUser(userData); // Update state with user data
-            console.log(userData);
-        } else {
-            setLoggedUser(null); // Reset state if logged out
-        }
-    }, []);*/
-
+    }, []);
 
     const handleDropdownClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -153,6 +162,10 @@ const Header = () => {
                     <button className="hamburger" onClick={handleDropdownClick}>
                         ☰
                     </button>
+                    <div className="points-display">
+                        <strong>Bodovi:</strong> {userBodovi}
+                    </div>
+
                     <div className="header-title-container">
                         {currentPage && <div className="header-subtitle">{currentPage}</div>}
                     </div>
@@ -160,7 +173,6 @@ const Header = () => {
                         Ej Sused
                     </h1>
 
-                    
                     {isDropdownOpen && (
                         <div className="dropdown_menu">
                             <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
@@ -174,6 +186,7 @@ const Header = () => {
                                             <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                             <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                            <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                             {isVolonter2() && (
                                                 <>
                                                     <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
@@ -181,7 +194,7 @@ const Header = () => {
                                                 </>
                                             )}
                                             {isAdmin() && (
-                                                 <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
+                                                <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
                                             )}
                                         </>
                                     )}
@@ -192,7 +205,9 @@ const Header = () => {
                                         </>
                                     )}
                                     <button className="header_gumb" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Odjavi se</button>
-                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                    {!Cookies.get('google') && ( // Hide "Edit Profile" for Google users
+                                        <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                    )}
                                 </>
                             ) : (
                                 <>
@@ -213,24 +228,24 @@ const Header = () => {
                         <button className="header_gumb" onClick={() => handleNavigate('/')}>Početna</button>
                         {isLoggedIn() ? (
                             <>
-                                
                                 <button className="header_gumb" onClick={() => handleNavigate('/tvrtke')}>Tvrtke</button>
-                                <button className="header_gumb" onClick={() => handleNavigate('/susjedi')}>Susjedi</button> 
+                                <button className="header_gumb" onClick={() => handleNavigate('/susjedi')}>Susjedi</button>
                                 <button className="header_gumb" onClick={() => handleNavigate('/dogadaji')}>Događaji</button>
                                 {isSusjed2() && (
                                     <>
                                         <button className="header_gumb" onClick={() => handleNavigate('/zahtjevi')}>Zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/moji-zahtjevi')}>Moji zahtjevi</button>
                                         <button className="header_gumb" onClick={() => handleNavigate('/napravi-zahtjev')}>Novi zahtjev</button>
+                                        <button className="header_gumb" onClick={() => handleNavigate('/ponude')}>Profesionalne ponude</button>
                                         {isVolonter2() && (
                                             <>
                                                 <button className="header_gumb" onClick={() => handleNavigate('/moji-dogadaji')}>Moji događaji</button>
                                                 <button className="header_gumb" onClick={() => handleNavigate('/kreiraj-dogadaj')}>Novi događaj</button>
                                             </>
                                         )}
-                                         {isAdmin() && (
-                                                 <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
-                                            )}
+                                        {isAdmin() && (
+                                            <button className="header_gumb" onClick={() => handleNavigate('/admin-prikaz')}>Brisanje komentara i korisnika</button>
+                                        )}
                                     </>
                                 )}
                                 {isTvrtka2() && (
@@ -240,7 +255,9 @@ const Header = () => {
                                     </>
                                 )}
                                 <button className="header_gumb" onClick={handleLogout}>Odjavi se</button>
-                                <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button> 
+                                {!Cookies.get('google') && ( 
+                                    <button className="header_gumb" onClick={() => handleNavigate('/uredi-profil')}>Uredi profil</button>
+                                )}
                             </>
                         ) : (
                             <>
@@ -253,6 +270,6 @@ const Header = () => {
             )}
         </div>
     );
-}
+};
 
 export default Header;

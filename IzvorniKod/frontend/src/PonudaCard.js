@@ -15,7 +15,7 @@ const PonudaCard = ({ event }) => {
         <h3>{event.nazivPonuda}</h3>
         <p><strong>Adresa:</strong> {event.adresaTvrtka}</p>
         {event.opisZahtjev && <p><strong>Opis:</strong> {event.opisPonuda}</p>}
-        <p><strong>Cijena:</strong> {event.cijenaNovac}</p>
+        <p><strong>Cijena:</strong> {event.cijenaNovac} €</p>
     </div>
   );
 };

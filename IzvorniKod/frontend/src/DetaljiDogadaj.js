@@ -57,7 +57,7 @@ const DetaljiDogadaj = () => {
     }
     const getStatusClass = (status) => {
         if (status === 'ODOBRAVANJE') return 'status-waiting'; // Orange for ČEKANJE
-        if (status === 'PREKINUTO') return 'status-rejected'; // Red for PREKINUTO
+        if (status === 'ODBIJENO') return 'status-rejected'; // Red for PREKINUTO
         return 'status-other'; // Green for other statuses
       };
     return (

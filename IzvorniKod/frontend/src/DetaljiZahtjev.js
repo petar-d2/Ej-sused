@@ -8,6 +8,8 @@ const DetaljiZahtjev = () => {
     const navigate = useNavigate();
     const [zahtjev, setZahtjev] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userPoints, setUserPoints] = useState(0); // Added state for user points
+    const [errorMessage, setErrorMessage] = useState(''); // State for error messages
 
     useEffect(() => {
         const fetchZahtjevDetails = async () => {
@@ -22,7 +24,22 @@ const DetaljiZahtjev = () => {
             }
         };
 
+        const fetchUserPoints = async () => {
+            try {
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData) {
+                    const userId = userData.id;
+                    const pointsApiUrl = window.location.href.replace(window.location.pathname, '/') + `user/${userId}/points/`;
+                    const response = await axios.get(pointsApiUrl); 
+                    setUserPoints(response.data.points); // Assume response contains `points`
+                }
+            } catch (error) {
+                console.error('Error fetching user points:', error);
+            }
+        };
+
         fetchZahtjevDetails();
+        //fetchUserPoints(); // Fetch user points
     }, [id]);
 
     const handleViewOnMapsClick = () => {
@@ -32,20 +49,38 @@ const DetaljiZahtjev = () => {
         window.open(mapsUrl, '_blank');
     };
 
-    const handleConfirm = () => {
-        const userData = JSON.parse(localStorage.getItem('user'));
-        console.log('Zahtjev potvrden:', userData.id);
+    const handleConfirm = async () => {
+        try {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData) {
+                setErrorMessage('Korisnik nije prijavljen!');
+                return;
+            }
+
+            const confirmApiUrl = window.location.href.replace(window.location.pathname, '/') + `zahtjev/${id}/accept/`;
+            const response = await axios.post(confirmApiUrl, { userId: userData.id });
+
+            if (response.data.success) {
+                setUserPoints((prevPoints) => prevPoints - zahtjev.cijenaBod);
+                setErrorMessage(''); // Clear any previous errors
+                alert('Zahtjev uspješno prihvaćen!');
+            } else {
+                setErrorMessage(response.data.message || 'Došlo je do greške prilikom prihvaćanja zahtjeva!');
+            }
+        } catch (error) {
+            console.error('Error confirming zahtjev:', error);
+            setErrorMessage('Došlo je do greške prilikom prihvaćanja zahtjeva!');
+        }
     };
 
-    // Function to determine the status class
     const getStatusClass = (status) => {
         switch (status) {
             case 'ČEKANJE':
-                return 'status-waiting';  // Orange color for ČEKANJE
+                return 'status-waiting';
             case 'PREKINUTO':
-                return 'status-canceled'; // Red color for PREKINUTO
+                return 'status-canceled';
             default:
-                return 'status-accepted'; // Green color for any other status
+                return 'status-accepted';
         }
     };
 
@@ -72,8 +107,8 @@ const DetaljiZahtjev = () => {
             <h2>Detalji zahtjeva</h2>
             <p><strong>Adresa:</strong> {zahtjev.adresaZahtjev}</p>
             <p><strong>Opis:</strong> {zahtjev.opisZahtjev || 'N/A'}</p>
-            
-            {/* Vrsta usluge container with badges */}
+
+            {/* User Points Display */}
             <div className="skills-container">
                 {Array.isArray(zahtjev.sifVrsta) 
                     ? zahtjev.sifVrsta.map((service, index) => (
@@ -84,6 +119,8 @@ const DetaljiZahtjev = () => {
 
             <p><strong>Status:</strong> <span className={getStatusClass(zahtjev.statusZahtjev)}>{zahtjev.statusZahtjev}</span></p>
             <p><strong>Cijena (bodovi):</strong> {zahtjev.cijenaBod}</p>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
 
             <button className="view-map-button" onClick={(e) => {e.stopPropagation(); handleViewOnMapsClick();}}>
                 Pogledaj lokaciju na karti

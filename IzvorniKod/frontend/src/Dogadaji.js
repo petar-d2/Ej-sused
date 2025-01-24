@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import DogadajCard from './DogadajCard';
 import './styles/dogadaji.css';
+import ModeratorDogadajCard from './ModeratorDogadajCard';
+import DogadajCard from './DogadajCard';
 
 const Dogadaji = () => {
   const [events, setEvents] = useState([]); // State for holding fetched events
@@ -9,7 +10,8 @@ const Dogadaji = () => {
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
   const [sortBy, setSortBy] = useState(''); // State for sorting
   const inputRef = useRef(null); // Reference for the input field
-
+  const user = JSON.parse(localStorage.getItem('user'));
+  const isModerator = user ? user.isModerator : false;
   // Fetch data from the server
   const fetchData = async (query = '', sort = '') => {
     setLoading(true);
@@ -28,7 +30,21 @@ const Dogadaji = () => {
     }
   };
 
-  // Trigger fetchData whenever searchQuery or sortBy changes
+  const handleStatusChange = async (id, newStatus) => {
+  
+    try {
+      await axios.patch(`/dogadaji/${id}/status/`, { statusDogadaj: newStatus });
+  
+      setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event.id === id ? { ...event, statusDogadaj: newStatus } : event
+        )
+      );
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchData(searchQuery, sortBy);
@@ -36,19 +52,16 @@ const Dogadaji = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, sortBy]);
-
   // Auto-focus the input field when the component loads
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value); // Update search query
   };
-
   // Handle sorting dropdown change
   const handleSortChange = (event) => {
     setSortBy(event.target.value); // Update sortBy state
@@ -74,7 +87,8 @@ const Dogadaji = () => {
           onChange={handleSearchChange}
           className="search-input"
         />
-        <select id="sort_dogadaji"
+        <select
+          id="sort_dogadaji"
           className="filter-dropdown"
           value={sortBy}
           onChange={handleSortChange}
@@ -89,7 +103,18 @@ const Dogadaji = () => {
 
       <div className="dogadaj-card-container">
         {events.map((event) => (
-          <DogadajCard key={event.id} event={event} />
+          isModerator ? (
+            <ModeratorDogadajCard
+              key={event.id}
+              event={event}
+              onStatusChange={handleStatusChange}
+            />
+          ) : (
+            <DogadajCard
+              key={event.id}
+              event={event}
+            />
+          )
         ))}
       </div>
     </div>

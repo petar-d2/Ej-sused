@@ -4,9 +4,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from django.test import LiveServerTestCase
 from selenium import webdriver
-import os
+from unittest.mock import patch
 import time
-
+##Testiranje je namjenjeno developerima za lokalno testiranje s obzirom da bi nam jako usporilo render
 #time.sleep() funkcija je koristena jer nam je baza usporena u free planu pa nemamo kako bas drugog nacina osim cekanja tj. sleep funkcije
 
 class LoginFormTest(LiveServerTestCase):
@@ -24,8 +24,8 @@ class LoginFormTest(LiveServerTestCase):
         submit = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, "submit")))
 
         # Enter credentials
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in the test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in the test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
 
         # Assert redirection to a logged-in page (modify expected URL/title as needed)
@@ -149,8 +149,8 @@ class KreirajDogadajTest(LiveServerTestCase):
         submit = self.driver.find_element(By.ID, "submit")
 
         # Use test credentials for a valid user
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in your test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in your test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
         time.sleep(4)
         print(self.driver.current_url)
@@ -160,7 +160,7 @@ class KreirajDogadajTest(LiveServerTestCase):
         print(self.driver.current_url)
         # Locate the form fields
         time.sleep(3)
-        print(self.driver.page_source)
+        # print(self.driver.page_source)
         naziv_dogadaj = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "nazivDogadaj"))
         )
@@ -191,9 +191,6 @@ class KreirajDogadajTest(LiveServerTestCase):
 
         time.sleep(4)
         self.assertIn("Događaj uspješno kreiran!", success_message.text)
-import json
-from unittest.mock import patch
-
 
 class PonudeSusjedaTest(LiveServerTestCase):
     host_url = "http://127.0.0.1:8000/"  # Update with your Django server's URL
@@ -233,7 +230,7 @@ class PonudeSusjedaTest(LiveServerTestCase):
         mock_post.return_value.json.return_value = mock_response
 
         # Step 2: Navigate to the page
-        self.driver.get(self.host_url + "ponude-susjeda/")
+        self.driver.get(self.host_url + "susjedi/")
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "susjed-card-container"))
         )
@@ -276,8 +273,8 @@ class DogadajiSearchAndNavigationTest(LiveServerTestCase):
         submit = self.driver.find_element(By.ID, "submit")
 
         # Use test credentials for a valid user
-        email.send_keys("cigo@gmail.com")  # Ensure this user exists in your test database
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Ensure this user exists in your test database
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
         time.sleep(4)  # Wait for login to complete
         self.assertEqual(self.host_url, self.driver.current_url)  # Verify successful login
@@ -352,7 +349,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
     @patch("requests.post")
     def test_tvrtke_create_search_sort_and_navigation(self, mock_post):
         mock_post.return_value.status_code = 201  # Mocking the 201 Created response
-        mock_response = {
+        mock_response = {   # ne koristi se nigdje???
             "data":
                 {
                     'email': 'newcompany@example.com',
@@ -376,11 +373,11 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
         password = self.driver.find_element(By.ID, "password")
         submit = self.driver.find_element(By.ID, "submit")
 
-        email.send_keys("cigo@gmail.com")  # Test credentials
-        password.send_keys("admin123")
+        email.send_keys("testuser@example.com")  # Test credentials
+        password.send_keys("password123")
         submit.send_keys(Keys.RETURN)
 
-        time.sleep(4)  # Wait for the login to complete
+        time.sleep(6)  # Wait for the login to complete
         self.assertEqual(self.driver.current_url, self.host_url)
 
         # Step 3: Navigate to the Tvrtke page and check if the new Tvrtka is present
@@ -389,6 +386,8 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
         tvrtka_cards = self.driver.find_elements(By.CLASS_NAME, "tvrtka-card")
         print(f"Found {len(tvrtka_cards)} tvrtka cards before search.")
+        time.sleep(4)
+
         # Step 4: Perform the search for the newly created Tvrtka
         search_input = self.driver.find_element(By.ID, "search1")
         search_input.send_keys("Test")  # Search for the created Tvrtka
@@ -420,7 +419,7 @@ class TvrtkaSortSearchTest(LiveServerTestCase):
 
         # Step 6: Click on a TvrtkaCard and verify navigation
         tvrtka_cards[0].click()  # Click the first card
-        time.sleep(3)
+        time.sleep(6)
 
         # Verify that the user is redirected to the tvrtka details page
         self.assertTrue(
