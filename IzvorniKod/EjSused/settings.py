@@ -107,7 +107,7 @@ WSGI_APPLICATION = "EjSused.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://susjed_user:qh9tyixwT8WhmzU2eo9YIMCIlWkb9lXb@dpg-ctn9tttds78s73c2jd90-a.frankfurt-postgres.render.com/susjed",
+        default="postgresql://susjed_user:u3TVWxyKszXYFKg8mVqZIxv4tgecA0HN@dpg-cub1hd2n91rc73901fng-a.frankfurt-postgres.render.com/susjed_gmie",
         conn_max_age=600    
     )
 }
